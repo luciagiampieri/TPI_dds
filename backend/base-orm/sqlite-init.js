@@ -13,7 +13,6 @@ async function CrearDBSiNoExiste() {
             "SELECT COUNT(*) as Cantidad FROM sqlite_schema WHERE type='table' AND name='Libros'",
             []
       );
-
       // Verificar si la tabla existe
       if (response.Cantidad > 0)
             exists = true;
@@ -46,4 +45,103 @@ async function CrearDBSiNoExiste() {
                   "INSERT INTO Generos VALUES ('Romance'),('Fantasy'),('Science Fiction'),('Mystery'),('Horror'),('Biography'),('Cookbook'),('Art'),('Crime'),('Poetry'),('Childrens'),('Religion')"
             );
       }
+
+      // Tabla Resenas
+      exists = false;
+      response = await db.get(
+            "SELECT COUNT(*) as Cantidad FROM sqlite_schema WHERE type='table' AND name='Resenas'",
+            []
+      );
+      if (response.Cantidad > 0)
+            exists = true;
+      if (!exists) {
+            await db.run(
+                  `CREATE TABLE Resenas (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        id_libro INTEGER NOT NULL,
+                        fecha_resena DATE NOT NULL,
+                        comentario TEXT NOT NULL,
+                        calificacion INTEGER NOT NULL,
+                        user_name TEXT NOT NULL,
+                        FOREIGN KEY (id_libro) REFERENCES Libros(id),
+                        FOREIGN KEY (user_name) REFERENCES User_Name(user_name)
+                  )`
+            );
+            console.log("Tabla Resenas creada!");
+            await db.run(
+                  `INSERT INTO Resenas (id_libro, fecha_resena, comentario, calificacion, user_name) VALUES 
+                  (1, '2021-06-01', 'Me fascina este libro. Muy cautivante. Lo recomendaría sin dudas!', 5, 'user1'),
+                  (2, '2021-06-01', 'La calidad del autor es excelente, aunque no mi estilo.', 3, 'user2'),
+                  (3, '2021-06-01', 'No me gustó para nada. No lo recomendaría.', 1, 'user3'),
+                  (4, '2021-06-01', 'Me encantó. Muy buen libro.', 4, 'user4'),
+                  (5, '2021-06-01', 'Muy buen libro. Me gustó mucho.', 4, 'user5'),
+                  (6, '2021-06-01', 'Este libro tiene mucho potencial. Ojalá llegara al New York Times1', 5, 'user6'),
+                  (7, '2021-06-01', 'Me encantó.', 4, 'user7'),
+                  (8, '2021-06-01', 'Lo leí en un par de horas. Es fascinante.', 4, 'user8'),
+                  (9, '2021-06-01', 'Como amante de los libros que soy, esta edición me ha decepcionado un poco pero respeto al autor.', 3, 'user9'),
+                  (10, '2021-06-01', 'Me encantó. Muy buen libro.', 4, 'user10')
+                  (1, '2021-06-01', 'Es muy divertido. Lo recomendaría sin dudas!', 5, 'user10'),
+                  (2, '2021-06-01', 'No es mi estilo de libros.', 2, 'user9'),
+                  (3, '2021-06-01', 'No me gustó para nada. No lo recomendaría.', 1, 'user8'),
+                  (4, '2021-06-01', 'Me encantó. Muy buen libro.', 4, 'user7'),
+                  (5, '2021-06-01', 'Muy buen libro. Me gustó mucho.', 4, 'user6'),
+                  (6, '2021-06-01', 'No me gustó para nada. No lo recomendaría.', 1, 'user5'),
+                  (7, '2021-06-01', 'Me encantó. Muy buen libro.', 4, 'user4'),
+                  (8, '2021-06-01', 'Muy buen libro. Me gustó mucho.', 4, 'user3'),
+                  (9, '2021-06-01', 'No me gustó para nada. No lo recomendaría.', 1, 'user2'),
+                  (10, '2021-06-01', 'Me encantó. Muy buen libro.', 4, 'user1'),
+                  (11, '2021-06-01', 'Me encantó. Muy buen libro.', 4, 'user5'),
+                  (12, '2021-06-01', 'Muy buen libro. Me gustó mucho.', 4, 'user4'),
+                  (13, '2021-06-01', 'No me gustó para nada. No lo recomendaría.', 1, 'user3'),
+                  (14, '2021-06-01', 'Me encantó. Muy buen libro.', 4, 'user2'),
+                  (15, '2021-06-01', 'Muy buen libro. Me gustó mucho.', 4, 'user1'),
+                  (16, '2021-06-01', 'No me gustó para nada. No lo recomendaría.', 1, 'user10'),
+                  (17, '2021-06-01', 'Me encantó. Muy buen libro.', 4, 'user9'),
+                  (18, '2021-06-01', 'Muy buen libro. Me gustó mucho.', 4, 'user8'),
+                  (19, '2021-06-01', 'No me gustó para nada. No lo recomendaría.', 1, 'user7'),
+                  (20, '2021-06-01', 'Me encantó. Muy buen libro.', 4, 'user6')
+                  (20, '2021-06-01', 'Me encantó. Muy buen libro.', 4, 'user6'),
+                  (19, '2021-06-01', 'Muy buen libro. Me gustó mucho.', 4, 'user5'),
+                  (18, '2021-06-01', 'No me gustó para nada. No lo recomendaría.', 1, 'user4'),
+                  (17, '2021-06-01', 'Me encantó. Muy buen libro.', 4, 'user3'),
+                  (16, '2021-06-01', 'Muy buen libro. Me gustó mucho.', 4, 'user2'),
+                  (15, '2021-06-01', 'No me gustó para nada. No lo recomendaría.', 1, 'user1'),
+                  (14, '2021-06-01', 'Me encantó. Muy buen libro.', 4, 'user10'),
+                  (13, '2021-06-01', 'Muy buen libro. Me gustó mucho.', 4, 'user9'),
+                  (12, '2021-06-01', 'No me gustó para nada. No lo recomendaría.', 1, 'user8'),
+                  (11, '2021-06-01', 'Me encantó. Muy buen libro.', 4, 'user7')`
+            );
+      }
+
+      // Tabla User_Name
+      exists = false;
+      response = await db.get(
+            "SELECT COUNT(*) as Cantidad FROM sqlite_schema WHERE type='table' AND name='User_Name'",
+            []
+      );
+      if (response.Cantidad > 0)
+            exists = true;
+      if (!exists) {
+            await db.run(
+                  "CREATE TABLE User_Name (user_name TEXT PRIMARY KEY, edad INTEGER NOT NULL)"
+            );
+            console.log("Tabla User_Name creada!");
+            await db.run(
+                  `INSERT INTO User_Name (user_name, edad) VALUES
+                  ('user1', 25), 
+                  ('user2', 30), 
+                  ('user3', 14), 
+                  ('user4', 28), 
+                  ('user5', 35), 
+                  ('user6', 44), 
+                  ('user7', 32), 
+                  ('user8', 29), 
+                  ('user9', 20), 
+                  ('user10', 60)`
+            );
+      }
+
+
+
+
 };
