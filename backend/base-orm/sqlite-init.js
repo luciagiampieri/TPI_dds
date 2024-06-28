@@ -27,26 +27,26 @@ async function CrearDBSiNoExiste() {
             // Agregamos valores
             await db.run(
                   `INSERT INTO Libros (titulo, fecha_publicacion, id_autor, id_editorial, precio, id_genero) VALUES 
-                                                      ('Orgullo y Prejuicio', '1813-01-28', 1, 1, 20000, 7),
-                                                      ('Kulti', '2015-03-20', 2, 2, 15000, 7),
-                                                      ('Harry Potter y el Prisionero de Azkaban','1997-06-26',4,3,12000,1),
-                                                      ('El Señor de los Anillos','2000-04-27',3,4,17000,1),
-                                                      ('Dune','1995-08-03',5,5,13000,2),
-                                                      ('Sinsajo','2010-08-24',6,6,18000,1),
-                                                      ('La Ventana Siniestra','1932-04-10',7,7,10000,3),
-                                                      ('El Silencio de la Ciudad Blanca','2016-08-23',8,8,19000,3),
-                                                      ('Frankenstein','1818-01-01',9,9,14000,4),
-                                                      ('Un Legado de Sangre','2023-09-09',10,10,16000,4),
-                                                      ('Maria Antonieta','1932-07-15',11,11,11500,5),
-                                                      ('Virginia Woolf y Victoria Ocampo','1931-02-19',12,12,11000,5),
-                                                      ('Su Peor Pesadilla','2022-11-17',13,13,20000,6),
-                                                      ('La Jugada Final','2023-02-23',14,14,21000,6),
-                                                      ('Mujercitas','1868-12-13',15,15,22000,10),
-                                                      ('Anna Karenina','1873-05-29',16,16,23000,10),
-                                                      ('El Maravilloso Mago de Oz','1900-06-16',17,17,24000,9),
-                                                      ('Alicia en el Pais de las Maravillas','1865-03-06',18,18,25000,9),
-                                                      ('Martin Fierro','1872-04-01',19,19,10000,8),
-                                                      ('Poesía de Paso','2019-08-07',20,20,11000,8)`
+                  ('Orgullo y Prejuicio', '1813-01-28', 1, 1, 20000, 7),
+                  ('Kulti', '2015-03-20', 2, 2, 15000, 7),
+                  ('Harry Potter y el Prisionero de Azkaban','1997-06-26',4,3,12000,1),
+                  ('El Señor de los Anillos','2000-04-27',3,4,17000,1),
+                  ('Dune','1995-08-03',5,5,13000,2),
+                  ('Sinsajo','2010-08-24',6,6,18000,1),
+                  ('La Ventana Siniestra','1932-04-10',7,7,10000,3),
+                  ('El Silencio de la Ciudad Blanca','2016-08-23',8,8,19000,3),
+                  ('Frankenstein','1818-01-01',9,9,14000,4),
+                  ('Un Legado de Sangre','2023-09-09',10,10,16000,4),
+                  ('Maria Antonieta','1932-07-15',11,11,11500,5),
+                  ('Virginia Woolf y Victoria Ocampo','1931-02-19',12,12,11000,5),
+                  ('Su Peor Pesadilla','2022-11-17',13,13,20000,6),
+                  ('La Jugada Final','2023-02-23',14,14,21000,6),
+                  ('Mujercitas','1868-12-13',15,15,22000,10),
+                  ('Anna Karenina','1873-05-29',16,13,23000,10),
+                  ('El Maravilloso Mago de Oz','1900-06-16',17,4,24000,9),
+                  ('Alicia en el Pais de las Maravillas','1865-03-06',18,9,25000,9),
+                  ('Martin Fierro','1872-04-01',19,7,10000,8),
+                  ('Poesía de Paso','2019-08-07',20,6,11000,8)`
             );
       }
       // Tabla Genero
@@ -65,16 +65,16 @@ async function CrearDBSiNoExiste() {
             console.log("Tabla Generos creada!");
             await db.run(
                   `INSERT INTO Generos (nombre) VALUES 
-                                                      ('Fantasia'),
-                                                      ('Ciencia Ficción'),
-                                                      ('Misterio'),
-                                                      ('Terror'),
-                                                      ('Biografia'),
-                                                      ('Crimen'),
-                                                      ('Romance'),
-                                                      ('Poesia'),
-                                                      ('Infantil'),
-                                                      ('Novela')`
+                  ('Fantasia'),
+                  ('Ciencia Ficción'),
+                  ('Misterio'),
+                  ('Terror'),
+                  ('Biografia'),
+                  ('Crimen'),
+                  ('Romance'),
+                  ('Poesia'),
+                  ('Infantil'),
+                  ('Novela')`
             );
       }
 
@@ -90,59 +90,59 @@ async function CrearDBSiNoExiste() {
       if (!exists) {
             await db.run(
                   `CREATE TABLE Resenas (
-                                                                        id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                                                        id_libro INTEGER NOT NULL,
-                                                                        fecha_resena DATE NOT NULL,
-                                                                        comentario TEXT NOT NULL,
-                                                                        calificacion INTEGER NOT NULL,
-                                                                        user_name TEXT NOT NULL,
-                                                                        FOREIGN KEY (id_libro) REFERENCES Libros(id),
-                                                                        FOREIGN KEY (user_name) REFERENCES User_Name(user_name)
-                                                      )`
+                  id INTEGER PRIMARY KEY AUTOINCREMENT,
+                  id_libro INTEGER NOT NULL,
+                  fecha_resena DATE NOT NULL,
+                  comentario TEXT NOT NULL,
+                  calificacion INTEGER NOT NULL,
+                  user_name TEXT NOT NULL,
+                  FOREIGN KEY (id_libro) REFERENCES Libros(id),
+                  FOREIGN KEY (user_name) REFERENCES User_Name(user_name)
+                  )`
             );
             console.log("Tabla Resenas creada!");
             await db.run(
                   `INSERT INTO Resenas (id_libro, fecha_resena, comentario, calificacion, user_name) VALUES 
-                                                      (1, '2021-06-01', 'Me fascina este libro. Muy cautivante. Lo recomendaría sin dudas!', 5, 'user1'),
-                                                      (2, '2021-06-01', 'La calidad del autor es excelente, aunque no mi estilo.', 3, 'user2'),
-                                                      (3, '2021-06-01', 'No me gustó para nada. No lo recomendaría.', 1, 'user3'),
-                                                      (4, '2021-06-01', 'Me encantó. Muy buen libro.', 4, 'user4'),
-                                                      (5, '2021-06-01', 'Muy buen libro. Me gustó mucho.', 4, 'user5'),
-                                                      (6, '2021-06-01', 'Este libro tiene mucho potencial. Ojalá llegara al New York Times1', 5, 'user6'),
-                                                      (7, '2021-06-01', 'Me encantó.', 4, 'user7'),
-                                                      (8, '2021-06-01', 'Lo leí en un par de horas. Es fascinante.', 4, 'user8'),
-                                                      (9, '2021-06-01', 'Como amante de los libros que soy, esta edición me ha decepcionado un poco pero respeto al autor.', 3, 'user9'),
-                                                      (10, '2021-06-01', 'Me encantó. Muy buen libro.', 4, 'user10'),
-                                                      (1, '2021-06-01', 'Es muy divertido. Lo recomendaría sin dudas!', 5, 'user10'),
-                                                      (2, '2021-06-01', 'No es mi estilo de libros.', 2, 'user9'),
-                                                      (3, '2021-06-01', 'No me gustó para nada. No lo recomendaría.', 1, 'user8'),
-                                                      (4, '2021-06-01', 'Me encantó. Muy buen libro.', 4, 'user7'),
-                                                      (5, '2021-06-01', 'Muy buen libro. Me gustó mucho.', 4, 'user6'),
-                                                      (6, '2021-06-01', 'No me gustó para nada. No lo recomendaría.', 1, 'user5'),
-                                                      (7, '2021-06-01', 'Me encantó. Muy buen libro.', 4, 'user4'),
-                                                      (8, '2021-06-01', 'Muy buen libro. Me gustó mucho.', 4, 'user3'),
-                                                      (9, '2021-06-01', 'No me gustó para nada. No lo recomendaría.', 1, 'user2'),
-                                                      (10, '2021-06-01', 'Me encantó. Muy buen libro.', 4, 'user1'),
-                                                      (11, '2021-06-01', 'Me encantó. Muy buen libro.', 4, 'user5'),
-                                                      (12, '2021-06-01', 'Muy buen libro. Me gustó mucho.', 4, 'user4'),
-                                                      (13, '2021-06-01', 'No me gustó para nada. No lo recomendaría.', 1, 'user3'),
-                                                      (14, '2021-06-01', 'Me encantó. Muy buen libro.', 4, 'user2'),
-                                                      (15, '2021-06-01', 'Muy buen libro. Me gustó mucho.', 4, 'user1'),
-                                                      (16, '2021-06-01', 'No me gustó para nada. No lo recomendaría.', 1, 'user10'),
-                                                      (17, '2021-06-01', 'Me encantó. Muy buen libro.', 4, 'user9'),
-                                                      (18, '2021-06-01', 'Muy buen libro. Me gustó mucho.', 4, 'user8'),
-                                                      (19, '2021-06-01', 'No me gustó para nada. No lo recomendaría.', 1, 'user7'),
-                                                      (20, '2021-06-01', 'Me encantó. Muy buen libro.', 4, 'user6'),
-                                                      (20, '2021-06-01', 'HORRIBLE.', 1, 'user6'),
-                                                      (19, '2021-06-01', 'Muy buen libro. Me gustó mucho.', 4, 'user5'),
-                                                      (18, '2021-06-01', 'No me gustó para nada. No lo recomendaría.', 1, 'user4'),
-                                                      (17, '2021-06-01', 'Me encantó. Muy buen libro.', 4, 'user3'),
-                                                      (16, '2021-06-01', 'Muy buen libro. Me gustó mucho.', 4, 'user2'),
-                                                      (15, '2021-06-01', 'No me gustó para nada. No lo recomendaría.', 1, 'user1'),
-                                                      (14, '2021-06-01', 'Me encantó. Muy buen libro.', 4, 'user10'),
-                                                      (13, '2021-06-01', 'Muy buen libro. Me gustó mucho.', 4, 'user9'),
-                                                      (12, '2021-06-01', 'No me gustó para nada. No lo recomendaría.', 1, 'user8'),
-                                                      (11, '2021-06-01', 'Me encantó. Muy buen libro.', 4, 'user7')`
+                  (1, '2021-06-01', 'Me fascina este libro. Muy cautivante. Lo recomendaría sin dudas!', 5, 'user1'),
+                  (2, '2021-06-01', 'La calidad del autor es excelente, aunque no mi estilo.', 3, 'user2'),
+                  (3, '2021-06-01', 'No me gustó para nada. No lo recomendaría.', 1, 'user3'),
+                  (4, '2021-06-01', 'Me encantó. Muy buen libro.', 4, 'user4'),
+                  (5, '2021-06-01', 'Muy buen libro. Me gustó mucho.', 4, 'user5'),
+                  (6, '2021-06-01', 'Este libro tiene mucho potencial. Ojalá llegara al New York Times1', 5, 'user6'),
+                  (7, '2021-06-01', 'Me encantó.', 4, 'user7'),
+                  (8, '2021-06-01', 'Lo leí en un par de horas. Es fascinante.', 4, 'user8'),
+                  (9, '2021-06-01', 'Como amante de los libros que soy, esta edición me ha decepcionado un poco pero respeto al autor.', 3, 'user9'),
+                  (10, '2021-06-01', 'Me encantó. Muy buen libro.', 4, 'user10'),
+                  (1, '2021-06-01', 'Es muy divertido. Lo recomendaría sin dudas!', 5, 'user10'),
+                  (2, '2021-06-01', 'No es mi estilo de libros.', 2, 'user9'),
+                  (3, '2021-06-01', 'No me gustó para nada. No lo recomendaría.', 1, 'user8'),
+                  (4, '2021-06-01', 'Me encantó. Muy buen libro.', 4, 'user7'),
+                  (5, '2021-06-01', 'Muy buen libro. Me gustó mucho.', 4, 'user6'),
+                  (6, '2021-06-01', 'No me gustó para nada. No lo recomendaría.', 1, 'user5'),
+                  (7, '2021-06-01', 'Me encantó. Muy buen libro.', 4, 'user4'),
+                  (8, '2021-06-01', 'Muy buen libro. Me gustó mucho.', 4, 'user3'),
+                  (9, '2021-06-01', 'No me gustó para nada. No lo recomendaría.', 1, 'user2'),
+                  (10, '2021-06-01', 'Me encantó. Muy buen libro.', 4, 'user1'),
+                  (11, '2021-06-01', 'Me encantó. Muy buen libro.', 4, 'user5'),
+                  (12, '2021-06-01', 'Muy buen libro. Me gustó mucho.', 4, 'user4'),
+                  (13, '2021-06-01', 'No me gustó para nada. No lo recomendaría.', 1, 'user3'),
+                  (14, '2021-06-01', 'Me encantó. Muy buen libro.', 4, 'user2'),
+                  (15, '2021-06-01', 'Muy buen libro. Me gustó mucho.', 4, 'user1'),
+                  (16, '2021-06-01', 'No me gustó para nada. No lo recomendaría.', 1, 'user10'),
+                  (17, '2021-06-01', 'Me encantó. Muy buen libro.', 4, 'user9'),
+                  (18, '2021-06-01', 'Muy buen libro. Me gustó mucho.', 4, 'user8'),
+                  (19, '2021-06-01', 'No me gustó para nada. No lo recomendaría.', 1, 'user7'),
+                  (20, '2021-06-01', 'Me encantó. Muy buen libro.', 4, 'user6'),
+                  (20, '2021-06-01', 'HORRIBLE.', 1, 'user6'),
+                  (19, '2021-06-01', 'Muy buen libro. Me gustó mucho.', 4, 'user5'),
+                  (18, '2021-06-01', 'No me gustó para nada. No lo recomendaría.', 1, 'user4'),
+                  (17, '2021-06-01', 'Me encantó. Muy buen libro.', 4, 'user3'),
+                  (16, '2021-06-01', 'Muy buen libro. Me gustó mucho.', 4, 'user2'),
+                  (15, '2021-06-01', 'No me gustó para nada. No lo recomendaría.', 1, 'user1'),
+                  (14, '2021-06-01', 'Me encantó. Muy buen libro.', 4, 'user10'),
+                  (13, '2021-06-01', 'Muy buen libro. Me gustó mucho.', 4, 'user9'),
+                  (12, '2021-06-01', 'No me gustó para nada. No lo recomendaría.', 1, 'user8'),
+                  (11, '2021-06-01', 'Me encantó. Muy buen libro.', 4, 'user7')`
             );
       }
 
@@ -162,16 +162,16 @@ async function CrearDBSiNoExiste() {
             console.log("Tabla User_Name creada!");
             await db.run(
                   `INSERT INTO User_Name (user_name, edad) VALUES
-                                                      ('user1', 25), 
-                                                      ('user2', 30), 
-                                                      ('user3', 14), 
-                                                      ('user4', 28), 
-                                                      ('user5', 35), 
-                                                      ('user6', 44), 
-                                                      ('user7', 32), 
-                                                      ('user8', 29), 
-                                                      ('user9', 20), 
-                                                      ('user10', 60)`
+                  ('user1', 25), 
+                  ('user2', 30), 
+                  ('user3', 14), 
+                  ('user4', 28), 
+                  ('user5', 35), 
+                  ('user6', 44), 
+                  ('user7', 32), 
+                  ('user8', 29), 
+                  ('user9', 20), 
+                  ('user10', 60)`
             );
       }
 
@@ -189,9 +189,9 @@ async function CrearDBSiNoExiste() {
       if (!exists) {
             await db.run(
                   `CREATE TABLE Tipo_Documentos (
-                                                      tipo INT PRIMARY KEY,
-                                                      descripcion VARCHAR(50)
-                                                      )`
+                  tipo INT PRIMARY KEY,
+                  descripcion VARCHAR(50)
+                  )`
             );
             console.log("Tabla TiposDocumento creada!");
             await db.run(
@@ -214,97 +214,83 @@ async function CrearDBSiNoExiste() {
       if (!exists) {
             await db.run(
                   `CREATE TABLE Autores (
-                                                      id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                                      nombre TEXT NOT NULL,
-                                                      apellido TEXT NOT NULL,
-                                                      fecha_nacimiento DATE NOT NULL,
-                                                      tipo_documento INT NOT NULL,
-                                                      nro_documento INT NOT NULL,
-                                                      UNIQUE (nro_documento),
-                                                      FOREIGN KEY (tipo_documento) REFERENCES Tipo_Documentos(tipo)
-                                                      )`
+                  id INTEGER PRIMARY KEY AUTOINCREMENT,
+                  nombre TEXT NOT NULL,
+                  apellido TEXT NOT NULL,
+                  fecha_nacimiento DATE NOT NULL,
+                  tipo_documento INT NOT NULL,
+                  nro_documento INT NOT NULL,
+                  FOREIGN KEY (tipo_documento) REFERENCES Tipo_Documentos(tipo)
+                  )`
             );
             console.log("Tabla Autores creada!");
             await db.run(
                   `INSERT INTO Autores (tipo_documento, nro_documento, nombre, apellido, fecha_nacimiento) VALUES
-                                    (1, '12345678', 'Jane', 'Austen', '1775-12-16'),
-                                    (2, '87654321', 'Mariana', 'Zapata', '1986-09-27'),
-                                    (3, '11223344', 'John', 'Ronald ', '1892-01-03'),
-                                    (4, '44332211', 'J.K.', 'Rowling', '1965-07-31'),
-                                    (1, '12345678', 'Frank', 'Herbert', '1920-10-08'),
-                                    (2, '87654321', 'Suzanne', 'Collins', '1962-08-10'),
-                                    (3, '11223344', 'Raymond', 'Chandler', '1888-07-23'),
-                                    (4, '44332211', 'Stephen', 'King', '1947-09-21'),
-                                    (1, '12345678', 'Mary', 'Shelley', '1797-08-30'),
-                                    (2, '87654321', 'S.T.', 'Gibson', '1990-02-02'),
-                                    (3, '11223344', ' Évelyne', 'Lever', '1944-03-03'),
-                                    (4, '44332211', 'Irene', 'Chikiar Bauer', '1978-04-04'),
-                                    (1, '12345678', 'Andrea', 'Mara', '1974-01-01'),
-                                    (2, '87654321', 'Jennifer', 'Lynn Barnes', '1984-10-19'),
-                                    (3, '11223344', 'Louisa', 'May Alcott', '1832-11-29'),
-                                    (4, '44332211', 'León', 'Tolstói', '1828-09-09'),
-                                    (1, '12345678', 'Frank', 'Baum', '1856-05-15'),
-                                    (2, '87654321', 'Lewis', 'Carroll', '1832-01-27'),
-                                    (3, '11223344', 'José', 'Hernández', '1834-10-21'),
-                                    (4, '44332211', 'Alvaro', 'Garat', '2000-04-04')`
+                  (1, '12345678', 'Jane', 'Austen', '1775-12-16'),
+                  (2, '87654321', 'Mariana', 'Zapata', '1986-09-27'),
+                  (3, '11223344', 'John', 'Ronald ', '1892-01-03'),
+                  (4, '44332211', 'J.K.', 'Rowling', '1965-07-31'),
+                  (1, '12345678', 'Frank', 'Herbert', '1920-10-08'),
+                  (2, '87654321', 'Suzanne', 'Collins', '1962-08-10'),
+                  (3, '11223344', 'Raymond', 'Chandler', '1888-07-23'),
+                  (4, '44332211', 'Stephen', 'King', '1947-09-21'),
+                  (1, '12345678', 'Mary', 'Shelley', '1797-08-30'),
+                  (2, '87654321', 'S.T.', 'Gibson', '1990-02-02'),
+                  (3, '11223344', ' Évelyne', 'Lever', '1944-03-03'),
+                  (4, '44332211', 'Irene', 'Chikiar Bauer', '1978-04-04'),
+                  (1, '12345678', 'Andrea', 'Mara', '1974-01-01'),
+                  (2, '87654321', 'Jennifer', 'Lynn Barnes', '1984-10-19'),
+                  (3, '11223344', 'Louisa', 'May Alcott', '1832-11-29'),
+                  (4, '44332211', 'León', 'Tolstói', '1828-09-09'),
+                  (1, '12345678', 'Frank', 'Baum', '1856-05-15'),
+                  (2, '87654321', 'Lewis', 'Carroll', '1832-01-27'),
+                  (3, '11223344', 'José', 'Hernández', '1834-10-21'),
+                  (4, '44332211', 'Alvaro', 'Garat', '2000-04-04')`
             );
       }
 
       // Tabla Editorial
       exists = false;
-      response = await db.get(
-            "SELECT COUNT(*) as Cantidad FROM sqlite_schema WHERE type='table' AND name='Editoriales'",
-            []
-      );
-      if (response.Cantidad > 0) {
-            exists = true;
-      }
+      sql = "SELECT COUNT(*) as Cantidad FROM sqlite_schema WHERE type='table' AND name='Editoriales'",
+      response = await db.get(sql, []);
+      if (response.Cantidad > 0) exists = true;
       if (!exists) {
             await db.run(
-                  "CREATE TABLE Editoriales (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre VARCHAR(50) NOT NULL, direccion VARCHAR(100) NOT NULL,  fecha_fundacion DATE NOT NULL, id_pais INTEGER NOT NULL );"
+                  "CREATE TABLE Editoriales (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre VARCHAR(50) NOT NULL, direccion VARCHAR(100) NOT NULL,  fecha_fundacion DATE NOT NULL, id_pais INTEGER NOT NULL, FOREIGN KEY (id_pais) REFERENCES Paises(id) );"
             );
-            console.log("Tabla Editoriales creada!");
-            /* await db.run(
-                                                      "INSERT INTO Editoriales VALUES ('Penguin Random House'),('HarperCollins'),('Simon & Schuster'),('Hachette Livre'),('Macmillan'),('Wiley'),('Scholastic'),('Pearson'),('Penguin'),('Houghton Mifflin')"
-                                    ); */
             console.log("tabla Editoriales creada!");
       }
 
       // insert editorial
-      await db.run(`INSERT INTO Editoriales (id, nombre, direccion, fecha_fundacion, id_pais)
-                                    VALUES
-                                                      (1, 'Penguin Random House', '1745 Broadway, New York', '1927-01-01', 1), 
-                                                      (2, 'HarperCollins', '1 London Bridge Street, London', '1817-01-01', 2),
-                                                      (3, 'Hachette Livre', '43 Quai de Grenelle, 75015 Paris', '1826-01-01', 3), 
-                                                      (4, 'Planeta', 'Av. Diagonal, 662-664, 08034 Barcelona', '1949-01-01', 4), 
-                                                      (5, 'Companhia das Letras', 'Rua Bandeira Paulista, 702, São Paulo', '1986-01-01', 5), 
-                                                      (6, 'Bertelsmann', 'Carl-Bertelsmann-Straße 270, 33311 Gütersloh', '1835-01-01', 6), 
-                                                      (7, 'Mondadori', 'Via Bianca di Savoia, 12, 20122 Milan', '1907-01-01', 7), -- Italia
-                                                      (8, 'Shueisha', '2-5-10 Hitotsubashi, Chiyoda-ku, Tokyo', '1925-01-01', 8), -- Japón
-                  (14, 'Farrar, Straus and Giroux', '18 West 18th Street, New York', '1946-01-01', 1), 
-                  (15, 'Seix Barral', 'Av. Diagonal, 662-664, 08034 Barcelona', '1911-01-01', 4), 
-                  (16, 'Auckland University Press', '1-11 Short Street', '1966-01-01', 12), 
-                  (17, 'Aschehoug', 'Sehesteds gate 3, 0164 Oslo', '1872-01-01', 13), 
-                  (18, 'Gallimard', '5 Rue Gaston Gallimard, 75007 Paris', '1911-01-01', 3), 
-                  (19, 'Tusquets Editores', 'Carrer de Mallorca, 310, 08037 Barcelona', '1969-01-01', 4), 
-                  (20, 'Salamandra', 'Carrer de Mallorca, 237, 08008 Barcelona', '1989-01-01', 4);
+      await db.run(`INSERT INTO Editoriales (nombre, direccion, fecha_fundacion, id_pais)
+            VALUES
+                  ('Penguin Random House', '1745 Broadway, New York', '1927-01-01', 1), 
+                  ('HarperCollins', '1 London Bridge Street, London', '1817-01-01', 2),
+                  ('Hachette Livre', '43 Quai de Grenelle, 75015 Paris', '1826-01-01', 3), 
+                  ('Planeta', 'Av. Diagonal, 662-664, 08034 Barcelona', '1949-01-01', 4), 
+                  ('Companhia das Letras', 'Rua Bandeira Paulista, 702, São Paulo', '1986-01-01', 5), 
+                  ('Bertelsmann', 'Carl-Bertelsmann-Straße 270, 33311 Gütersloh', '1835-01-01', 6), 
+                  ('Mondadori', 'Via Bianca di Savoia, 12, 20122 Milan', '1907-01-01', 7), 
+                  ('Shueisha', '2-5-10 Hitotsubashi, Chiyoda-ku, Tokyo', '1925-01-01', 8), 
+                  ('Farrar, Straus and Giroux', '18 West 18th Street, New York', '1946-01-01', 1), 
+                  ('Seix Barral', 'Av. Diagonal, 662-664, 08034 Barcelona', '1911-01-01', 4), 
+                  ('Auckland University Press', '1-11 Short Street', '1966-01-01', 12), 
+                  ('Aschehoug', 'Sehesteds gate 3, 0164 Oslo', '1872-01-01', 13), 
+                  ('Gallimard', '5 Rue Gaston Gallimard, 75007 Paris', '1911-01-01', 3), 
+                  ('Tusquets Editores', 'Carrer de Mallorca, 310, 08037 Barcelona', '1969-01-01', 4), 
+                  ('Salamandra', 'Carrer de Mallorca, 237, 08008 Barcelona', '1989-01-01', 4);
             `);
             
       // Tabla Pais
       exists = false;
-      response = await db.get(
-            "SELECT COUNT(*) as Cantidad FROM sqlite_schema WHERE type='table' AND name='Paises'",
-            []
-      );
+      sql = "SELECT COUNT(*) as Cantidad FROM sqlite_schema WHERE type='table' AND name='Paises'",
+      response = await db.get(sql, []);
       if (response.Cantidad > 0)
             exists = true;
       if (!exists) {
             await db.run(
                   "CREATE TABLE Paises (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre VARCHAR(50) NOT NULL);"
             );
-            /* await db.run(
-                  "INSERT INTO Paises VALUES ('Argentina'),('Australia'),('Brazil'),('Canada'),('China'),('France'),('Germany'),('India'),('Italy'),('Japan'),('Mexico'),('Russia'),('South Africa'),('South Korea'),('Spain'),('United Kingdom'),('United States')"
-            ); */
             console.log("Tabla Paises creada!");
       }
 

@@ -41,7 +41,8 @@ router.get("/api/resenas", async function (req, res, next) {
     });
 
     return res.json({ Items: rows, RegistrosTotal: count });
-});
+}); // ejemplo de uso: http://localhost:4444/api/resenas?nombre_libro=el&Pagina=1
+// ejemplo de uso sin filtro: https://localhost:4444/api/resenas
 
 // Ruta de reseña: obtener por ID.
 router.get("/api/resenas/:id", async function (req, res, next) {
