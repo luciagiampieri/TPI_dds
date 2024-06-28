@@ -184,8 +184,8 @@ async function CrearDBSiNoExiste() {
       if (!exists) {
             await db.run(
                   `CREATE TABLE TiposDocumento (
-                      id INTEGER PRIMARY KEY AUTOINCREMENT,
-                      nombre TEXT NOT NULL
+                  id INTEGER PRIMARY KEY AUTOINCREMENT,
+                  nombre TEXT NOT NULL
                   )`
             );
             console.log("Tabla TiposDocumento creada!");
@@ -208,14 +208,14 @@ async function CrearDBSiNoExiste() {
       if (!exists) {
             await db.run(
                   `CREATE TABLE Autores (
-                      id INTEGER PRIMARY KEY AUTOINCREMENT,
-                      nombre TEXT NOT NULL,
-                      apellido TEXT NOT NULL,
-                      fecha_nacimiento DATE NOT NULL,
-                      id_tipo_documento INT NOT NULL,
-                      numero_documento TEXT NOT NULL,
-                      UNIQUE (nro_documento),
-                      FOREIGN KEY (id_tipo_documento) REFERENCES TiposDocumento(id)
+                  id INTEGER PRIMARY KEY AUTOINCREMENT,
+                  nombre TEXT NOT NULL,
+                  apellido TEXT NOT NULL,
+                  fecha_nacimiento DATE NOT NULL,
+                  id_tipo_documento INT NOT NULL,
+                  numero_documento TEXT NOT NULL,
+                  UNIQUE (nro_documento),
+                  FOREIGN KEY (id_tipo_documento) REFERENCES TiposDocumento(id)
                   )`
             );
             console.log("Tabla Autores creada!");
