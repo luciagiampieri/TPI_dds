@@ -161,7 +161,76 @@ async function CrearDBSiNoExiste() {
             );
       }
 
+      // Tabla tipo documento
+      exists = false;
+      response = await db.get(
+            "SELECT COUNT(*) as Cantidad FROM sqlite_schema WHERE type='table' AND name='TipoDocumentos'",
+            []
+      );
 
+      if (response.Cantidad > 0)
+            exists = true;
 
+      if (!exists) {
+            await db.run(
+                  `CREATE TABLE TiposDocumento (
+                      id INTEGER PRIMARY KEY AUTOINCREMENT,
+                      nombre TEXT NOT NULL
+                  )`
+            );
+            console.log("Tabla TiposDocumento creada!");
+            await db.run(
+                  "INSERT INTO TiposDocumento VALUES ('DNI'),('Cédula'),('Pasaporte'),('Numero de Identificacion de Extranjero')"
+            );
+      }
 
+      // Tabla Autores
+
+      exists = false;
+      response = await db.get(
+            "SELECT COUNT(*) as Cantidad FROM sqlite_schema WHERE type='table' AND name='Autores'",
+            []
+      );
+
+      if (response.Cantidad > 0)
+            exists = true;
+
+      if (!exists) {
+            await db.run(
+                  `CREATE TABLE Autores (
+                      id INTEGER PRIMARY KEY AUTOINCREMENT,
+                      nombre TEXT NOT NULL,
+                      apellido TEXT NOT NULL,
+                      fecha_nacimiento DATE NOT NULL,
+                      id_tipo_documento INT NOT NULL,
+                      numero_documento TEXT NOT NULL,
+                      UNIQUE (nro_documento),
+                      FOREIGN KEY (id_tipo_documento) REFERENCES TiposDocumento(id)
+                  )`
+            );
+            console.log("Tabla Autores creada!");
+            await db.run(
+                  `INSERT INTO Autores (tipo_documento, nro_documento, nombre, apellido, fecha_nacimiento) VALUES
+            (1, '12345678', 'Jane', 'Austen', '1775-12-16'),
+            (2, '87654321', 'Mariana', 'Zapata', '1986-09-27'),
+            (3, '11223344', 'John', 'Ronald ', '1892-01-03'),
+            (4, '44332211', 'J.K.', 'Rowling', '1965-07-31'),
+            (1, '12345678', 'Frank', 'Herbert', '1920-10-08'),
+            (2, '87654321', 'Suzanne', 'Collins', '1962-08-10'),
+            (3, '11223344', 'Raymond', 'Chandler', '1888-07-23'),
+            (4, '44332211', 'Stephen', 'King', '1947-09-21'),
+            (1, '12345678', 'Mary', 'Shelley', '1797-08-30'),
+            (2, '87654321', 'S.T.', 'Gibson', '1990-02-02'),
+            (3, '11223344', ' Évelyne', 'Lever', '1944-03-03'),
+            (4, '44332211', 'Irene', 'Chikiar Bauer', '1978-04-04'),
+            (1, '12345678', 'Andrea', 'Mara', '1974-01-01'),
+            (2, '87654321', 'Jennifer', 'Lynn Barnes', '1984-10-19'),
+            (3, '11223344', 'Louisa', 'May Alcott', '1832-11-29'),
+            (4, '44332211', 'León', 'Tolstói', '1828-09-09'),
+            (1, '12345678', 'Frank', 'Baum', '1856-05-15'),
+            (2, '87654321', 'Lewis', 'Carroll', '1832-01-27'),
+            (3, '11223344', 'José', 'Hernández', '1834-10-21'),
+            (4, '44332211', 'Alvaro', 'Garat', '2000-04-04')`
+            );
+      }
 };
