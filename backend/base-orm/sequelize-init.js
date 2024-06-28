@@ -231,7 +231,7 @@ const Tipo_Documentos = sequelize.define(
       "Tipo_Documentos",
       {
             tipo: {
-                  type: DataTypes.STRING(10),
+                  type: DataTypes.INTEGER,
                   allowNull: false,
                   primaryKey: true
             },
