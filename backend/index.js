@@ -12,10 +12,12 @@ require("./base-orm/sqlite-init");
 // Importar rutas
 const resenasRoutes = require("./routes/resenas");
 const librosRoutes = require("./routes/libros");
+const autoresRoutes = require("./routes/autores");
 
 // Usar rutas (asegúrate de que el archivo y las rutas estén bien definidas)
 app.use(resenasRoutes);
 app.use(librosRoutes);
+app.use(autoresRoutes);
 
 // Puerto
 const PORT = 4444;

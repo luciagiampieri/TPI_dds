@@ -62,7 +62,7 @@ router.post("/api/libros/", async (req, res) => {
             let data = await db.Libros.create({
                   id: req.body.id,
                   titulo: req.body.titulo,
-                  fecha_publicacion: moment(req.body.fecha_publicacion).format('YYYY-MM-DD'),
+                  fecha_publicacion: req.body.fecha_publicacion,
                   id_autor: req.body.id_autor,
                   id_editorial: req.body.id_editorial,
                   precio: req.body.precio,

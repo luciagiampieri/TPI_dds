@@ -150,10 +150,6 @@ const Autores= sequelize.define(
                               args: true,
                               msg: 'El tipo de documento es requerido'
                         },
-                        len: {
-                              args: [2, 10],
-                              msg: 'El campo tipo de documento debe tener entre 2 y 10 caracteres'
-                        },
                   },
             },
             nro_documento: {
