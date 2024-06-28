@@ -24,10 +24,6 @@ const Libros = sequelize.define(
                               args: [2, 80],
                               msg: 'El campo titulo debe tener entre 2 y 80 caracteres'
                         },
-                        unique: {
-                              args: true,
-                              msg: 'El titulo ya existe'
-                        },
                   },
             },
             fecha_publicacion: {
@@ -73,7 +69,7 @@ const Libros = sequelize.define(
                               msg: 'El precio debe ser un número decimal'
                         },
                         min: {
-                              args: 0,
+                              args: [0],
                               msg: 'El precio debe ser mayor a 0'
                         },
                   },
