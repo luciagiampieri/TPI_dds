@@ -1,7 +1,7 @@
 const { timeStamp } = require('console');
 const { Sequelize, DataTypes } = require('sequelize');
 // cambiar la ruta!!!! a nuestra ruta
-const sequelize = new Sequelize('sqlite::memory:');
+const sequelize = new Sequelize('sqlite:' + "./.data/BD_dds.db");
 
 //Definir el modelo
 const Libros = sequelize.define(
@@ -141,9 +141,13 @@ const Generos= sequelize.define(
 const Autores= sequelize.define(
       "Autores",
       {
-            tipo_documento: {
-                  type: DataTypes.STRING(10),
+            id: {
+                  type: DataTypes.INTEGER,
                   primaryKey: true,
+                  autoIncrement: true,
+            },
+            tipo_documento: {
+                  type: DataTypes.INTEGER,
                   allowNull: false,
                   validate: {
                         notEmpty: {
@@ -158,7 +162,6 @@ const Autores= sequelize.define(
             },
             nro_documento: {
                   type: DataTypes.STRING(20),
-                  primaryKey: true,
                   allowNull: false,
                   validate: {
                         notEmpty: {

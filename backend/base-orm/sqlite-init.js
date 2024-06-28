@@ -3,7 +3,7 @@ const db = require("aa-sqlite");
 
 async function CrearDBSiNoExiste() {
       // abrir BD, si no existe la crea
-      await db.open("RUTA_A_LA_BD");
+      await db.open("./.data/BD_dds.db");
 
       let exists = false;
       let response = null;
