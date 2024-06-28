@@ -26,7 +26,26 @@ async function CrearDBSiNoExiste() {
             console.log("Tabla Libros creada!");
             // Agregamos valores
             await db.run(
-                  "INSERT INTO Libros VALUES ('Pride and Prejudice', '1813-01-28', 1, 28, 9.99, 13),('Emma', '1815-12-23', 1, 28, 9.99, 13),('Sense and Sensibility', '1811-10-30', 1, 28, 9.99, 13),('Kulti','2015-04-11',5,12.1,13),('Harry Potter and the Sorcerers Stone','1997-06-26',2,12.1,3),('Harry Potter and the Chamber of Secrets','1998-07-02',2,12.1,3),('Harry Potter and the Prisoner of Azkaban','1999-07-08',2,12.1,3),('Harry Potter and the Goblet of Fire','2000-07-08',2,12.1,3),('Harry Potter and the Order of the Phoenix','2003-06-21',2,12.1,3),('Harry Potter and the Half-Blood Prince','2005-07-16',2,12.1,3),('Harry Potter and the Deathly Hallows','2007-07-21',2,12.1,3),('The Hunger Games','2008-09-14',3,12.1,13)"
+                  "INSERT INTO Libros VALUES ('Orgullo y Prejuicio', '1813-01-28', 1, 3, 20000, 7);\n"
+                  + "INSERT INTO Libros VALUES ('Kulti', '2015-03-20', 2, 2, 15000, 7);\n"
+                  + "INSERT INTO Libros VALUES ('Harry Potter y el Prisionero de Azkaban','1997-06-26',4,12000,1);\n"
+                  + "INSERT INTO Libros VALUES ('El Señor de los Anillos','2000-04-27',3,17000,1);\n"
+                  + "INSERT INTO Libros VALUES ('Dune','1995-08-03',5,13000,2);\n"
+                  + "INSERT INTO Libros VALUES ('Sinsaje','2010-08-24',6,18000,1);\n"
+                  + "INSERT INTO Libros VALUES ('La Ventana Siniestra','1932-04-10',7,10000,3);\n"
+                  + "INSERT INTO Libros VALUES ('El Silencio de la Ciudad Blanca','2016-08-23',8,19000,3);\n"
+                  + "INSERT INTO Libros VALUES ('Frankenstein','1818-01-01',9,14000,4);\n"
+                  + "INSERT INTO Libros VALUES ('Un Legado de Sangre','2023-09-09',10,16000,4);\n"
+                  + "INSERT INTO Libros VALUES ('Maria Antonieta','1932-07-15',11,11500,5);\n"
+                  + "INSERT INTO Libros VALUES ('Virginia Woolf y Victoria Ocampo','1931-02-19',12,11000,5);\n"
+                  + "INSERT INTO Libros VALUES ('Su Peor Pesadilla','2022-11-17',13,20000,6);\n"
+                  + "INSERT INTO Libros VALUES ('La Jugada Final','2023-02-23',14,21000,6);\n"
+                  + "INSERT INTO Libros VALUES ('Mujercitas','1868-12-13',15,22000,10);\n"
+                  + "INSERT INTO Libros VALUES ('Anna Karenina','1873-05-29',16,23000,10);\n"
+                  + "INSERT INTO Libros VALUES ('El Maravilloso Mago de Oz','1900-06-16',17,24000,9);\n"
+                  + "INSERT INTO Libros VALUES ('Alicia en el Pais de las Maravillas','1865-03-06',18,25000,9);\n"
+                  + "INSERT INTO Libros VALUES ('Martin Fierro','1872-04-01',19,10000,8);\n"
+                  + "INSERT INTO Libros VALUES ('Poesía de Paso','2019-08-07',20,11000,8);\n"
             );
       }
       // Tabla Genero
@@ -43,7 +62,7 @@ async function CrearDBSiNoExiste() {
             );
             console.log("Tabla Generos creada!");
             await db.run(
-                  "INSERT INTO Generos VALUES ('Romance'),('Fantasy'),('Science Fiction'),('Mystery'),('Horror'),('Biography'),('Cookbook'),('Art'),('Crime'),('Poetry'),('Childrens'),('Religion')"
+                  "INSERT INTO Generos VALUES ('Fantasia'),('Ciencia Ficción'),('Misterio'),('Terror'),('Biografia'),('Crimen'),('Romance'),('Poesia'),('Infantil'),('Novela')"
             );
       }
 };
