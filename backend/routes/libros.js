@@ -1,7 +1,6 @@
 const express = require("express");
 const db = require("../base-orm/sequelize-init");
 const { Op, ValidationError } = require("sequelize");
-const moment = require("moment");
 // const auth = require("../seguridad/auth");
 const router = express.Router();
 
@@ -62,7 +61,7 @@ router.post("/api/libros/", async (req, res) => {
             let data = await db.Libros.create({
                   id: req.body.id,
                   titulo: req.body.titulo,
-                  fecha_publicacion: moment(req.body.fecha_publicacion).format('YYYY-MM-DD'),
+                  fecha_publicacion: req.body.fecha_publicacion,
                   id_autor: req.body.id_autor,
                   id_editorial: req.body.id_editorial,
                   precio: req.body.precio,
@@ -97,7 +96,7 @@ router.put("/api/libros/:id", async (req, res) => {
 
             item.id = req.body.id;
             item.titulo = req.body.titulo;
-            item.fecha_publicacion = moment(req.body.fecha_publicacion).format('YYYY-MM-DD');
+            item.fecha_publicacion = req.body.fecha_publicacion;
             item.id_autor = req.body.id_autor;
             item.id_editorial = req.body.id_editorial;
             item.precio = req.body.precio;

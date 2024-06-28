@@ -225,7 +225,7 @@ const Autores= sequelize.define(
       },
 );
 
-//REVISAR************************
+
 const Tipo_Documentos = sequelize.define(
       "Tipo_Documentos",
       {
