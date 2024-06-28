@@ -26,26 +26,26 @@ async function CrearDBSiNoExiste() {
             // Agregamos valores
             await db.run(
                   `INSERT INTO Libros (titulo, fecha_publicacion, id_autor, id_editorial, precio, id_genero) VALUES 
-                  ('Orgullo y Prejuicio', '1813-01-28', 1, 3, 20000, 7),
+                  ('Orgullo y Prejuicio', '1813-01-28', 1, 1, 20000, 7),
                   ('Kulti', '2015-03-20', 2, 2, 15000, 7),
-                  ('Harry Potter y el Prisionero de Azkaban','1997-06-26',4,12000,1),
-                  ('El Señor de los Anillos','2000-04-27',3,17000,1),
-                  ('Dune','1995-08-03',5,13000,2),
-                  ('Sinsajo','2010-08-24',6,18000,1),
-                  ('La Ventana Siniestra','1932-04-10',7,10000,3),
-                  ('El Silencio de la Ciudad Blanca','2016-08-23',8,19000,3),
-                  ('Frankenstein','1818-01-01',9,14000,4),
-                  ('Un Legado de Sangre','2023-09-09',10,16000,4),
-                  ('Maria Antonieta','1932-07-15',11,11500,5),
-                  ('Virginia Woolf y Victoria Ocampo','1931-02-19',12,11000,5),
-                  ('Su Peor Pesadilla','2022-11-17',13,20000,6),
-                  ('La Jugada Final','2023-02-23',14,21000,6),
-                  ('Mujercitas','1868-12-13',15,22000,10),
-                  ('Anna Karenina','1873-05-29',16,23000,10),
-                  ('El Maravilloso Mago de Oz','1900-06-16',17,24000,9),
-                  ('Alicia en el Pais de las Maravillas','1865-03-06',18,25000,9),
-                  ('Martin Fierro','1872-04-01',19,10000,8),
-                  ('Poesía de Paso','2019-08-07',20,11000,8)`
+                  ('Harry Potter y el Prisionero de Azkaban','1997-06-26',4,3,12000,1),
+                  ('El Señor de los Anillos','2000-04-27',3,4,17000,1),
+                  ('Dune','1995-08-03',5,5,13000,2),
+                  ('Sinsajo','2010-08-24',6,6,18000,1),
+                  ('La Ventana Siniestra','1932-04-10',7,7,10000,3),
+                  ('El Silencio de la Ciudad Blanca','2016-08-23',8,8,19000,3),
+                  ('Frankenstein','1818-01-01',9,9,14000,4),
+                  ('Un Legado de Sangre','2023-09-09',10,10,16000,4),
+                  ('Maria Antonieta','1932-07-15',11,11,11500,5),
+                  ('Virginia Woolf y Victoria Ocampo','1931-02-19',12,12,11000,5),
+                  ('Su Peor Pesadilla','2022-11-17',13,13,20000,6),
+                  ('La Jugada Final','2023-02-23',14,14,21000,6),
+                  ('Mujercitas','1868-12-13',15,15,22000,10),
+                  ('Anna Karenina','1873-05-29',16,16,23000,10),
+                  ('El Maravilloso Mago de Oz','1900-06-16',17,17,24000,9),
+                  ('Alicia en el Pais de las Maravillas','1865-03-06',18,18,25000,9),
+                  ('Martin Fierro','1872-04-01',19,19,10000,8),
+                  ('Poesía de Paso','2019-08-07',20,20,11000,8)`
             );
       }
       // Tabla Genero
