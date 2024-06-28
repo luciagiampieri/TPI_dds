@@ -78,15 +78,8 @@ router.post("/api/resenas/", async (req, res) => {
         });
         res.status(200).json(data.dataValues);
     } catch (err) {
-        if (err instanceof ValidationError) {
-            let messages = "";
-            err.errors.forEach(
-                (x) => (messages += (x.path ?? "campo") + ": " + x.message + "\n")
-            );
-            res.status(400).json({ message: messages });
-        } else {
-            throw err;
-        }
+        console.error("Error in POST /api/resenas/", err);
+        res.status(500).json({ error: "Internal server error" });
     }
 });
 
@@ -142,12 +135,8 @@ router.delete("/api/resenas/:id", async (req, res) => {
             res.sendStatus(404);
         }
     } catch (err) {
-        if (err instanceof ValidationError) {
-            const messages = err.errors.map((x) => x.message);
-            res.status(400).json(messages);
-        } else {
-            throw err;
-        }
+        console.error("Error in POST /api/resenas/", err);
+        res.status(500).json({ error: "Internal server error" });
     }
 });
 

@@ -188,14 +188,14 @@ async function CrearDBSiNoExiste() {
 
       if (!exists) {
             await db.run(
-                  `CREATE TABLE TiposDocumento (
-                                                      id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                                      nombre TEXT NOT NULL
+                  `CREATE TABLE Tipo_Documentos (
+                                                      tipo INT PRIMARY KEY,
+                                                      descripcion VARCHAR(50)
                                                       )`
             );
             console.log("Tabla TiposDocumento creada!");
             await db.run(
-                  "INSERT INTO TiposDocumento VALUES ('DNI'),('Cédula'),('Pasaporte'),('Numero de Identificacion de Extranjero')"
+                  "INSERT INTO Tipo_Documentos (tipo, descripcion) VALUES (1, 'DNI'), (2, 'Cédula'), (3, 'Pasaporte'), (4, 'Numero de Identificacion de Extranjero')"
             );
       }
 
@@ -218,10 +218,10 @@ async function CrearDBSiNoExiste() {
                                                       nombre TEXT NOT NULL,
                                                       apellido TEXT NOT NULL,
                                                       fecha_nacimiento DATE NOT NULL,
-                                                      id_tipo_documento INT NOT NULL,
-                                                      numero_documento TEXT NOT NULL,
+                                                      tipo_documento INT NOT NULL,
+                                                      nro_documento INT NOT NULL,
                                                       UNIQUE (nro_documento),
-                                                      FOREIGN KEY (id_tipo_documento) REFERENCES TiposDocumento(id)
+                                                      FOREIGN KEY (tipo_documento) REFERENCES Tipo_Documentos(tipo)
                                                       )`
             );
             console.log("Tabla Autores creada!");
