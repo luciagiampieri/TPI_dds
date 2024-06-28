@@ -9,7 +9,7 @@ router.get("/api/user", async function (req, res, next) {
         let data = await db.User_Name.findAll({
             attributes: ["user_name", "edad"],
         });
-        res.json(data);
+        res.json(data); 
     } catch (error) {
         console.error("Error al obtener los usuarios:", error);
         res.status(500).json({ error: "Error al obtener los usuarios" });

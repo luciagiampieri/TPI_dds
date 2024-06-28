@@ -15,6 +15,7 @@ const generosRoutes = require("./routes/generos");
 const editorialesRoutes = require("./routes/editoriales");
 const tipodocRoutes = require("./routes/tipo_documento");
 const paisesRoutes = require("./routes/paises");
+const autoresRoutes = require("./routes/autores");
 
 // Usar rutas (asegúrate de que el archivo y las rutas estén bien definidas)
 app.use(resenasRoutes);
@@ -24,6 +25,7 @@ app.use(usuariosRoutes);
 app.use(editorialesRoutes);
 app.use(tipodocRoutes);
 app.use(paisesRoutes);
+app.use(autoresRoutes);
 
 // Puerto
 const PORT = 4444;
