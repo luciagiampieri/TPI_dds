@@ -12,12 +12,18 @@ const resenasRoutes = require("./routes/resenas");
 const usuariosRoutes = require("./routes/usernames");
 const librosRoutes = require("./routes/libros");
 const generosRoutes = require("./routes/generos");
+const editorialesRoutes = require("./routes/editoriales");
+const tipodocRoutes = require("./routes/tipo_documento");
+const paisesRoutes = require("./routes/paises");
 
 // Usar rutas (asegúrate de que el archivo y las rutas estén bien definidas)
 app.use(resenasRoutes);
 app.use(librosRoutes);
 app.use(generosRoutes);
 app.use(usuariosRoutes);
+app.use(editorialesRoutes);
+app.use(tipodocRoutes);
+app.use(paisesRoutes);
 
 // Puerto
 const PORT = 4444;
