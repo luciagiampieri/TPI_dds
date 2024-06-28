@@ -1,20 +1,21 @@
 const express = require("express");
-const db = require("../base-orm/sequelize-init");
-// import auth from "../seguridad/auth";
+const db = require("../base-orm/sequelize-init.js");
+
 const router = express.Router();
 
-// GET ALL de la tabla User_Name que tiene los atributos user_name y edad.
-router.get("/api/usernames", async function (req, res) {
-    try {
-        const { count, rows } = await db.User_Name.findAndCountAll({
-            attributes: ["user_name","edad"],
-            order: [["user_name", "ASC"]],
-        });
-        return res.json({ Items: rows, RegistrosTotal: count });
-    } catch (error) {
-        return res.status(500).json({ error: error.message });
-    } 
-}); // ejemplo de uso: http://localhost:4444/api/usernames
 
-// exportamos el router.
+router.get("/api/user", async function (req, res, next) {
+    try {
+        let data = await db.User_Name.findAll({
+            attributes: ["user_name", "edad"],
+        });
+        res.json(data);
+    } catch (error) {
+        console.error("Error al obtener los usuarios:", error);
+        res.status(500).json({ error: "Error al obtener los usuarios" });
+    }
+});
+
+// ejemplo de uso: http://localhost:4444/api/user
+
 module.exports = router;

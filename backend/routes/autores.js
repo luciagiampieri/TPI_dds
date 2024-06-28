@@ -43,21 +43,27 @@ router.get("/api/autores", async function (req, res, next) {
     }
 });
 
+
 // obtener autor por ID 
 router.get("/api/autores/:id", async function (req, res, next) {
-    let item = await db.Autores.findOne({
-          attributes: [
+    try {
+        let item = await db.Autores.findOne({
+            attributes: [
                 "id",
                 "tipo_documento",
                 "nro_documento",
                 "nombre",
                 "apellido",
                 "fecha_nacimiento",
-          ],
-          where: { id: req.params.id },
-    });
-    res.json(item);
-}); 
+            ],
+            where: { id: req.params.id },
+        });
+        res.json(item);
+    } catch (error) {
+        console.error("Error al obtener el autor:", error);
+        res.status(500).json({ error: "Error al obtener el autor" });
+    }
+});
 
 // crear un autor
 router.post("/api/autores", async (req, res) => {
@@ -68,7 +74,7 @@ router.post("/api/autores", async (req, res) => {
                 nro_documento: req.body.nro_documento,
                 nombre: req.body.nombre,
                 apellido: req.body.apellido,
-                fecha_nacimiento: moment(req.body.fecha_nacimiento).format('YYYY-MM-DD'),
+                fecha_nacimiento: req.body.fecha_nacimiento,
           });
           res.status(200).json(data.dataValues);
     } catch (err) {
@@ -136,7 +142,7 @@ router.delete("/api/autores/:id", async (req, res) => {
         await item.destroy();
         
         // Devolver una respuesta de éxito
-        res.sendStatus(204);
+        res.sendStatus(200);
     } catch (err) {
         console.error("Error al eliminar el autor:", err);
         res.status(500).json({ error: "Error al eliminar el autor" });
