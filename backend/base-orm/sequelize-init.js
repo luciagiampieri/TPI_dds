@@ -418,13 +418,17 @@ const Resenas= sequelize.define(
                         },
                   },
             },
-            id_tipo_resena: {
-                  type: DataTypes.INTEGER,
+            user_name: {
+                  type: DataTypes.STRING(50),
                   allowNull: false,
                   validate: {
-                        notNull: {
+                        notEmpty: {
                               args: true,
-                              msg: 'El tipo de reseña es requerido'
+                              msg: 'El nombre de usuario es requerido'
+                        },
+                        len: {
+                              args: [3, 50],
+                              msg: 'El campo nombre de usuario debe tener entre 3 y 50 caracteres'
                         },
                   },
             },
@@ -442,25 +446,31 @@ const Resenas= sequelize.define(
       },
 );
 
-const Tipo_Resenas= sequelize.define(
-      "Tipo_Resenas",
+const User_Name= sequelize.define(
+      "User_Name",
       {
-            id: {
-                  type: DataTypes.INTEGER,
-                  primaryKey: true,
-                  autoIncrement: true,
-            },
-            nombre: {
+            user_name: {
                   type: DataTypes.STRING(50),
+                  primaryKey: true,
                   allowNull: false,
                   validate: {
                         notEmpty: {
                               args: true,
-                              msg: 'El nombre es requerido'
+                              msg: 'El nombre de usuario es requerido'
                         },
                         len: {
                               args: [3, 50],
-                              msg: 'El campo nombre debe tener entre 3 y 50 caracteres'
+                              msg: 'El campo nombre de usuario debe tener entre 3 y 50 caracteres'
+                        },
+                  },
+            },
+            edad: {
+                  type: DataTypes.INTEGER,
+                  allowNull: false,
+                  validate: {
+                        notNull: {
+                              args: true,
+                              msg: 'La edad es requerida'
                         },
                   },
             },
@@ -468,9 +478,9 @@ const Tipo_Resenas= sequelize.define(
 
       {
             hooks: {
-                  beforeValidate: function (Tipo_Resenas, options) {
-                        if (typeof Tipo_Resenas.nombre === 'string') {
-                              Tipo_Resenas.nombre = Tipo_Resenas.nombre.toUpperCase().trim();
+                  beforeValidate: function (User_Name, options) {
+                        if (typeof User_Name.user_name === 'string') {
+                              User_Name.user_name = User_Name.user_name.toUpperCase().trim();
                         }
                   }
             },
@@ -488,5 +498,5 @@ module.exports = {
       Editoriales,
       Paises,
       Resenas,
-      Tipo_Resenas,
+      User_Name
 };
