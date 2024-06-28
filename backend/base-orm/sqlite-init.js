@@ -21,7 +21,17 @@ async function CrearDBSiNoExiste() {
       if (!exists) {
             // Crear tabla Libros
             await db.run(
-                  "CREATE TABLE Libros (id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT NOT NULL, fecha_publicacion DATE NOT NULL, id_autor INT NOT NULL, id_editorial INT NOT NULL, precio DECIMAL(10,2) NOT NULL, id_genero INT NOT NULL, FOREIGN KEY (id_autor) REFERENCES Autores(id), FOREIGN KEY (id_editorial) REFERENCES Editoriales(id), FOREIGN KEY (id_genero) REFERENCES Generos(id))"
+                  `CREATE TABLE Libros (
+                  id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                  titulo TEXT NOT NULL, 
+                  fecha_publicacion DATE NOT NULL, 
+                  id_autor INT NOT NULL, 
+                  id_editorial INT NOT NULL, 
+                  precio DECIMAL(10,2) NOT NULL, 
+                  id_genero INT NOT NULL, 
+                  FOREIGN KEY (id_autor) REFERENCES Autores(id) ON DELETE CASCADE, 
+                  FOREIGN KEY (id_editorial) REFERENCES Editoriales(id) ON DELETE CASCADE, 
+                  FOREIGN KEY (id_genero) REFERENCES Generos(id))`
             );
             console.log("Tabla Libros creada!");
             // Agregamos valores
@@ -60,7 +70,9 @@ async function CrearDBSiNoExiste() {
       }
       if (!exists) {
             await db.run(
-                  "CREATE TABLE Generos (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT NOT NULL);"
+                  `CREATE TABLE Generos (
+                  id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                  nombre TEXT NOT NULL)`
             );
             console.log("Tabla Generos creada!");
             await db.run(
@@ -96,7 +108,7 @@ async function CrearDBSiNoExiste() {
                   comentario TEXT NOT NULL,
                   calificacion INTEGER NOT NULL,
                   user_name TEXT NOT NULL,
-                  FOREIGN KEY (id_libro) REFERENCES Libros(id),
+                  FOREIGN KEY (id_libro) REFERENCES Libros(id) ON DELETE CASCADE,
                   FOREIGN KEY (user_name) REFERENCES User_Name(user_name)
                   )`
             );
@@ -157,7 +169,9 @@ async function CrearDBSiNoExiste() {
       }
       if (!exists) {
             await db.run(
-                  "CREATE TABLE User_Name (user_name TEXT PRIMARY KEY, edad INTEGER NOT NULL)"
+                  `CREATE TABLE User_Name (
+                  user_name TEXT PRIMARY KEY, 
+                  edad INTEGER NOT NULL)`
             );
             console.log("Tabla User_Name creada!");
             await db.run(
@@ -256,7 +270,12 @@ async function CrearDBSiNoExiste() {
       if (response.Cantidad > 0) exists = true;
       if (!exists) {
             await db.run(
-                  "CREATE TABLE Editoriales (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre VARCHAR(50) NOT NULL, direccion VARCHAR(100) NOT NULL,  fecha_fundacion DATE NOT NULL, id_pais INTEGER NOT NULL, FOREIGN KEY (id_pais) REFERENCES Paises(id) );"
+                  `CREATE TABLE Editoriales (
+                  id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                  nombre VARCHAR(50) NOT NULL, 
+                  direccion VARCHAR(100) NOT NULL,  
+                  fecha_fundacion DATE NOT NULL, 
+                  id_pais INTEGER NOT NULL, FOREIGN KEY (id_pais) REFERENCES Paises(id) )`
             );
             console.log("tabla Editoriales creada!");
       }
@@ -289,7 +308,9 @@ async function CrearDBSiNoExiste() {
             exists = true;
       if (!exists) {
             await db.run(
-                  "CREATE TABLE Paises (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre VARCHAR(50) NOT NULL);"
+                  `CREATE TABLE Paises (
+                  id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                  nombre VARCHAR(50) NOT NULL)`
             );
             console.log("Tabla Paises creada!");
       }

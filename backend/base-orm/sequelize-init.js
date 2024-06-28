@@ -1,4 +1,3 @@
-const { timeStamp } = require('console');
 const { Sequelize, DataTypes } = require('sequelize');
 // cambiar la ruta!!!! a nuestra ruta
 const sequelize = new Sequelize('sqlite:' + "./.data/BD_dds.db");
@@ -23,10 +22,6 @@ const Libros = sequelize.define(
                         len: {
                               args: [2, 80],
                               msg: 'El campo titulo debe tener entre 2 y 80 caracteres'
-                        },
-                        unique: {
-                              args: true,
-                              msg: 'El titulo ya existe'
                         },
                   },
             },
@@ -73,7 +68,7 @@ const Libros = sequelize.define(
                               msg: 'El precio debe ser un número decimal'
                         },
                         min: {
-                              args: 0,
+                              args: [0],
                               msg: 'El precio debe ser mayor a 0'
                         },
                   },
@@ -229,7 +224,7 @@ const Autores= sequelize.define(
       },
 );
 
-//REVISAR************************
+
 const Tipo_Documentos = sequelize.define(
       "Tipo_Documentos",
       {
@@ -442,7 +437,7 @@ const Resenas= sequelize.define(
                         }
                   }
             },
-            timestamps: false
+            timestamps: false,
       },
 );
 
@@ -484,7 +479,8 @@ const User_Name= sequelize.define(
                         }
                   }
             },
-            timestamps: false
+            timestamps: false,
+            freezeTableName: true
       },
 );
 
