@@ -62,7 +62,17 @@ async function CrearDBSiNoExiste() {
             );
             console.log("Tabla Generos creada!");
             await db.run(
-                  "INSERT INTO Generos VALUES ('Fantasia'),('Ciencia Ficción'),('Misterio'),('Terror'),('Biografia'),('Crimen'),('Romance'),('Poesia'),('Infantil'),('Novela')"
+                  `INSERT INTO Generos (nombre) VALUES 
+                  ('Fantasia'),
+                  ('Ciencia Ficción'),
+                  ('Misterio'),
+                  ('Terror'),
+                  ('Biografia'),
+                  ('Crimen'),
+                  ('Romance'),
+                  ('Poesia'),
+                  ('Infantil'),
+                  ('Novela')`
             );
       }
 
