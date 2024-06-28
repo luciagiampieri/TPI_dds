@@ -8,38 +8,42 @@ const router = express.Router();
 
 // Obtener por filtro.
 router.get("/api/editoriales", async function (req, res, next) {
-    let where = {};
-    let include = [];
+    try {
+        let where = {};
+        let include = [];
 
-    if (req.query.nombre_pais != undefined && req.query.nombre_pais !== "") {
-        include.push({
-            model: db.Paises,
-            as: 'Paises',
-            where: {
-                nombre: { [Op.like]: `%${req.query.nombre_pais}%` }
-            },
-            attributes: []  // No necesitamos atributos del pais en los resultados de editoriales
+        if (req.query.nombre_pais != undefined && req.query.nombre_pais !== "") {
+            include.push({
+                model: db.Paises,
+                as: 'Paises',
+                where: {
+                    nombre: { [Op.like]: `%${req.query.nombre_pais}%` }
+                },
+                attributes: []  // No necesitamos atributos del pais en los resultados de editoriales
+            });
+        }
+
+        const Pagina = req.query.Pagina ?? 1;
+        const TamañoPagina = 10;
+        const { count, rows } = await db.Editoriales.findAndCountAll({
+            attributes: [
+                "id",
+                "nombre",
+                "direccion",
+                "fecha_fundacion",
+                "id_pais",
+            ],
+            order: [["id", "ASC"]],
+            where,
+            include,
+            offset: (Pagina - 1) * TamañoPagina,
+            limit: TamañoPagina,
         });
+
+        return res.json({ Items: rows, RegistrosTotal: count });
+    } catch (error) {
+        next(error);
     }
-
-    const Pagina = req.query.Pagina ?? 1;
-    const TamañoPagina = 10;
-    const { count, rows } = await db.Editoriales.findAndCountAll({
-        attributes: [
-            "id",
-            "nombre",
-            "direccion",
-            "fecha_fundacion",
-            "id_pais",
-        ],
-        order: [["id", "ASC"]],
-        where,
-        include,
-        offset: (Pagina - 1) * TamañoPagina,
-        limit: TamañoPagina,
-    });
-
-    return res.json({ Items: rows, RegistrosTotal: count });
 }); // ejemplo de uso: http://localhost:4444/api/editoriales?nombre_pais=el&Pagina=1
 // ejemplo de uso sin filtro: https://localhost:4444/api/editoriales
 
