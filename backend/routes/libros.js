@@ -123,13 +123,14 @@ router.delete("/api/libros/:id", async (req, res) => {
             let data = await db.Libros.destroy({
                   where: { id: req.params.id },
             });
+            console.log("Number of rows deleted:", data);
             if (data === 1) {
                   res.sendStatus(200);
             } else {
                   res.sendStatus(404);
             }
       } catch (err) {
-            console.error("Error in POST /api/libros/", err);
+            console.error("Error in DELETE /api/libros/", err);
             res.status(500).json({ error: "Internal server error" });
       }
 });
