@@ -488,6 +488,12 @@ const User_Name= sequelize.define(
       },
 );
 
+
+// Asociación entre Resenas y Libros
+Resenas.belongsTo(Libros, { foreignKey: 'id_libro', as: 'libro' });
+Libros.hasMany(Resenas, { foreignKey: 'id_libro', as: 'resenas' });
+
+
 // Exportar los modelos
 module.exports = {
       sequelize,

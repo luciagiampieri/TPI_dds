@@ -1,5 +1,24 @@
 const express = require("express"); // importar express
-// crear servidor
+
+// Crear servidor
 const app = express();
-app.use(express.json()); // para poder leer json en el body
-require("./base-orm/sqlite-init");  // crear base si no existe
+
+// Middleware para parsear JSON en el body de las solicitudes
+app.use(express.json()); 
+
+// Inicializar base de datos (asegúrate de que este archivo exista y funcione correctamente)
+require("./base-orm/sqlite-init");  
+
+// Importar rutas
+const resenasRoutes = require("./routes/resenas");
+
+// Usar rutas (asegúrate de que el archivo y las rutas estén bien definidas)
+app.use(resenasRoutes);
+
+// Puerto
+const PORT = 4444;
+
+// Iniciar servidor
+app.listen(PORT, () => {
+    console.log(`Servidor iniciado en puerto ${PORT}`);
+});
