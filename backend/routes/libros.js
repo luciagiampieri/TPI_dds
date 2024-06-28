@@ -1,7 +1,6 @@
 const express = require("express");
 const db = require("../base-orm/sequelize-init");
 const { Op, ValidationError } = require("sequelize");
-const moment = require("moment");
 // const auth = require("../seguridad/auth");
 const router = express.Router();
 
@@ -56,7 +55,7 @@ router.get("/api/libros/:id", async function (req, res, next) {
       res.json(item);
 });
 
-// Ruta de reseña: crear.
+// Ruta de libros: crear.
 router.post("/api/libros/", async (req, res) => {
       try {
             let data = await db.Libros.create({
@@ -75,7 +74,7 @@ router.post("/api/libros/", async (req, res) => {
       }
 });
 
-// Ruta de reseña: actualizar.
+// Ruta de libros: actualizar.
 router.put("/api/libros/:id", async (req, res) => {
       try {
             let item = await db.Libros.findOne({
@@ -97,7 +96,7 @@ router.put("/api/libros/:id", async (req, res) => {
 
             item.id = req.body.id;
             item.titulo = req.body.titulo;
-            item.fecha_publicacion = moment(req.body.fecha_publicacion).format('YYYY-MM-DD');
+            item.fecha_publicacion = req.body.fecha_publicacion;
             item.id_autor = req.body.id_autor;
             item.id_editorial = req.body.id_editorial;
             item.precio = req.body.precio;
@@ -118,19 +117,20 @@ router.put("/api/libros/:id", async (req, res) => {
       }
 });
 
-// Ruta de reseña: eliminar.
+// Ruta de libros: eliminar.
 router.delete("/api/libros/:id", async (req, res) => {
       try {
             let data = await db.Libros.destroy({
                   where: { id: req.params.id },
             });
+            console.log("Number of rows deleted:", data);
             if (data === 1) {
                   res.sendStatus(200);
             } else {
                   res.sendStatus(404);
             }
       } catch (err) {
-            console.error("Error in POST /api/libros/", err);
+            console.error("Error in DELETE /api/libros/", err);
             res.status(500).json({ error: "Internal server error" });
       }
 });

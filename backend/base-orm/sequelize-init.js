@@ -1,4 +1,3 @@
-const { timeStamp } = require('console');
 const { Sequelize, DataTypes } = require('sequelize');
 // cambiar la ruta!!!! a nuestra ruta
 const sequelize = new Sequelize('sqlite:' + "./.data/BD_dds.db");
@@ -221,7 +220,7 @@ const Autores= sequelize.define(
       },
 );
 
-//REVISAR************************
+
 const Tipo_Documentos = sequelize.define(
       "Tipo_Documentos",
       {
@@ -434,7 +433,7 @@ const Resenas= sequelize.define(
                         }
                   }
             },
-            timestamps: false
+            timestamps: false,
       },
 );
 
@@ -476,7 +475,8 @@ const User_Name= sequelize.define(
                         }
                   }
             },
-            timestamps: false
+            timestamps: false,
+            freezeTableName: true
       },
 );
 
@@ -485,9 +485,10 @@ const User_Name= sequelize.define(
 Resenas.belongsTo(Libros, { foreignKey: 'id_libro', as: 'libro' });
 Libros.hasMany(Resenas, { foreignKey: 'id_libro', as: 'resenas' });
 
-// Asociación entre Libros y Editoriales
-Libros.belongsTo(Editoriales, { foreignKey: 'id_editorial', as: 'editorial' });
-Editoriales.hasMany(Libros, { foreignKey: 'id_editorial', as: 'libros' });
+// Asociación entre Editoriales y Paises
+Editoriales.belongsTo(Paises, { foreignKey: 'id_pais', as: 'Paises' });
+Paises.hasMany(Editoriales, { foreignKey: 'id_pais', as: 'Editoriales' });
+
 
 
 // Exportar los modelos
