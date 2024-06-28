@@ -8,62 +8,72 @@ const router = express.Router();
 
 // Obtener por filtro.
 router.get("/api/resenas", async function (req, res, next) {
-    let where = {};
-    let include = [];
+    try {
+        let where = {};
+        let include = [];
 
-    if (req.query.nombre_libro != undefined && req.query.nombre_libro !== "") {
-        include.push({
-            model: db.Libros,
-            as: 'libro',
-            where: {
-                titulo: { [Op.like]: `%${req.query.nombre_libro}%` }
-            },
-            attributes: []  // No necesitamos atributos del libro en los resultados de reseñas
+        if (req.query.nombre_libro != undefined && req.query.nombre_libro !== "") {
+            include.push({
+                model: db.Libros,
+                as: 'libro',
+                where: {
+                    titulo: { [Op.like]: `%${req.query.nombre_libro}%` }
+                },
+                attributes: []  // No necesitamos atributos del libro en los resultados de reseñas
+            });
+        }
+
+        const Pagina = req.query.Pagina ?? 1;
+        const TamañoPagina = 10;
+        const { count, rows } = await db.Resenas.findAndCountAll({
+            attributes: [
+                "id",
+                "id_libro",
+                "fecha_resena",
+                "comentario",
+                "calificacion",
+                "user_name",
+            ],
+            order: [["id", "ASC"]],
+            where,
+            include,
+            offset: (Pagina - 1) * TamañoPagina,
+            limit: TamañoPagina,
         });
+        return res.json({ Items: rows, RegistrosTotal: count });
+    } catch (err) {
+        console.error("Error in GET /api/resenas", err);
+        res.status(500).json({ error: "Internal server error" });
     }
-
-    const Pagina = req.query.Pagina ?? 1;
-    const TamañoPagina = 10;
-    const { count, rows } = await db.Resenas.findAndCountAll({
-        attributes: [
-            "id",
-            "id_libro",
-            "fecha_resena",
-            "comentario",
-            "calificacion",
-            "user_name",
-        ],
-        order: [["id", "ASC"]],
-        where,
-        include,
-        offset: (Pagina - 1) * TamañoPagina,
-        limit: TamañoPagina,
-    });
-    return res.json({ Items: rows, RegistrosTotal: count });
 }); // ejemplo de uso: http://localhost:4444/api/resenas?nombre_libro=el&Pagina=1
 // ejemplo de uso sin filtro pero con página: http://localhost:4444/api/resenas?Pagina=1
 
 // Ruta de reseña: obtener por ID.
 router.get("/api/resenas/:id", async function (req, res, next) {
-    let item = await db.Resenas.findOne({
-        attributes: [
-            "id",
-            "id_libro",
-            "fecha_resena",
-            "comentario",
-            "calificacion",
-            "user_name",
-        ],
-        where: { id: req.params.id },
-        include: [
-            {
-                model: db.Libros,
-                as: 'libro',
-                attributes: ["titulo"]
-            }
-        ]
-    });
-    res.json(item);
+    try {
+        let item = await db.Resenas.findOne({
+            attributes: [
+                "id",
+                "id_libro",
+                "fecha_resena",
+                "comentario",
+                "calificacion",
+                "user_name",
+            ],
+            where: { id: req.params.id },
+            include: [
+                {
+                    model: db.Libros,
+                    as: 'libro',
+                    attributes: ["titulo"]
+                }
+            ]
+        });
+        res.json(item);
+    } catch (err) {
+        console.error("Error in GET /api/resenas/:id", err);
+        res.status(500).json({ error: "Internal server error" });
+    }
 }); // ejemplo de uso: http://localhost:4444/api/resenas/1
 
 // Ruta de reseña: crear.

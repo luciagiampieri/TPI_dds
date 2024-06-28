@@ -4,55 +4,65 @@ const { Op, ValidationError } = require("sequelize");
 // const auth = require("../seguridad/auth");
 const router = express.Router();
 
-// Rutas de Libros.
+// Rutas de LIBROS.
 
 // Obtener por filtro.
 router.get("/api/libros", async function (req, res, next) {
-      let where = {};
-      let include = [];
+      try {
+            let where = {};
+            let include = [];
 
-      if (req.query.titulo != undefined && req.query.titulo !== "") {
-            where.titulo = { [Op.like]: `%${req.query.titulo}%` };
-      };
+            if (req.query.titulo != undefined && req.query.titulo !== "") {
+                  where.titulo = { [Op.like]: `%${req.query.titulo}%` };
+            };
 
-      const Pagina = req.query.Pagina ?? 1;
-      const TamañoPagina = 10;
-      const { count, rows } = await db.Libros.findAndCountAll({
-            attributes: [
-                  "id",
-                  "titulo",
-                  "fecha_publicacion",
-                  "id_autor",
-                  "id_editorial",
-                  "precio",
-                  "id_genero",
-            ],
-            order: [["id", "ASC"]],
-            where,
-            include,
-            offset: (Pagina - 1) * TamañoPagina,
-            limit: TamañoPagina,
-      });
+            const Pagina = req.query.Pagina ?? 1;
+            const TamañoPagina = 10;
+            const { count, rows } = await db.Libros.findAndCountAll({
+                  attributes: [
+                        "id",
+                        "titulo",
+                        "fecha_publicacion",
+                        "id_autor",
+                        "id_editorial",
+                        "precio",
+                        "id_genero",
+                  ],
+                  order: [["id", "ASC"]],
+                  where,
+                  include,
+                  offset: (Pagina - 1) * TamañoPagina,
+                  limit: TamañoPagina,
+            });
 
-      return res.json({ Items: rows, RegistrosTotal: count });
+            return res.json({ Items: rows, RegistrosTotal: count });
+      } catch (err) {
+            console.error("Error in GET /api/libros", err);
+            res.status(500).json({ error: "Internal server error" });
+      }
 }); // ejemplo de uso: http://localhost:4444/api/libros?titulo=el&Pagina=1
 // ejemplo de uso sin filtro: https://localhost:4444/api/libros
 
 // Ruta de libros: obtener por ID.
 router.get("/api/libros/:id", async function (req, res, next) {
-      let item = await db.Libros.findOne({
-            attributes: [
-                  "id",
-                  "titulo",
-                  "fecha_publicacion",
-                  "id_autor",
-                  "id_editorial",
-                  "precio",
-                  "id_genero",
-            ],
-            where: { id: req.params.id },
-      });
-      res.json(item);
+      try {
+            let item = await db.Libros.findOne({
+                  attributes: [
+                        "id",
+                        "titulo",
+                        "fecha_publicacion",
+                        "id_autor",
+                        "id_editorial",
+                        "precio",
+                        "id_genero",
+                  ],
+                  where: { id: req.params.id },
+            });
+            res.json(item);
+      } catch (err) {
+            console.error("Error in GET /api/libros/", err);
+            res.status(500).json({ error: "Internal server error" });
+      }
 });
 
 // Ruta de libros: crear.
