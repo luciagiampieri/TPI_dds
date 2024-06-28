@@ -1,4 +1,3 @@
-const { timeStamp } = require('console');
 const { Sequelize, DataTypes } = require('sequelize');
 // cambiar la ruta!!!! a nuestra ruta
 const sequelize = new Sequelize('sqlite:' + "./.data/BD_dds.db");
@@ -438,7 +437,7 @@ const Resenas= sequelize.define(
                         }
                   }
             },
-            timestamps: false
+            timestamps: false,
       },
 );
 
@@ -480,7 +479,8 @@ const User_Name= sequelize.define(
                         }
                   }
             },
-            timestamps: false
+            timestamps: false,
+            freezeTableName: true
       },
 );
 

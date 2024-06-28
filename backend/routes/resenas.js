@@ -39,10 +39,9 @@ router.get("/api/resenas", async function (req, res, next) {
         offset: (Pagina - 1) * TamañoPagina,
         limit: TamañoPagina,
     });
-
     return res.json({ Items: rows, RegistrosTotal: count });
 }); // ejemplo de uso: http://localhost:4444/api/resenas?nombre_libro=el&Pagina=1
-// ejemplo de uso sin filtro: https://localhost:4444/api/resenas
+// ejemplo de uso sin filtro pero con página: http://localhost:4444/api/resenas?Pagina=1
 
 // Ruta de reseña: obtener por ID.
 router.get("/api/resenas/:id", async function (req, res, next) {
@@ -65,7 +64,7 @@ router.get("/api/resenas/:id", async function (req, res, next) {
         ]
     });
     res.json(item);
-});
+}); // ejemplo de uso: http://localhost:4444/api/resenas/1
 
 // Ruta de reseña: crear.
 router.post("/api/resenas/", async (req, res) => {
@@ -82,7 +81,8 @@ router.post("/api/resenas/", async (req, res) => {
         console.error("Error in POST /api/resenas/", err);
         res.status(500).json({ error: "Internal server error" });
     }
-});
+}); // ejemplo de uso: POST http://localhost:4444/api/resenas/ con body en formato JSON
+// ejemplo de body: {"id_libro":1,"fecha_resena":"2021-10-10","comentario":"Muy entretenido!","calificacion":5,"user_name":"user10"}
 
 // Ruta de reseña: actualizar.
 router.put("/api/resenas/:id", async (req, res) => {
@@ -122,7 +122,8 @@ router.put("/api/resenas/:id", async (req, res) => {
             throw err;
         }
     }
-});
+}); // ejemplo de uso: PUT http://localhost:4444/api/resenas/1 con body en formato JSON
+// ejemplo de body: {"fecha_resena":"2021-10-10","comentario":"Muy entretenido!","calificacion":5,"user_name":"user10"}
 
 // Ruta de reseña: eliminar.
 router.delete("/api/resenas/:id", async (req, res) => {
@@ -139,7 +140,7 @@ router.delete("/api/resenas/:id", async (req, res) => {
         console.error("Error in POST /api/resenas/", err);
         res.status(500).json({ error: "Internal server error" });
     }
-});
+}); // ejemplo de uso: DELETE http://localhost:4444/api/resenas/1
 
 // exportamos nuestro nuevo router.
 module.exports = router;
