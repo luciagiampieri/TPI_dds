@@ -493,9 +493,10 @@ const User_Name= sequelize.define(
 Resenas.belongsTo(Libros, { foreignKey: 'id_libro', as: 'libro' });
 Libros.hasMany(Resenas, { foreignKey: 'id_libro', as: 'resenas' });
 
-// Asociación entre Libros y Editoriales
-Libros.belongsTo(Editoriales, { foreignKey: 'id_editorial', as: 'editorial' });
-Editoriales.hasMany(Libros, { foreignKey: 'id_editorial', as: 'libros' });
+// Asociación entre Editoriales y Paises
+Editoriales.belongsTo(Paises, { foreignKey: 'id_pais', as: 'Paises' });
+Paises.hasMany(Editoriales, { foreignKey: 'id_pais', as: 'Editoriales' });
+
 
 
 // Exportar los modelos
