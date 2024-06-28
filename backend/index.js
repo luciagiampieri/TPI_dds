@@ -7,8 +7,9 @@ app.use(express.json());
 require("./base-orm/sqlite-init");  
 
 
-// Importar rutas de RESEÑAS
+// Importar rutas
 const resenasRoutes = require("./routes/resenas");
+const usuariosRoutes = require("./routes/usernames");
 const librosRoutes = require("./routes/libros");
 const generosRoutes = require("./routes/generos");
 
@@ -16,6 +17,7 @@ const generosRoutes = require("./routes/generos");
 app.use(resenasRoutes);
 app.use(librosRoutes);
 app.use(generosRoutes);
+app.use(usuariosRoutes);
 
 // Puerto
 const PORT = 4444;

@@ -55,7 +55,7 @@ router.get("/api/libros/:id", async function (req, res, next) {
       res.json(item);
 });
 
-// Ruta de reseña: crear.
+// Ruta de libros: crear.
 router.post("/api/libros/", async (req, res) => {
       try {
             let data = await db.Libros.create({
@@ -74,7 +74,7 @@ router.post("/api/libros/", async (req, res) => {
       }
 });
 
-// Ruta de reseña: actualizar.
+// Ruta de libros: actualizar.
 router.put("/api/libros/:id", async (req, res) => {
       try {
             let item = await db.Libros.findOne({
@@ -117,7 +117,7 @@ router.put("/api/libros/:id", async (req, res) => {
       }
 });
 
-// Ruta de reseña: eliminar.
+// Ruta de libros: eliminar.
 router.delete("/api/libros/:id", async (req, res) => {
       try {
             let data = await db.Libros.destroy({
