@@ -11,13 +11,11 @@ const router = express.Router();
 router.get("/api/editoriales", async function (req, res, next) {
     try {
         let where = {};
-        let include = [];
-
         if (req.query.nombre != undefined && req.query.nombre !== "") {
             where.nombre = { [Op.like]: `%${req.query.nombre}%` };
         };
 
-        const Pagina = req.query.Pagina ?? 1;
+        const Pagina = parseInt(req.query.Pagina) || 1;
         const TamañoPagina = 10;
         const { count, rows } = await db.Editoriales.findAndCountAll({
             attributes: [
@@ -29,7 +27,6 @@ router.get("/api/editoriales", async function (req, res, next) {
             ],
             order: [["id", "ASC"]],
             where,
-            include,
             offset: (Pagina - 1) * TamañoPagina,
             limit: TamañoPagina,
         });

@@ -10,43 +10,26 @@ const router = express.Router();
 router.get("/api/resenas", async function (req, res, next) {
     try {
         let where = {};
-        let include = [];
-
-        if (req.query.nombre_libro != undefined && req.query.nombre_libro !== "") {
-            include.push({
-                model: db.Libros,
-                as: 'libro',
-                where: {
-                    titulo: { [Op.like]: `%${req.query.nombre_libro}%` }
-                },
-                attributes: []  // No necesitamos atributos del libro en los resultados de reseñas
-            });
+        if (req.query.calificacion) {
+            where.calificacion = req.query.calificacion;
         }
 
-        const Pagina = req.query.Pagina ?? 1;
+        const Pagina = parseInt(req.query.Pagina) || 1;
         const TamañoPagina = 10;
         const { count, rows } = await db.Resenas.findAndCountAll({
-            attributes: [
-                "id",
-                "id_libro",
-                "fecha_resena",
-                "comentario",
-                "calificacion",
-                "user_name",
-            ],
-            order: [["id", "ASC"]],
             where,
-            include,
             offset: (Pagina - 1) * TamañoPagina,
             limit: TamañoPagina,
+            include: [{ model: db.Libros, as: 'Libro', attributes: ['titulo'] }],
         });
+
         return res.json({ Items: rows, RegistrosTotal: count });
-    } catch (err) {
-        console.error("Error in GET /api/resenas", err);
-        res.status(500).json({ error: "Internal server error" });
+    } catch (error) {
+        next(error);
     }
-}); // ejemplo de uso: http://localhost:4444/api/resenas?nombre_libro=el&Pagina=1
-// ejemplo de uso sin filtro pero con página: http://localhost:4444/api/resenas?Pagina=1
+});
+ // ejemplo de uso: http://localhost:4444/api/resenas?calificacion=5&Pagina=1
+// ejemplo de uso sin filtro: http://localhost:4444/api/resenas 
 
 // Ruta de reseña: obtener por ID.
 router.get("/api/resenas/:id", async function (req, res, next) {
