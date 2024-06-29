@@ -11,12 +11,12 @@ async function getAllLibros(titulo, Pagina) {
 }
 
 async function getByIdLibros(item) {
-      const resp = await axios.get(URL + "/" + item.idSerie);
+      const resp = await axios.get(URL + "/" + item.id);
       return resp.data;
 }
 
 async function ActivarDesactivar(item) {
-      await axios.delete(URL + "/" + item.idSerie);
+      await axios.delete(URL + "/" + item.id);
 }
 
 async function saveLibros(item) {

@@ -62,7 +62,7 @@ function LibrosRegistro({
                               </div>
                         </div>
 
-                        {/* campo fechaEstreno */}
+                        {/* campo fecha Publicacion */}
                         <div className="row">
                               <div className="col-sm-4 col-md-3 offset-md-1">
                                     <label className="col-form-label" htmlFor="fecha_publicacion">
@@ -83,6 +83,70 @@ function LibrosRegistro({
                                     />
                                     <div className="invalid-feedback">
                                           {errors?.fecha_publicacion?.message}
+                                    </div>
+                              </div>
+                        </div>
+
+                        {/* campo idAutor */}
+                        <div className="row">
+                              <div className="col-sm-4 col-md-3 offset-md-1">
+                                    <label className="col-form-label" htmlFor="id_autor">
+                                          Autor<span className="text-danger">*</span>:
+                                    </label>
+                              </div>
+                              <div className="col-sm-8 col-md-6">
+                                    <select
+                                          {...register("id_autor", {
+                                                required: { 
+                                                      value: true, 
+                                                      message: "Autor es requerido" },
+                                          })}
+                                          className={
+                                                "form-control " +
+                                                (errors?.id_autor ? "is-invalid" : "")
+                                          }
+                                          >
+                                          <option value="" key={1}></option>
+                                          {Array.isArray(autores) && generos.map((x) => (
+                                                <option value={x.id_autor} key={x.id_autor}>
+                                                      {x.nombre}
+                                                </option>
+                                          ))}
+                                    </select>
+                                    <div className="invalid-feedback">
+                                          {errors?.id_autor?.message}
+                                    </div>
+                              </div>
+                        </div>
+
+                        {/* campo idEditorial */}
+                        <div className="row">
+                              <div className="col-sm-4 col-md-3 offset-md-1">
+                                    <label className="col-form-label" htmlFor="id_editorial">
+                                          Editorial<span className="text-danger">*</span>:
+                                    </label>
+                              </div>
+                              <div className="col-sm-8 col-md-6">
+                                    <select
+                                          {...register("id_editorial", {
+                                                required: { 
+                                                      value: true, 
+                                                      message: "Editorial es requerido" },
+                                          })}
+                                          className={
+                                                "form-control " +
+                                                (errors?.id_editorial ? "is-invalid" : "")
+                                          }
+                                          >
+                                          <option value="" key={1}></option>
+                                          {Array.isArray(editorial) && generos.map((x) => (
+                                                <option value={x.id_editorial} key={x.id_editorial}>
+                                                      {x.nombre}
+                                                </option>
+                                    ))}
+                                    </select>
+                                    <div className="invalid-feedback">
+                                          {errors?.id_editorial?.message}
                                     </div>
                               </div>
                         </div>
@@ -117,32 +181,34 @@ function LibrosRegistro({
                         </div>
 
 
-                        {/* campo idGenero */}
+                        {/* campo id_genero */}
                         <div className="row">
                               <div className="col-sm-4 col-md-3 offset-md-1">
-                                    <label className="col-form-label" htmlFor="idGenero">
+                                    <label className="col-form-label" htmlFor="id_genero">
                                           Género<span className="text-danger">*</span>:
                                     </label>
                               </div>
                               <div className="col-sm-8 col-md-6">
                                     <select
-                                          {...register("idGenero", {
-                                                required: { value: true, message: "Género es requerido" },
+                                          {...register("id_genero", {
+                                                required: { 
+                                                      value: true, 
+                                                      message: "Género es requerido" },
                                           })}
                                           className={
                                                 "form-control " +
-                                                (errors?.idGenero ? "is-invalid" : "")
+                                                (errors?.id_genero ? "is-invalid" : "")
                                           }
                                     >
                                     <option value="" key={1}></option>
                                     {Array.isArray(generos) && generos.map((x) => (
-                                          <option value={x.idGenero} key={x.idGenero}>
-                                                {x.nombreGenero}
+                                          <option value={x.id_genero} key={x.id_genero}>
+                                                {x.nombre}
                                           </option>
                                     ))}
                                     </select>
                                     <div className="invalid-feedback">
-                                          {errors?.idGenero?.message}
+                                          {errors?.id_genero?.message}
                                     </div>
                               </div>
                         </div>
@@ -174,7 +240,6 @@ function LibrosRegistro({
                                           {errors?.id_genero?.message}
                                     </div>
                               </div>
-
                         </div>
 
 

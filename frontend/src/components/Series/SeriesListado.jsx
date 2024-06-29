@@ -12,7 +12,7 @@ export function SeriesListado({
   Buscar,
   generos,
 }) {
-   
+
   return (
     <div className="table-responsive">
       <table className="table table-hover table-sm table-bordered table-striped">

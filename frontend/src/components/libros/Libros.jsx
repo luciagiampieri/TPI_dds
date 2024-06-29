@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-//import LibrosBuscar from "./components/libros/LibrosBuscar";
+import LibrosBuscar from "./components/libros/LibrosBuscar";
 import LibrosRegistro from "./components/libros/LibrosRegistro";
-//import LibrosListado from "./components/libros/LibrosListado";
+import LibrosListado from "./components/libros/LibrosListado";
 import generosService from "../../services/generos.service";
 import librosService from "../../services/libros.service";
 import modalDialogService from "../../services/modalDialog.service";
@@ -162,7 +162,7 @@ function Libros() {
                         Libros <small>{TituloAccionABMC[AccionABMC]}</small>
                   </div>
 
-                  {/*{AccionABMC === "L" && (
+                  {AccionABMC === "L" && (
                         <LibrosBuscar 
                               {...{
                                     Titulo,
@@ -189,7 +189,7 @@ function Libros() {
                                     generos,
                               }}
                         />
-                  )}*/}
+                  )}
 
                   {AccionABMC === "L" && Items?.length === 0 && (
                         <div className="alert alert-info mensajesAlert">
