@@ -63,10 +63,6 @@ const Libros = sequelize.define(
                               args: true,
                               msg: 'El precio es requerido'
                         },
-                        isDecimal: {
-                              args: true,
-                              msg: 'El precio debe ser un número decimal'
-                        },
                         min: {
                               args: [0],
                               msg: 'El precio debe ser mayor a 0'
