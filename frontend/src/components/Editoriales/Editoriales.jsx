@@ -20,7 +20,7 @@ function Editoriales() {
     const [AccionABMC, setAccionABMC] = useState("L");
 
     const [Nombre, setNombre] = useState(""); // estado para filtrar la búsqueda de autores
-    const [Items, setItems] = useState([]); // estado para mostrar el listado de autores
+    const [Editorial, setEditorial] = useState([]); // estado para mostrar el listado de autores
     const [Item, setItem] = useState(null); // estado para mostrar el autor en el formulario
     const [RegistrosTotal, setRegistrosTotal] = useState(0); // estado para mostrar la cantidad de registros
     const [Pagina, setPagina] = useState(1); // estado para mostrar la página actual
@@ -35,6 +35,9 @@ function Editoriales() {
         BuscarPaises();
     }, []); // useEffect se ejecuta solo una vez. Busca los autores disponibles.
 
+    useEffect(() => {
+        Buscar();
+    }, [Nombre, Pagina]); // useEffect se ejecuta cada vez que Nombre o Pagina cambian.
 
     async function Buscar(_pagina) {
         if (_pagina && _pagina !== Pagina) {
@@ -43,13 +46,15 @@ function Editoriales() {
             _pagina = Pagina;
         }
     
-        const data = await editorialesService.getAllEditoriales({ nombre: Nombre, _pagina: _pagina });
+        modalDialogService.BloquearPantalla(true);
+        const data = await editorialesService.getAllEditoriales({ nombre: Nombre, Pagina: _pagina });
+        modalDialogService.BloquearPantalla(false);
     
-        setItems(data);
-        setRegistrosTotal(data.length);
+        setEditorial(data.Items);
+        setRegistrosTotal(data.RegistrosTotal);
     
         const arrPaginas = [];
-        for (let i = 1; i <= Math.ceil(data.length / 10); i++) {
+        for (let i = 1; i <= Math.ceil(data.RegistrosTotal / 10); i++) {
             arrPaginas.push(i);
         }
         setPaginas(arrPaginas);
@@ -81,7 +86,7 @@ function Editoriales() {
     } // Agrega una editorial y actualiza el estado con el autor creado y el tipo de acción.
 
     const Imprimir = () => {
-        const data = Items.map((item) => ({
+        const data = Editorial.map((item) => ({
             Nombre: item.nombre,
             Direccion: item.direccion,
             "Fecha Fundacion": item.fecha_fundacion,
@@ -142,10 +147,10 @@ function Editoriales() {
                 />
             )}
 
-            {AccionABMC === "L" && Items && Items.length > 0 && (
+            {AccionABMC === "L" && Editorial && Editorial.length > 0 && (
                 <EditorialesListado
                     {...{
-                        Items,
+                        Items: Editorial,
                         Consultar,
                         Eliminar,
                         Modificar,
@@ -159,10 +164,10 @@ function Editoriales() {
                 />
             )}
 
-            {AccionABMC === "L" && Items && Items.length === 0 && (
+            {AccionABMC === "L" && Editorial && Editorial.length === 0 && (
                 <div className="alert alert-info mensajesAlert">
                     <i className="fa fa-exclamation-sign"></i>
-                    No se encontraron registros... Presione buscar...
+                    No se encontraron registros...
                 </div>
             )}
 

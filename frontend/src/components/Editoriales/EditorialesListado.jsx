@@ -73,10 +73,10 @@ export default function EditorialesListado({
                         <select
                             value={Pagina}
                             onChange={(e) => {
-                                Buscar(e.target.value);
+                                Buscar(Number(e.target.value));
                             }}
                         >
-                            {Paginas?.map((x) => (
+                            {Paginas.map((x) => (
                                 <option value={x} key={x}>
                                     {x}
                                 </option>

@@ -1,126 +1,199 @@
-import React, { useState, useEffect } from 'react';
-import resenasService from '../../services/resenas.service'; // Asegúrate de que la ruta sea correcta
+import React, { useState, useEffect } from "react";
+import ResenasBuscar from "./ResenasBuscar";
+import ResenasListado from "./ResenasListado";
+import ResenasRegistro from "./ResenasRegistro";
+import resenasService from "../../services/resenas.service";
+import user_namesServices from "../../services/user_names.service";
+import modalDialogService from "../../services/modalDialog.service";
+import librosService from "../../services/libros.service";
 
-const Resenas = () => {
-    const [resenas, setResenas] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const [newResena, setNewResena] = useState({
-        id_libro: '',
-        fecha_resena: '',
-        comentario: '',
-        calificacion: '',
-        user_name: '',
-    });
-    const [refreshKey, setRefreshKey] = useState(0); // Para forzar la actualización
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
+
+function Resenas() {
+    const TituloAccionABMC = {
+        A: "(Agregar)",
+        B: "(Eliminar)",
+        M: "(Modificar)",
+        C: "(Consultar)",
+        L: "(Listado)",
+    };
+    const [AccionABMC, setAccionABMC] = useState("L");
+
+    const [Calif, setCalif] = useState(""); 
+    const [Libro, setLibro] = useState([]);
+    const [Resenas, setResenas] = useState([]);
+    const [Item, setItem] = useState(null);
+    const [RegistrosTotal, setRegistrosTotal] = useState(0); 
+    const [Pagina, setPagina] = useState(1); 
+    const [Paginas, setPaginas] = useState([]); 
+    const [Users, setUsers] = useState([]); 
 
     useEffect(() => {
-        fetchResenas();
-    }, [refreshKey]); // Dependencia en refreshKey para actualizar la lista
-
-    const fetchResenas = async () => {
-        setLoading(true);
-        setError(null);
-        try {
-            const response = await resenasService.getAllResenas(); // Asegúrate de que el servicio esté correctamente configurado
-            setResenas(response.data); // Ajusta según el formato de respuesta del servicio
-        } catch (err) {
-            setError(err.message || 'Error al cargar las reseñas');
-        } finally {
-            setLoading(false);
+        async function BuscarUsers() {
+            let data = await user_namesServices.getAllUserNames();
+            setUsers(data); 
         }
+        BuscarUsers();
+    }, []); 
+
+    useEffect(() => {
+        Buscar(Pagina);
+    }, [Calif, Pagina]);
+
+    useEffect(() => {
+        async function BuscarLibros() {
+            let data = await librosService.getAllLibros();
+            setLibro(data); 
+        }
+        BuscarLibros();
+    }, []);
+
+
+    async function Buscar(_pagina) {
+        if (_pagina && _pagina !== Pagina) {
+            setPagina(_pagina);
+        } else {
+            _pagina = Pagina;
+        }
+    
+        const data = await resenasService.getAllResenas({ calificacion: Calif, Pagina: _pagina });
+    
+        setResenas(data.Items);
+        setRegistrosTotal(data.RegistrosTotal);
+    
+        const arrPaginas = [];
+        for (let i = 1; i <= Math.ceil(data.RegistrosTotal / 10); i++) {
+            arrPaginas.push(i);
+        }
+        setPaginas(arrPaginas);
+    }
+
+    async function BuscarId(item, accionABMC) {
+        const data = await resenasService.getResenaById(item.id);
+        setItem(data);
+        setAccionABMC(accionABMC);
+    } 
+
+    function Consultar(item) {
+        BuscarId(item, "C");
+    } 
+
+    function Modificar(item) {
+        BuscarId(item, "M");
+    } 
+
+    async function Agregar() {
+        setAccionABMC("A");
+        setItem({
+            id_libro: "",
+            fecha_resena: "",
+            comentario: "",
+            calificacion: "",
+            username: "",
+        });
+    } 
+
+    const Imprimir = () => {
+        const data = Resenas.map((item) => ({
+            Libro: Libro.find((libro) => libro.id === item.id_libro)?.titulo || "",
+            Fecha: item.fecha_resena,
+            Comentario: item.comentario,
+            Calificacion: item.calificacion,
+            Usuario: item.user_name
+        }));
+
+        const worksheet = XLSX.utils.json_to_sheet(data); 
+        const workbook = XLSX.utils.book_new(); 
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Reseñas"); 
+        const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" }); 
+        const dataBlob = new Blob([excelBuffer], { type: "application/octet-stream" }); 
+        saveAs(dataBlob, "ReseñaListado.xlsx"); 
     };
 
-    const handleAddResena = async () => {
-        if (!newResena.id_libro || !newResena.fecha_resena || !newResena.comentario || !newResena.calificacion || !newResena.user_name) {
-            setError('Todos los campos son requeridos');
-            return;
+    async function Eliminar(item) {
+        await resenasService.deleteResena(item.id);
+        await Buscar();
+    }
+
+    async function Grabar(item) {
+        if (AccionABMC === "A") {
+            await resenasService.createResena(item);
+        } else if (AccionABMC === "M") {
+            await resenasService.updateResena(item.id, item);
         }
 
-        setLoading(true);
-        setError(null);
-        try {
-            await resenasService.createResena(newResena);
-            setNewResena({
-                id_libro: '',
-                fecha_resena: '',
-                comentario: '',
-                calificacion: '',
-                user_name: '',
-            });
-            setRefreshKey(prevKey => prevKey + 1); // Forzar la actualización de la lista
-        } catch (err) {
-            setError(err.message || 'Error al agregar la reseña');
-        } finally {
-            setLoading(false);
-        }
-    };
+        await Buscar();
+        Volver();
+
+        setTimeout(() => {
+            modalDialogService.Alert(
+                "Registro " +
+                    (AccionABMC === "A" ? "agregado" : "modificado") +
+                    " correctamente."
+            );
+        }, 0);
+    }
+
+    function Volver() {
+        setAccionABMC("L");
+    }
 
     return (
         <div>
-            <h1>Reseñas</h1>
-            {loading && <p>Cargando...</p>}
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            {resenas.length === 0 && !loading && <p>No hay reseñas disponibles</p>}
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID Libro</th>
-                        <th>Fecha Reseña</th>
-                        <th>Comentario</th>
-                        <th>Calificación</th>
-                        <th>Nombre Usuario</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {resenas.map((resena) => (
-                        <tr key={resena.id}>
-                            <td>{resena.id_libro}</td>
-                            <td>{new Date(resena.fecha_resena).toLocaleDateString()}</td>
-                            <td>{resena.comentario}</td>
-                            <td>{resena.calificacion}</td>
-                            <td>{resena.user_name}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-            <div>
-                <h2>Agregar Nueva Reseña</h2>
-                <input
-                    type="number"
-                    placeholder="ID Libro"
-                    value={newResena.id_libro}
-                    onChange={(e) => setNewResena({ ...newResena, id_libro: e.target.value })}
-                />
-                <input
-                    type="date"
-                    placeholder="Fecha Reseña"
-                    value={newResena.fecha_resena}
-                    onChange={(e) => setNewResena({ ...newResena, fecha_resena: e.target.value })}
-                />
-                <textarea
-                    placeholder="Comentario"
-                    value={newResena.comentario}
-                    onChange={(e) => setNewResena({ ...newResena, comentario: e.target.value })}
-                />
-                <input
-                    type="number"
-                    placeholder="Calificación (1-5)"
-                    min="1"
-                    max="5"
-                    value={newResena.calificacion}
-                    onChange={(e) => setNewResena({ ...newResena, calificacion: e.target.value })}
-                />
-                <input
-                    type="text"
-                    placeholder="Nombre Usuario"
-                    value={newResena.user_name}
-                    onChange={(e) => setNewResena({ ...newResena, user_name: e.target.value })}
-                />
-                <button onClick={handleAddResena}>Agregar Reseña</button>
+            <div className="tituloPagina">
+                Reseñas <small>{TituloAccionABMC[AccionABMC]}</small>
             </div>
+
+            {AccionABMC === "L" && (
+                <ResenasBuscar
+                    {...{
+                        Calif,
+                        setCalif,
+                        Buscar,
+                        Agregar,
+                    }}
+                />
+            )}
+
+            {AccionABMC === "L" && Resenas && Resenas.length > 0 && (
+                <ResenasListado
+                    {...{
+                        Items: Resenas,
+                        Consultar,
+                        Eliminar,
+                        Modificar,
+                        Imprimir,
+                        Pagina,
+                        RegistrosTotal,
+                        Paginas,
+                        Buscar,
+                        Libro,
+                    }}
+                />
+            )}
+
+            {AccionABMC === "L" && Resenas && Resenas.length === 0 && (
+                <div className="alert alert-info mensajesAlert">
+                    <i className="fa fa-exclamation-sign"></i>
+                    No se encontraron registros... Presione buscar...
+                </div>
+            )}
+
+            {AccionABMC !== "L" && (
+                <ResenasRegistro
+                    {...{
+                        AccionABMC,
+                        Libro, 
+                        Users, 
+                        Item,
+                        Grabar,
+                        Volver,
+                    }}
+                />
+            )}
         </div>
     );
-};
+}
 
 export default Resenas;

@@ -4,15 +4,15 @@ import { config } from '../config.js';
 const URL = config.urlResourceEditoriales
 
 // Obtener todos los autores con paginación
-const getAllEditoriales = async ({ nombre = '', _pagina = 1 }) => {
+const getAllEditoriales = async ({ nombre = '', Pagina = 1 }) => {
     try {
         const response = await axios.get(URL, {
             params: {
-                nombre: nombre,
-                Pagina: _pagina,
+                nombre,
+                Pagina,
             },
         });
-        return response.data.Items;
+        return response.data;
     } catch (error) {
         console.error('Error al obtener todas las editoriales:', error);
         throw error;

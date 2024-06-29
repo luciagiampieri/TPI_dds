@@ -1,32 +1,69 @@
-// src/services/resenas.service.js
-import http from './http.service';
+import axios from 'axios';
+import { config } from '../config.js';
 
-const API_URL = '/api/resenas';
+const URL = config.urlResourceResenas
 
-const getAllResenas = async (params) => {
-    const response = await http.get(API_URL, { params });
-    return response.data;
+// Obtener todos los autores con paginación
+const getAllResenas = async ({ calificacion = 1, Pagina = 1 }) => {
+    try {
+        const response = await axios.get(URL, {
+            params: {
+                calificacion,
+                Pagina,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error al obtener todas las reseñas:', error);
+        throw error;
+    }
 };
 
+
+// Obtener un autor por ID
 const getResenaById = async (id) => {
-    const response = await http.get(`${API_URL}/${id}`);
-    return response.data;
+    try {
+        const response = await axios.get(`${URL}/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error al obtener la reseña por ID:', error);
+        throw error;
+    }
 };
 
-const createResena = async (data) => {
-    const response = await http.post(API_URL, data);
-    return response.data;
+// Crear un nuevo autor
+const createResena = async (resena) => {
+    try {
+        const response = await axios.post(`${URL}`, resena);
+        return response.data;
+    } catch (error) {
+        console.error('Error al crear la reseña:', error);
+        throw error;
+    }
 };
 
-const updateResena = async (id, data) => {
-    await http.put(`${API_URL}/${id}`, data);
+// Actualizar un autor existente
+const updateResena = async (id, resena) => {
+    try {
+        await axios.put(`${URL}/${id}`, resena);
+    } catch (error) {
+        console.error('Error al actualizar la reseña:', error);
+        throw error;
+    }
 };
 
+// Eliminar un autor
 const deleteResena = async (id) => {
-    await http.delete(`${API_URL}/${id}`);
+    try {
+        await axios.delete(`${URL}/${id}`);
+    } catch (error) {
+        console.error('Error al eliminar la reseña:', error);
+        throw error;
+    }
 };
 
-const servicios_resenas = {
+
+const resenasService = {
     getAllResenas,
     getResenaById,
     createResena,
@@ -34,4 +71,4 @@ const servicios_resenas = {
     deleteResena,
 };
 
-export default servicios_resenas;
+export default resenasService;
