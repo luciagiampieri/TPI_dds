@@ -4,10 +4,11 @@ import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { Inicio } from "./components/Inicio";
 import { Menu } from "./components/Menu";
 import { Footer } from "./components/Footer";
-//import { Series } from "./components/Series/Series";
-import Libros from "./components/libros/Libros";
-import Generos from "./components/Generos";
 import { ModalDialog } from "./components/ModalDialog";
+import Resenas from "./components/Resenas/Resenas";
+import Libros from "./components/Libros/Libros";
+import Autores from "./components/Autores/Autores";
+import Editoriales from "./components/Editoriales/Editoriales";
 
 
 function App() {
@@ -19,11 +20,10 @@ function App() {
         <Menu />
         <Routes>
           <Route path="/inicio" element={<Inicio />} />
-          {/*<Route path="/series" element={<Series />} />*/}
+          <Route path="/resenas" element={<Resenas />} />
           <Route path="/libros" element={<Libros />} />
-          <Route path="/genero" element={<Generos />} />
-          <Route path="/documentales" element={<Inicio />} />
-          <Route path="/cortos" element={<Inicio />} />
+          <Route path="/autores" element={<Autores />} />
+          <Route path="/editoriales" element={<Editoriales />} />
           <Route path="*" element={<Navigate to="/inicio" replace />} />
         </Routes>
         </div>

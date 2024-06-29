@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function LibrosListado({
+export default function AutoresListado({
     Items,
     Consultar,
     Eliminar,
@@ -10,41 +10,33 @@ export default function LibrosListado({
     RegistrosTotal,
     Paginas,
     Buscar,
-    generos,
-    autores,
-    editoriales,
+    tipo_documento,
 }) {
     return (
         <div className="table-responsive">
             <table className="table table-hover table-sm table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th className="text-center">Título</th>
+                        <th className="text-center">Tipo Documento</th>
                         <th className="text-center" style={{ width: "15%" }}>
-                            Fecha Publicación
+                            Numero Documento
                         </th>
-                        <th className="text-center">Autor</th>
-                        <th className="text-center">Editorial</th>
-                        <th className="text-center">Precio</th>
-                        <th className="text-center text-nowrap">Genero</th>
+                        <th className="text-center">Nombre</th>
+                        <th className="text-center">Apellido</th>
+                        <th className="text-center">Fecha Nacimiento</th>
                     </tr>
                 </thead>
                 <tbody>
                 {Items.map((Item) => (
                     <tr key={Item.id}>
-                        <td className="text-center align-middle">{Item.titulo}</td>
                         <td className="text-center align-middle" style={{ width: "15%" }}>
-                            {Item.fecha_publicacion}
+                            {tipo_documento.find((TipoDoc) => TipoDoc.tipo === Item.tipo_documento)?.descripcion || ""}
                         </td>
+                        <td className="text-center align-middle">{Item.nro_documento}</td>
+                        <td className="text-center align-middle">{Item.nombre}</td>
+                        <td className="text-center align-middle">{Item.apellido}</td>
                         <td className="text-center align-middle" style={{ width: "15%" }}>
-                            {autores.find((Autor) => Autor.id === Item.id_autor)?.nombre || ""}
-                        </td>
-                        <td className="text-center align-middle" style={{ width: "15%" }}>
-                            {editoriales.find((Editorial) => Editorial.id === Item.id_editorial)?.nombre || ""}
-                        </td>
-                        <td className="text-center align-middle">{Item.precio}</td>
-                        <td className="text-center align-middle" style={{ width: "15%" }}>
-                            {generos.find((Genero) => Genero.id === Item.id_genero)?.nombre || ""}
+                            {Item.fecha_nacimiento}
                         </td>
                         <td className="text-center align-middle text-nowrap">
                             <button

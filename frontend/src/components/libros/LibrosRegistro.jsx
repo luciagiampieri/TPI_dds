@@ -5,6 +5,8 @@ import { useForm } from "react-hook-form";
 function LibrosRegistro({
       AccionABMC,
       generos,
+      autores,
+      editoriales,
       Item,
       Grabar,
       Volver,
@@ -62,7 +64,7 @@ function LibrosRegistro({
                               </div>
                         </div>
 
-                        {/* campo fecha Publicacion */}
+                        {/* campo fechaEstreno */}
                         <div className="row">
                               <div className="col-sm-4 col-md-3 offset-md-1">
                                     <label className="col-form-label" htmlFor="fecha_publicacion">
@@ -86,7 +88,7 @@ function LibrosRegistro({
                                     </div>
                               </div>
                         </div>
-
+                  
                         {/* campo idAutor */}
                         <div className="row">
                               <div className="col-sm-4 col-md-3 offset-md-1">
@@ -106,8 +108,8 @@ function LibrosRegistro({
                                                 (errors?.id_autor ? "is-invalid" : "")
                                           }
                                           >
-                                          <option value="" key={1}></option>
-                                          {Array.isArray(autores) && generos.map((x) => (
+                                          <option value="" key="empty"></option>
+                                          {Array.isArray(autores) && autores.map((x) => (
                                                 <option value={x.id_autor} key={x.id_autor}>
                                                       {x.nombre}
                                                 </option>
@@ -138,8 +140,8 @@ function LibrosRegistro({
                                                 (errors?.id_editorial ? "is-invalid" : "")
                                           }
                                           >
-                                          <option value="" key={1}></option>
-                                          {Array.isArray(editorial) && generos.map((x) => (
+                                          <option value="" key="empty"></option>
+                                          {Array.isArray(editoriales) && editoriales.map((x) => (
                                                 <option value={x.id_editorial} key={x.id_editorial}>
                                                       {x.nombre}
                                                 </option>
@@ -150,7 +152,7 @@ function LibrosRegistro({
                                     </div>
                               </div>
                         </div>
-                  
+
                         {/* campo precio */}
                         <div className="row">
                               <div className="col-sm-4 col-md-3 offset-md-1">
@@ -179,13 +181,11 @@ function LibrosRegistro({
                                     </div>
                               </div>
                         </div>
-
-
                         {/* campo id_genero */}
                         <div className="row">
                               <div className="col-sm-4 col-md-3 offset-md-1">
                                     <label className="col-form-label" htmlFor="id_genero">
-                                          Género<span className="text-danger">*</span>:
+                                          Género<span className="text-danger"></span>:
                                     </label>
                               </div>
                               <div className="col-sm-8 col-md-6">
@@ -200,7 +200,7 @@ function LibrosRegistro({
                                                 (errors?.id_genero ? "is-invalid" : "")
                                           }
                                     >
-                                    <option value="" key={1}></option>
+                                    <option value="" key="empty"></option>
                                     {Array.isArray(generos) && generos.map((x) => (
                                           <option value={x.id_genero} key={x.id_genero}>
                                                 {x.nombre}
@@ -211,35 +211,7 @@ function LibrosRegistro({
                                           {errors?.id_genero?.message}
                                     </div>
                               </div>
-                        </div>
-
-                        <div className="row">
-                              <div className="col-sm-4 col-md-3 offset-md-1">
-                                    <label className="col-form-label" htmlFor="idGenero">
-                                          Género<span className="text-danger">*</span>:
-                                    </label>
-                              </div>
-                              <div className="col-sm-8 col-md-6">
-                                    <select
-                                          {...register("id_genero", {
-                                                required: { value: true, message: "Genero es requerido" },
-                                          })}
-                                          className={
-                                                "form-control " +
-                                                (errors?.id_genero ? "is-invalid" : "")
-                                          }
-                                          >
-                                          <option value="" key={1}></option>
-                                          {id_genero?.map((x) => (
-                                                <option value={x.id_genero} key={x.id_genero}>
-                                                      {x.nombre}
-                                                </option>
-                                          ))}
-                                    </select>
-                                    <div className="invalid-feedback">
-                                          {errors?.id_genero?.message}
-                                    </div>
-                              </div>
+                              
                         </div>
 
 

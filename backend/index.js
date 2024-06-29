@@ -7,6 +7,11 @@ app.use(express.json());
 require("./base-orm/sqlite-init");  
 
 
+const cors = require('cors');
+// Middleware para permitir CORS (acceso a la API desde otros dominios)
+app.use(cors());
+
+
 // Importar rutas
 const resenasRoutes = require("./routes/resenas");
 const usuariosRoutes = require("./routes/usernames");

@@ -485,7 +485,25 @@ Libros.hasMany(Resenas, { foreignKey: 'id_libro', as: 'resenas' });
 Editoriales.belongsTo(Paises, { foreignKey: 'id_pais', as: 'Paises' });
 Paises.hasMany(Editoriales, { foreignKey: 'id_pais', as: 'Editoriales' });
 
+// Asociación entre Autores y Tipo_Documentos
+Autores.belongsTo(Tipo_Documentos, { foreignKey: 'tipo_documento', as: 'Tipo_Documentos' });
+Tipo_Documentos.hasMany(Autores, { foreignKey: 'tipo_documento', as: 'Autores' });
 
+// Asociación entre Libros y Autores
+Libros.belongsTo(Autores, { foreignKey: 'id_autor', as: 'Autores' });
+Autores.hasMany(Libros, { foreignKey: 'id_autor', as: 'Libros' });
+
+// Asociación entre Libros y Editoriales
+Libros.belongsTo(Editoriales, { foreignKey: 'id_editorial', as: 'Editoriales' });
+Editoriales.hasMany(Libros, { foreignKey: 'id_editorial', as: 'Libros' });
+
+// Asociación entre Libros y Generos
+Libros.belongsTo(Generos, { foreignKey: 'id_genero', as: 'Generos' });
+Generos.hasMany(Libros, { foreignKey: 'id_genero', as: 'Libros' });
+
+// Asociación entre Resenas y User_Name
+Resenas.belongsTo(User_Name, { foreignKey: 'user_name', as: 'User_Name' });
+User_Name.hasMany(Resenas, { foreignKey: 'user_name', as: 'Resenas' });
 
 // Exportar los modelos
 module.exports = {

@@ -1,21 +1,21 @@
-import React from "react";
+import React from 'react'
 
-function LibrosBuscar({ titulo, setTitulo, Buscar, Agregar }) {
+function EditorialesBuscar({ nombre, setNombre, Buscar, Agregar }) {
     return (
         <form name="FormBusqueda">
             <div className="container-fluid">
                 <div className="row">
                     <div className="col-sm-4 col-md-2">
-                        <label className="col-form-label">Titulo:</label>
+                        <label className="col-form-label">Nombre:</label>
                     </div>
                     <div className="col-sm-8 col-md-4">
                         <input
                             type="text"
                             className="form-control"
-                            onChange={(e) => setTitulo(e.target.value)}
-                            value={titulo}
-                            minLength="2"
-                            maxLength="80"
+                            onChange={(e) => setNombre(e.target.value)}
+                            value={nombre}
+                            minLength="3"
+                            maxLength="50"
                             autoFocus
                         />
                     </div>
@@ -47,4 +47,4 @@ function LibrosBuscar({ titulo, setTitulo, Buscar, Agregar }) {
     );
 }
 
-export default LibrosBuscar;
+export default EditorialesBuscar;

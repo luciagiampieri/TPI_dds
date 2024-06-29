@@ -1,6 +1,7 @@
 import React from "react";
+import moment from "moment";
 
-export default function LibrosListado({
+export default function EditorialesListado({
     Items,
     Consultar,
     Eliminar,
@@ -10,41 +11,29 @@ export default function LibrosListado({
     RegistrosTotal,
     Paginas,
     Buscar,
-    generos,
-    autores,
-    editoriales,
+    Paises = [], // Asegurarse de que Paises está en las props y tenga un valor por defecto
 }) {
     return (
         <div className="table-responsive">
             <table className="table table-hover table-sm table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th className="text-center">Título</th>
+                        <th className="text-center">Nombre</th>
                         <th className="text-center" style={{ width: "15%" }}>
-                            Fecha Publicación
+                            Dirección
                         </th>
-                        <th className="text-center">Autor</th>
-                        <th className="text-center">Editorial</th>
-                        <th className="text-center">Precio</th>
-                        <th className="text-center text-nowrap">Genero</th>
+                        <th className="text-center">Fecha Fundacion</th>
+                        <th className="text-center">Pais</th>
                     </tr>
                 </thead>
                 <tbody>
                 {Items.map((Item) => (
                     <tr key={Item.id}>
-                        <td className="text-center align-middle">{Item.titulo}</td>
+                        <td className="text-center align-middle">{Item.nombre}</td>
+                        <td className="text-center align-middle">{Item.direccion}</td>
+                        <td className="text-center align-middle">{moment(Item.fecha_fundacion).format("YYYY/MM/DD")}</td>
                         <td className="text-center align-middle" style={{ width: "15%" }}>
-                            {Item.fecha_publicacion}
-                        </td>
-                        <td className="text-center align-middle" style={{ width: "15%" }}>
-                            {autores.find((Autor) => Autor.id === Item.id_autor)?.nombre || ""}
-                        </td>
-                        <td className="text-center align-middle" style={{ width: "15%" }}>
-                            {editoriales.find((Editorial) => Editorial.id === Item.id_editorial)?.nombre || ""}
-                        </td>
-                        <td className="text-center align-middle">{Item.precio}</td>
-                        <td className="text-center align-middle" style={{ width: "15%" }}>
-                            {generos.find((Genero) => Genero.id === Item.id_genero)?.nombre || ""}
+                            {Paises.find((pais) => pais.id === Item.id_pais)?.nombre || ""}
                         </td>
                         <td className="text-center align-middle text-nowrap">
                             <button
