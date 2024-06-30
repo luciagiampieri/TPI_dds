@@ -7,6 +7,7 @@ import autoresService from "../../services/autores.service";
 import editorialesService from "../../services/editoriales.service";
 import librosService from "../../services/libros.service";
 import modalDialogService from "../../services/modalDialog.service";
+
 import moment from "moment";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
@@ -22,15 +23,15 @@ function Libros() {
       const [AccionABMC, setAccionABMC] = useState("L");
 
       const [Titulo, setTitulo] = useState(""); // estado para filtrar la búsqueda de libros
-      const [Items, setItems] = useState([]); // estado para mostrar el listado de libros
+      const [Libro, setLibro] = useState([]); // estado para mostrar el listado de libros
       const [Item, setItem] = useState(null); // estado para mostrar el libro en el formulario
       const [RegistrosTotal, setRegistrosTotal] = useState(0); // estado para mostrar la cantidad de registros
       const [Pagina, setPagina] = useState(1); // estado para mostrar la página actual
       const [Paginas, setPaginas] = useState([]); // estado para mostrar las páginas disponibles
 
-      const [autores, setAutores] = useState([]); // estado para mostrar los autores disponibles
-      const [editoriales, setEditoriales] = useState([]); // estado para mostrar las editoriales disponibles
-      const [generos, setGeneros] = useState([]); // estado para mostrar los géneros disponibles
+      const [Autores, setAutores] = useState([]); // estado para mostrar los autores disponibles
+      const [Editoriales, setEditoriales] = useState([]); // estado para mostrar las editoriales disponibles
+      const [Generos, setGeneros] = useState([]); // estado para mostrar los géneros disponibles
 
       useEffect(() => {
             async function BuscarGeneros() {
@@ -56,6 +57,10 @@ function Libros() {
             BuscarEditoriales();
       }, []);
 
+      useEffect(() => {
+            Buscar();
+      }, [Titulo, Pagina]);
+
       async function Buscar(_pagina) {
             if (_pagina && _pagina !== Pagina) {
                   setPagina(_pagina); // Si se pasa la página por parámetro, se actualiza el estado
@@ -63,10 +68,11 @@ function Libros() {
                   _pagina = Pagina; // Si no se pasa la página por parámetro, se usa la página actual
             }
 
-            const data = await librosService.getAllLibros(Titulo, _pagina); // Busca los libros según el título y la página
+            modalDialogService.BloquearPantalla(true); // Bloquea la pantalla
+            const data = await librosService.getAllLibros({titulo: Titulo, Pagina: _pagina}); // Busca los libros según el título y la página
             modalDialogService.BloquearPantalla(false); // Desbloquea la pantalla
 
-            setItems(data.Items); // Actualiza el estado con los libros encontrados
+            setLibro(data.Items); // Actualiza el estado con los libros encontrados
             setRegistrosTotal(data.RegistrosTotal); // Actualiza el estado con la cantidad de registros encontrados
 
             const arrPaginas = [];
@@ -104,13 +110,13 @@ function Libros() {
       } // Agrega un libro y actualiza el estado con el libro creado??? y el tipo de acción.
 
       const Imprimir = () => {
-            const data = Items.map((item) => ({
+            const data = Libro.map((item) => ({
                   Título: item.titulo,
                   "Fecha Publicacion": item.fecha_publicacion,
-                  Autor: autores.find((autor) => autor.id === item.id_autor)?.nombre || "",
-                  Editorial: editoriales.find((editorial) => editorial.id === item.id_editorial)?.nombre || "",
+                  Autor: Autores.find((autor) => autor.id === item.id_autor)?.nombre || "",
+                  Editorial: Editoriales.find((editorial) => editorial.id === item.id_editorial)?.nombre || "",
                   Precio: item.precio,
-                  Genero: generos.find((genero) => genero.id === item.id_genero)?.nombre || "",
+                  Genero: Generos.find((genero) => genero.id === item.id_genero)?.nombre || "",
             })); // Mapea los libros encontrados y los muestra en el listado.
 
             const worksheet = XLSX.utils.json_to_sheet(data); // Convierte los datos a una hoja de cálculo
@@ -123,24 +129,17 @@ function Libros() {
       };
 
       async function Eliminar(item) {
-            modalDialogService.Confirm(
-                  "Esta seguro que quiere eliminar el libro?",
-                  async () => {
-                        await librosService.deleteLibro(item.id);
-                        await Buscar();
-                  }
-            );
-      } // Elimina un libro y actualiza el estado con los libros encontrados.
+            await librosService.deleteLibro(item.id);
+            await Buscar();
+      }; // Elimina un libro y actualiza el estado con los libros encontrados.
 
       async function Grabar(item) {
-            try {
-                  await librosService.saveLibros(item);
-            } catch (error) {
-                  modalDialogService.Alert(
-                        error?.response?.data?.message ?? error.toString()
-                  );
-                  return;
+            if (AccionABMC === "A") {
+                  await librosService.createLibro(item);
+            } else if (AccionABMC === "M") {
+                  await librosService.updateLibro(item.id, item);
             }
+      
             await Buscar();
             Volver();
 
@@ -174,10 +173,10 @@ function Libros() {
                         />
                   )}
 
-                  {AccionABMC === "L" && Items && Items.length > 0 && (
+                  {AccionABMC === "L" && Libro && Libro.length > 0 && (
                         <LibrosListado
                               {...{
-                                    Items,
+                                    Items: Libro,
                                     Consultar,
                                     Eliminar,
                                     Modificar,
@@ -186,14 +185,14 @@ function Libros() {
                                     RegistrosTotal,
                                     Paginas,
                                     Buscar,
-                                    generos,
-                                    autores,
-                                    editoriales,
+                                    Generos,
+                                    Autores,
+                                    Editoriales,
                               }}
                         />
                   )}
 
-                  {AccionABMC === "L" && Items && Items.length === 0 && (
+                  {AccionABMC === "L" && Libro && Libro.length === 0 && (
                         <div className="alert alert-info mensajesAlert">
                               <i className="fa fa-exclamation-sign"></i>
                               No se encontraron registros...
@@ -204,9 +203,9 @@ function Libros() {
                         <LibrosRegistro
                               {...{
                                     AccionABMC,
-                                    generos,
-                                    autores,
-                                    editoriales,
+                                    Generos,
+                                    Autores,
+                                    Editoriales,
                                     Item,
                                     Grabar,
                                     Volver,

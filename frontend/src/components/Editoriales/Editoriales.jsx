@@ -6,6 +6,7 @@ import editorialesService from "../../services/editoriales.service";
 import paisesService from "../../services/paises.services";
 import modalDialogService from "../../services/modalDialog.service";
 
+import moment from "moment";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 
@@ -82,6 +83,7 @@ function Editoriales() {
             fecha_fundacion: "",
             id_pais: "",
         });
+        modalDialogService.Alert("preparando el Alta...");
         console.log(Item);
     } // Agrega una editorial y actualiza el estado con el autor creado y el tipo de acción.
 

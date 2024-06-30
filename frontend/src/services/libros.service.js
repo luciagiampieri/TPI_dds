@@ -1,114 +1,71 @@
-import httpService from "./http.service";
+import axios from 'axios'
 import { config } from "../config";
 
-// import axios from "axios";
-// import { config } from "../config";
+const URL = config.urlResourceLibros
 
-// const { urlResourceLibros } = config;
-
-// async function getAllLibros(titulo, Pagina) {
-//       const resp = await axios.get(urlResourceLibros, {
-//             params: { titulo, Pagina },
-//       });
-//       return resp.data.Items;
-// }
-
-// async function getByIdLibros(item) {
-//       const resp = await axios.get(urlResourceLibros + "/" + item.idSerie);
-//       return resp.data.Items;
-// }
-
-// async function ActivarDesactivar(item) {
-//       await axios.delete(urlResourceLibros + "/" + item.idSerie);
-// }
-
-// async function saveLibros(item) {
-//       if (item.id === 0) {
-//             await axios.post(urlResourceLibros, item);
-//       } else {
-//             await axios.put(urlResourceLibros + "/" + item.id, item);
-//       }
-// }
-
-
-// async function deleteLibro(item) {
-//       await axios.delete(urlResourceLibros + "/" + item.id);
-// }
-
-// const librosService = {
-//       getAllLibros,
-//       getByIdLibros,
-//       ActivarDesactivar,
-//       saveLibros,
-//       deleteLibro,
-// };
-
-// export default librosService;
-
-// libros.service.js
-
-// libros.service.js
-
-const { urlResourceLibros } = config;
-
-async function getAllLibros(titulo, Pagina) {
+// Obtener todos los libros con paginación
+const getAllLibros= async ({ titulo = '', Pagina = 1 }) => {
       try {
-            const resp = await httpService.get(urlResourceLibros, {
-                  params: { titulo, Pagina },
+            const response = await axios.get(URL, {
+                  params: {
+                        titulo,
+                        Pagina,
+                  },
             });
-            return resp.data.Items;
+            return response.data;
       } catch (error) {
-            console.error("Error al obtener todos los libros:", error);
+            console.error('Error al obtener todas los libros:', error);
             throw error;
       }
-}
+};
 
-async function getByIdLibros(item) {
+// Obtener un libro por ID
+const getByIdLibros = async (id) => {
       try {
-            const resp = await httpService.get(`${urlResourceLibros}/${item.idSerie}`);
-            return resp.data;
+            const response = await axios.get(`${URL}/${id}`);
+            return response.data;
       } catch (error) {
-            console.error(`Error al obtener el libro con ID ${item.idSerie}:`, error);
+            console.error('Error al obtener el libro por ID:', error);
             throw error;
       }
-}
+};
 
-async function ActivarDesactivar(item) {
+// Crear un nuevo libro
+const createLibro = async (libro) => {
       try {
-            await httpService.delete(`${urlResourceLibros}/${item.idSerie}`);
+            const response = await axios.post(`${URL}`, libro);
+            return response.data;
       } catch (error) {
-            console.error(`Error al activar/desactivar el libro con ID ${item.idSerie}:`, error);
+            console.error('Error al crear el libro:', error);
             throw error;
       }
-}
+};
 
-async function saveLibros(item) {
+// Actualizar un libro existente
+const updateLibro = async (id, libro) => {
       try {
-            if (item.id === 0) {
-                  await httpService.post(urlResourceLibros, item);
-            } else {
-                  await httpService.put(`${urlResourceLibros}/${item.id}`, item);
-            }
+            axios.put(`${URL}/${id}`, libro);
       } catch (error) {
-            console.error("Error al guardar el libro:", error);
+            console.error('Error al actualizar el libro:', error);
             throw error;
       }
-}
+};
 
-async function deleteLibro(item) {
+// Eliminar un libro
+const deleteLibro = async (id) => {
       try {
-            await httpService.delete(`${urlResourceLibros}/${item.id}`);
+            await axios.delete(`${URL}/${id}`);
       } catch (error) {
-            console.error(`Error al eliminar el libro con ID ${item.id}:`, error);
+            console.error('Error al eliminar el libro:', error);
             throw error;
       }
-}
+};
 
 const librosService = {
       getAllLibros,
       getByIdLibros,
-      ActivarDesactivar,
-      saveLibros,
+      updateLibro,
+      createLibro,
       deleteLibro,
 };
 

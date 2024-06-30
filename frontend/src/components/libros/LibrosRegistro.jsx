@@ -4,9 +4,9 @@ import { useForm } from "react-hook-form";
 
 function LibrosRegistro({
       AccionABMC,
-      generos,
-      autores,
-      editoriales,
+      Generos,
+      Autores,
+      Editoriales,
       Item,
       Grabar,
       Volver,
@@ -19,7 +19,7 @@ function LibrosRegistro({
       } = useForm({ values: Item });
 
       const onSubmit = (data) => {
-            //data.fecha_publicacion = moment(data.fecha_publicacion).format("YYYY-MM-DD");
+            data.fecha_publicacion = moment(data.fecha_publicacion).format("YYYY-MM-DD");
             Grabar(data);
       };
 
@@ -40,7 +40,9 @@ function LibrosRegistro({
                                     <input
                                           type="text"
                                           {...register("titulo", {
-                                                required: { value: true, message: "Título es requerido" },
+                                                required: { 
+                                                      value: true, 
+                                                      message: "Título es requerido" },
                                                 minLength: {
                                                       value: 2,
                                                       message: "Título debe tener al menos 2 caracteres",
@@ -49,7 +51,6 @@ function LibrosRegistro({
                                                       value: 80,
                                                       message: "Título debe tener como máximo 80 caracteres",
                                                 },
-                                                unique: { value: true, message: "Título ya existe" },
                                           })}
                                           autoFocus
                                           className={
@@ -109,11 +110,12 @@ function LibrosRegistro({
                                           }
                                           >
                                           <option value="" key="empty"></option>
-                                          {Array.isArray(autores) && autores.map((x) => (
-                                                <option value={x.id_autor} key={x.id_autor}>
-                                                      {x.nombre}
-                                                </option>
-                                          ))}
+                                          {Array.isArray(Autores) && 
+                                                Autores.map((x) => (
+                                                      <option value={x.id} key={x.id}>
+                                                            {x.nombre}
+                                                      </option>
+                                                ))}
                                     </select>
                                     <div className="invalid-feedback">
                                           {errors?.id_autor?.message}
@@ -141,11 +143,12 @@ function LibrosRegistro({
                                           }
                                           >
                                           <option value="" key="empty"></option>
-                                          {Array.isArray(editoriales) && editoriales.map((x) => (
-                                                <option value={x.id_editorial} key={x.id_editorial}>
-                                                      {x.nombre}
-                                                </option>
-                                    ))}
+                                          {Array.isArray(Editoriales) 
+                                                && Editoriales.map((x) => (
+                                                      <option value={x.id} key={x.id}>
+                                                            {x.nombre}
+                                                      </option>
+                                                ))}
                                     </select>
                                     <div className="invalid-feedback">
                                           {errors?.id_editorial?.message}
@@ -201,8 +204,8 @@ function LibrosRegistro({
                                           }
                                     >
                                     <option value="" key="empty"></option>
-                                    {Array.isArray(generos) && generos.map((x) => (
-                                          <option value={x.id_genero} key={x.id_genero}>
+                                    {Array.isArray(Generos) && Generos.map((x) => (
+                                          <option value={x.id} key={x.id}>
                                                 {x.nombre}
                                           </option>
                                     ))}

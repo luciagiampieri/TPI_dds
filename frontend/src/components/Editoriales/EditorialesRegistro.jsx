@@ -69,7 +69,9 @@ function EditorialesRegistro({
                             <input
                                 type="text"
                                 {...register("direccion", {
-                                    required: { value: true, message: "Dirección es requerida" },
+                                    required: { 
+                                        value: true, 
+                                        message: "Dirección es requerida" },
                                     minLength: {
                                         value: 3,
                                         message: "Dirección debe tener al menos 3 caracteres",
@@ -127,7 +129,9 @@ function EditorialesRegistro({
                         <div className="col-sm-8 col-md-6">
                             <select
                                 {...register("id_pais", {
-                                    required: { value: true, message: "Pais es requerido" },
+                                    required: { 
+                                        value: true, 
+                                        message: "Pais es requerido" },
                                 })}
                                 className={
                                     "form-control " + (errors?.id_pais ? "is-invalid" : "")
@@ -172,7 +176,7 @@ function EditorialesRegistro({
                 {!isValid && isSubmitted && (
                     <div className="row alert alert-danger mensajesAlert">
                         <i className="fa fa-exclamation-sign"></i>
-                        Revisar los datos ingresados...
+                            Revisar los datos ingresados...
                     </div>
                 )}
             </div>

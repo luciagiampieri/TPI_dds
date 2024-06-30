@@ -13,10 +13,6 @@ const urlResourceResenas = urlServidor + "/api/resenas";
 
 // opcion 2 cuando se despliega en un servidor.
 
-
-
-
-
 export const config = {
     urlServidor,
     urlResourceLibros,

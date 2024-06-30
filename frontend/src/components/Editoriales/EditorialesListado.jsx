@@ -19,10 +19,8 @@ export default function EditorialesListado({
                 <thead>
                     <tr>
                         <th className="text-center">Nombre</th>
-                        <th className="text-center" style={{ width: "15%" }}>
-                            Dirección
-                        </th>
-                        <th className="text-center">Fecha Fundacion</th>
+                        <th className="text-center">Dirección</th>
+                        <th className="text-center" style={{ width: "15%" }}>Fecha Fundacion</th>
                         <th className="text-center">Pais</th>
                     </tr>
                 </thead>
@@ -31,7 +29,9 @@ export default function EditorialesListado({
                     <tr key={Item.id}>
                         <td className="text-center align-middle">{Item.nombre}</td>
                         <td className="text-center align-middle">{Item.direccion}</td>
-                        <td className="text-center align-middle">{moment(Item.fecha_fundacion).format("YYYY/MM/DD")}</td>
+                        <td className="text-center align-middle">
+                            {moment(Item.fecha_fundacion).format("YYYY/MM/DD")}
+                            </td>
                         <td className="text-center align-middle" style={{ width: "15%" }}>
                             {Paises.find((pais) => pais.id === Item.id_pais)?.nombre || ""}
                         </td>

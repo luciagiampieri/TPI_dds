@@ -1,4 +1,5 @@
 import React from "react";
+import moment from "moment";
 
 export default function LibrosListado({
     Items,
@@ -10,9 +11,9 @@ export default function LibrosListado({
     RegistrosTotal,
     Paginas,
     Buscar,
-    generos,
-    autores,
-    editoriales,
+    Generos = [],
+    Autores = [],
+    Editoriales = [],
 }) {
     return (
         <div className="table-responsive">
@@ -20,9 +21,7 @@ export default function LibrosListado({
                 <thead>
                     <tr>
                         <th className="text-center">Título</th>
-                        <th className="text-center" style={{ width: "15%" }}>
-                            Fecha Publicación
-                        </th>
+                        <th className="text-center" style={{ width: "15%" }}>Fecha Publicación</th>
                         <th className="text-center">Autor</th>
                         <th className="text-center">Editorial</th>
                         <th className="text-center">Precio</th>
@@ -33,18 +32,18 @@ export default function LibrosListado({
                 {Items.map((Item) => (
                     <tr key={Item.id}>
                         <td className="text-center align-middle">{Item.titulo}</td>
-                        <td className="text-center align-middle" style={{ width: "15%" }}>
-                            {Item.fecha_publicacion}
+                        <td className="text-center align-middle">
+                            {moment(Item.fecha_publicacion).format("YYYY/MM/DD")}
                         </td>
-                        <td className="text-center align-middle" style={{ width: "15%" }}>
-                            {autores.find((Autor) => Autor.id === Item.id_autor)?.nombre || ""}
+                        <td className="text-center align-middle">
+                            {Autores.find((autor) => autor.id === Item.id_autor)?.nombre || ""}
                         </td>
-                        <td className="text-center align-middle" style={{ width: "15%" }}>
-                            {editoriales.find((Editorial) => Editorial.id === Item.id_editorial)?.nombre || ""}
+                        <td className="text-center align-middle">
+                            {Editoriales.find((editorial) => editorial.id === Item.id_editorial)?.nombre || ""}
                         </td>
                         <td className="text-center align-middle">{Item.precio}</td>
-                        <td className="text-center align-middle" style={{ width: "15%" }}>
-                            {generos.find((Genero) => Genero.id === Item.id_genero)?.nombre || ""}
+                        <td className="text-center align-middle">
+                            {Generos.find((genero) => genero.id === Item.id_genero)?.nombre || ""}
                         </td>
                         <td className="text-center align-middle text-nowrap">
                             <button
@@ -84,7 +83,7 @@ export default function LibrosListado({
                         <select
                             value={Pagina}
                             onChange={(e) => {
-                                Buscar(e.target.value);
+                                Buscar(Number(e.target.value));
                             }}
                         >
                             {Paginas?.map((x) => (

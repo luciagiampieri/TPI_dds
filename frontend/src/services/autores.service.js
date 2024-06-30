@@ -1,36 +1,6 @@
 import axios from 'axios';
 import { config } from '../config.js';
 
-// import urlResourceAutores from '../config.js';
-
-// const getAllAutores = async () => {
-    
-// };
-
-// const getAutorById = async () => {
-    
-// };
-
-// const createAutor = async () => {
-
-// };
-
-// const updateAutor = async () => {
-// };
-
-// const deleteAutor = async (id) => {};
-
-// const autoresService = {
-//     getAllAutores,
-//     getAutorById,
-//     createAutor,
-//     updateAutor,
-//     deleteAutor,
-// };
-
-// export default autoresService;
-
-// Configura Axios
 
 const URL = config.urlResourceAutores
 

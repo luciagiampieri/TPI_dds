@@ -62,8 +62,8 @@ function Menu() {
   return (
     <nav className="navbar navbar-dark bg-dark navbar-expand-md">
       <div className="container-fluid">
-        <a className="navbar-brand" href="#!">
-          <i className="fa fa-film"></i>
+        <a className="navbar-brand" href="/inicio">
+        <i class="fa-solid fa-book-open"></i>
           &nbsp;<i>BarbieBiblioteca</i>
         </a>
         <button

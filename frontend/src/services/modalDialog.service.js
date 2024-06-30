@@ -45,6 +45,7 @@ const Confirm = (
 };
 
 
+
 let cntBloquearPantalla = 0;
 const BloquearPantalla = (blnBloquear) => {
   if (blnBloquear) {

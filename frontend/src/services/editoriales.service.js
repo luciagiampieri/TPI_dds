@@ -3,23 +3,23 @@ import { config } from '../config.js';
 
 const URL = config.urlResourceEditoriales
 
-// Obtener todos los autores con paginación
-const getAllEditoriales = async ({ nombre = '', Pagina = 1 }) => {
+// Obtener todos las editoriales con paginación
+const getAllEditoriales = async ( nombre = '', Pagina = 1 ) => {
     try {
-        const response = await axios.get(URL, {
+        const response = await axios.get(`${URL}`, {
             params: {
                 nombre,
-                Pagina,
+                Pagina: Pagina,
             },
         });
-        return response.data;
+        return response.data.Items;
     } catch (error) {
         console.error('Error al obtener todas las editoriales:', error);
         throw error;
     }
 };
 
-// Obtener un autor por ID
+// Obtener una editorial por ID
 const getEditorialById = async (id) => {
     try {
         const response = await axios.get(`${URL}/${id}`);
@@ -30,7 +30,7 @@ const getEditorialById = async (id) => {
     }
 };
 
-// Crear un nuevo autor
+// Crear un nuevo editorial
 const createEditorial = async (editorial) => {
     try {
         const response = await axios.post(`${URL}`, editorial);
@@ -41,7 +41,7 @@ const createEditorial = async (editorial) => {
     }
 };
 
-// Actualizar un autor existente
+// Actualizar una editorial existente
 const updateEditorial = async (id, editorial) => {
     try {
         await axios.put(`${URL}/${id}`, editorial);
@@ -51,7 +51,7 @@ const updateEditorial = async (id, editorial) => {
     }
 };
 
-// Eliminar un autor
+// Eliminar una editorial
 const deleteEditorial = async (id) => {
     try {
         await axios.delete(`${URL}/${id}`);
