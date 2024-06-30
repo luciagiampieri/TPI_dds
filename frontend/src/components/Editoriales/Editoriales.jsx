@@ -6,7 +6,6 @@ import editorialesService from "../../services/editoriales.service";
 import paisesService from "../../services/paises.services";
 import modalDialogService from "../../services/modalDialog.service";
 
-import moment from "moment";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 
@@ -51,7 +50,7 @@ function Editoriales() {
         const data = await editorialesService.getAllEditoriales({ nombre: Nombre, Pagina: _pagina });
         modalDialogService.BloquearPantalla(false);
     
-        setEditorial(data.Items);
+        setEditorial(data.Items || []); // Asegurarse de que data.Items sea un array
         setRegistrosTotal(data.RegistrosTotal);
     
         const arrPaginas = [];

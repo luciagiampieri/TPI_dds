@@ -1,10 +1,10 @@
-import axios from 'axios'
+import axios from 'axios';
 import { config } from "../config";
 
-const URL = config.urlResourceLibros
+const URL = config.urlResourceLibros;
 
 // Obtener todos los libros con paginación
-const getAllLibros= async ({ titulo = '', Pagina = 1 }) => {
+const getAllLibros = async ({ titulo = '', Pagina = 1 }) => {
       try {
             const response = await axios.get(URL, {
                   params: {
@@ -12,7 +12,7 @@ const getAllLibros= async ({ titulo = '', Pagina = 1 }) => {
                         Pagina,
                   },
             });
-            return response.data;
+            return response.data; // Asegurarse de devolver el objeto completo
       } catch (error) {
             console.error('Error al obtener todas los libros:', error);
             throw error;
@@ -33,7 +33,7 @@ const getByIdLibros = async (id) => {
 // Crear un nuevo libro
 const createLibro = async (libro) => {
       try {
-            const response = await axios.post(`${URL}`, libro);
+            const response = await axios.post(URL, libro);
             return response.data;
       } catch (error) {
             console.error('Error al crear el libro:', error);
@@ -44,7 +44,7 @@ const createLibro = async (libro) => {
 // Actualizar un libro existente
 const updateLibro = async (id, libro) => {
       try {
-            axios.put(`${URL}/${id}`, libro);
+            await axios.put(`${URL}/${id}`, libro);
       } catch (error) {
             console.error('Error al actualizar el libro:', error);
             throw error;

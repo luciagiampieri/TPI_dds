@@ -1,14 +1,13 @@
 import axios from 'axios';
 import { config } from '../config.js';
 
-const URL = config.urlResourceResenas
+const URL = config.urlResourceResenas;
 
-// Obtener todos los autores con paginación
-const getAllResenas = async ({ calificacion = 1, Pagina = 1 }) => {
+const getAllResenas = async ({ comentario = '', Pagina = 1 }) => {
     try {
         const response = await axios.get(URL, {
             params: {
-                calificacion,
+                comentario,
                 Pagina,
             },
         });
@@ -19,8 +18,6 @@ const getAllResenas = async ({ calificacion = 1, Pagina = 1 }) => {
     }
 };
 
-
-// Obtener un autor por ID
 const getResenaById = async (id) => {
     try {
         const response = await axios.get(`${URL}/${id}`);
@@ -31,10 +28,9 @@ const getResenaById = async (id) => {
     }
 };
 
-// Crear un nuevo autor
 const createResena = async (resena) => {
     try {
-        const response = await axios.post(`${URL}`, resena);
+        const response = await axios.post(URL, resena);
         return response.data;
     } catch (error) {
         console.error('Error al crear la reseña:', error);
@@ -42,7 +38,6 @@ const createResena = async (resena) => {
     }
 };
 
-// Actualizar un autor existente
 const updateResena = async (id, resena) => {
     try {
         await axios.put(`${URL}/${id}`, resena);
@@ -52,7 +47,6 @@ const updateResena = async (id, resena) => {
     }
 };
 
-// Eliminar un autor
 const deleteResena = async (id) => {
     try {
         await axios.delete(`${URL}/${id}`);
@@ -62,13 +56,6 @@ const deleteResena = async (id) => {
     }
 };
 
-
-const resenasService = {
-    getAllResenas,
-    getResenaById,
-    createResena,
-    updateResena,
-    deleteResena,
-};
+const resenasService = { getAllResenas, getResenaById, createResena, updateResena, deleteResena };
 
 export default resenasService;

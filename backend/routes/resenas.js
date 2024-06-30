@@ -1,26 +1,32 @@
 const express = require("express");
 const db = require("../base-orm/sequelize-init");
 const { Op, ValidationError } = require("sequelize");
+const moment = require("moment");
 // const auth = require("../seguridad/auth");
 const router = express.Router();
 
-// Rutas de RESEÑAS.
-
-// Obtener por filtro.
 router.get("/api/resenas", async function (req, res, next) {
     try {
         let where = {};
-        if (req.query.calificacion) {
-            where.calificacion = req.query.calificacion;
-        }
+        if (req.query.comentario != undefined && req.query.comentario !== "") {
+            where.comentario = { [Op.like]: `%${req.query.comentario}%` };
+        };
 
         const Pagina = parseInt(req.query.Pagina) || 1;
         const TamañoPagina = 10;
         const { count, rows } = await db.Resenas.findAndCountAll({
+            attributes: [
+                "id",
+                "id_libro",
+                "fecha_resena",
+                "comentario",
+                "calificacion",
+                "user_name"
+            ],
+            order: [["id", "ASC"]],
             where,
             offset: (Pagina - 1) * TamañoPagina,
             limit: TamañoPagina,
-            include: [{ model: db.Libros, as: 'Libro', attributes: ['titulo'] }],
         });
 
         return res.json({ Items: rows, RegistrosTotal: count });
@@ -28,8 +34,8 @@ router.get("/api/resenas", async function (req, res, next) {
         next(error);
     }
 });
- // ejemplo de uso: http://localhost:4444/api/resenas?calificacion=5&Pagina=1
-// ejemplo de uso sin filtro: http://localhost:4444/api/resenas 
+// ejemplo de uso con filtro de comentario: http://localhost:4444/api/resenas?comentario=entretenido&Pagina=1
+// ejemplo de uso sin filtro: http://localhost:4444/api/resenas
 
 // Ruta de reseña: obtener por ID.
 router.get("/api/resenas/:id", async function (req, res, next) {
@@ -52,7 +58,11 @@ router.get("/api/resenas/:id", async function (req, res, next) {
                 }
             ]
         });
-        res.json(item);
+        if (item) {
+            res.json(item);
+        } else {
+            res.status(404).json({ message: "Reseña no encontrada" });
+        }
     } catch (err) {
         console.error("Error in GET /api/resenas/:id", err);
         res.status(500).json({ error: "Internal server error" });
@@ -64,7 +74,7 @@ router.post("/api/resenas/", async (req, res) => {
     try {
         let data = await db.Resenas.create({
             id_libro: req.body.id_libro,
-            fecha_resena: req.body.fecha_resena,
+            fecha_resena: moment(req.body.fecha_resena).format("YYYY-MM-DD"),
             comentario: req.body.comentario,
             calificacion: req.body.calificacion,
             user_name: req.body.user_name,
@@ -92,12 +102,12 @@ router.put("/api/resenas/:id", async (req, res) => {
             where: { id: req.params.id },
         });
         if (!item) {
-            res.status(404).json({ message: "Resena no encontrada" });
+            res.status(404).json({ message: "Reseña no encontrada" });
             return;
         }
 
         item.id_libro = req.body.id_libro;
-        item.fecha_resena = req.body.fecha_resena;
+        item.fecha_resena = moment(req.body.fecha_resena).format("YYYY-MM-DD"),
         item.comentario = req.body.comentario;
         item.calificacion = req.body.calificacion;
         item.user_name = req.body.user_name;
@@ -112,10 +122,12 @@ router.put("/api/resenas/:id", async (req, res) => {
             );
             res.status(400).json({ message: messages });
         } else {
-            throw err;
+            console.error("Error in PUT /api/resenas/:id", err);
+            res.status(500).json({ error: "Internal server error" });
         }
     }
-}); // ejemplo de uso: PUT http://localhost:4444/api/resenas/1 con body en formato JSON
+});
+// ejemplo de uso: PUT http://localhost:4444/api/resenas/1 con body en formato JSON
 // ejemplo de body: {"fecha_resena":"2021-10-10","comentario":"Muy entretenido!","calificacion":5,"user_name":"user10"}
 
 // Ruta de reseña: eliminar.
@@ -130,7 +142,7 @@ router.delete("/api/resenas/:id", async (req, res) => {
             res.sendStatus(404);
         }
     } catch (err) {
-        console.error("Error in POST /api/resenas/", err);
+        console.error("Error in DELETE /api/resenas/:id", err);
         res.status(500).json({ error: "Internal server error" });
     }
 }); // ejemplo de uso: DELETE http://localhost:4444/api/resenas/1

@@ -51,8 +51,8 @@ function Libros() {
 
       useEffect(() => {
             async function BuscarEditoriales() {
-                  let data = await editorialesService.getAllEditoriales();
-                  setEditoriales(data);
+                  let data = await editorialesService.getAllEditoriales({ nombre: '', Pagina: 1 });
+                  setEditoriales(data.Items || []); // Asegurarse de que data.Items sea un array
             }
             BuscarEditoriales();
       }, []);
@@ -69,7 +69,7 @@ function Libros() {
             }
 
             modalDialogService.BloquearPantalla(true); // Bloquea la pantalla
-            const data = await librosService.getAllLibros({titulo: Titulo, Pagina: _pagina}); // Busca los libros según el título y la página
+            const data = await librosService.getAllLibros({ titulo: Titulo, Pagina: _pagina }); // Busca los libros según el título y la página
             modalDialogService.BloquearPantalla(false); // Desbloquea la pantalla
 
             setLibro(data.Items); // Actualiza el estado con los libros encontrados
@@ -107,7 +107,7 @@ function Libros() {
             });
             modalDialogService.Alert("preparando el Alta...");
             console.log(Item);
-      } // Agrega un libro y actualiza el estado con el libro creado??? y el tipo de acción.
+      } // Agrega un libro y actualiza el estado con el libro creado y el tipo de acción.
 
       const Imprimir = () => {
             const data = Libro.map((item) => ({
@@ -139,15 +139,15 @@ function Libros() {
             } else if (AccionABMC === "M") {
                   await librosService.updateLibro(item.id, item);
             }
-      
+
             await Buscar();
             Volver();
 
             setTimeout(() => {
                   modalDialogService.Alert(
                         "Registro " +
-                              (AccionABMC === "A" ? "agregado" : "modificado") +
-                              " correctamente."
+                        (AccionABMC === "A" ? "agregado" : "modificado") +
+                        " correctamente."
                   );
             }, 0);
       }
@@ -217,4 +217,3 @@ function Libros() {
 }
 
 export default Libros;
-

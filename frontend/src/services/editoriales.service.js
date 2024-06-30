@@ -1,18 +1,18 @@
 import axios from 'axios';
 import { config } from '../config.js';
 
-const URL = config.urlResourceEditoriales
+const URL = config.urlResourceEditoriales;
 
-// Obtener todos las editoriales con paginación
-const getAllEditoriales = async ( nombre = '', Pagina = 1 ) => {
+// Obtener todas las editoriales con paginación
+const getAllEditoriales = async ({ nombre = '', Pagina = 1 }) => {
     try {
-        const response = await axios.get(`${URL}`, {
+        const response = await axios.get(URL, {
             params: {
                 nombre,
-                Pagina: Pagina,
+                Pagina,
             },
         });
-        return response.data.Items;
+        return response.data; // Asegurarse de devolver el objeto completo
     } catch (error) {
         console.error('Error al obtener todas las editoriales:', error);
         throw error;
@@ -30,10 +30,10 @@ const getEditorialById = async (id) => {
     }
 };
 
-// Crear un nuevo editorial
+// Crear una nueva editorial
 const createEditorial = async (editorial) => {
     try {
-        const response = await axios.post(`${URL}`, editorial);
+        const response = await axios.post(URL, editorial);
         return response.data;
     } catch (error) {
         console.error('Error al crear la editorial:', error);
@@ -60,7 +60,6 @@ const deleteEditorial = async (id) => {
         throw error;
     }
 };
-
 
 const editorialesService = {
     getAllEditoriales,
