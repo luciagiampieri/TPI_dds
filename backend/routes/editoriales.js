@@ -11,6 +11,7 @@ const router = express.Router();
 router.get("/api/editoriales", async function (req, res, next) {
     try {
         let where = {};
+
         if (req.query.nombre != undefined && req.query.nombre !== "") {
             where.nombre = { [Op.like]: `%${req.query.nombre}%` };
         };
@@ -52,13 +53,6 @@ router.get("/api/editoriales/:id", async function (req, res, next) {
                 "id_pais",
             ],
             where: { id: req.params.id },
-            include: [
-                {
-                    model: db.Paises,
-                    as: 'Paises',
-                    attributes: ["nombre"]
-                }
-            ]
         });
 
         if (!item) {

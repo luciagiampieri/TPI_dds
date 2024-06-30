@@ -1,6 +1,7 @@
 const express = require("express");
 const db = require("../base-orm/sequelize-init");
 const { Op, ValidationError } = require("sequelize");
+const moment = require("moment");
 // const auth = require("../seguridad/auth");
 const router = express.Router();
 
@@ -16,7 +17,7 @@ router.get("/api/libros", async function (req, res, next) {
                   where.titulo = { [Op.like]: `%${req.query.titulo}%` };
             };
 
-            const Pagina = req.query.Pagina ?? 1;
+            const Pagina = parseInt(req.query.Pagina) || 1;
             const TamañoPagina = 10;
             const { count, rows } = await db.Libros.findAndCountAll({
                   attributes: [
@@ -58,6 +59,10 @@ router.get("/api/libros/:id", async function (req, res, next) {
                   ],
                   where: { id: req.params.id },
             });
+
+            if (!item) {
+                  return res.status(404).json({ message: "Libro no encontrado" });
+            }
             res.json(item);
       } catch (err) {
             console.error("Error in GET /api/libros/", err);
@@ -71,7 +76,7 @@ router.post("/api/libros/", async (req, res) => {
             let data = await db.Libros.create({
                   id: req.body.id,
                   titulo: req.body.titulo,
-                  fecha_publicacion: req.body.fecha_publicacion,
+                  fecha_publicacion: moment(req.body.fecha_publicacion).format("YYYY-MM-DD"),
                   id_autor: req.body.id_autor,
                   id_editorial: req.body.id_editorial,
                   precio: req.body.precio,
@@ -106,7 +111,7 @@ router.put("/api/libros/:id", async (req, res) => {
 
             item.id = req.body.id;
             item.titulo = req.body.titulo;
-            item.fecha_publicacion = req.body.fecha_publicacion;
+            item.fecha_publicacion = moment(req.body.fecha_publicacion).format("YYYY-MM-DD");
             item.id_autor = req.body.id_autor;
             item.id_editorial = req.body.id_editorial;
             item.precio = req.body.precio;
@@ -133,7 +138,7 @@ router.delete("/api/libros/:id", async (req, res) => {
             let data = await db.Libros.destroy({
                   where: { id: req.params.id },
             });
-            console.log("Number of rows deleted:", data);
+            console.log("Numero de filas borradas:", data);
             if (data === 1) {
                   res.sendStatus(200);
             } else {
