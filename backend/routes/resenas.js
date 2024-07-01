@@ -5,16 +5,20 @@ const moment = require("moment");
 const router = express.Router();
 const { authenticateJWT, authorizeUser } = require("../seguridad/auth"); // Importa el middleware de autenticación y autorización
 
+
 // Rutas de RESEÑAS.
 
+
 // Obtener por filtro.
-router.get("/api/resenas", async function (req, res, next) {
+router.get("/api/resenasALL", async function (req, res) {
     try {
         let where = {};
+
 
         if (req.query.comentario != undefined && req.query.comentario !== "") {
             where.comentario = { [Op.like]: `%${req.query.comentario}%` };
         };
+
 
         const { count, rows } = await db.Resenas.findAndCountAll({
             attributes: [
@@ -29,6 +33,7 @@ router.get("/api/resenas", async function (req, res, next) {
             where,
         });
 
+
         return res.json({ Items: rows, RegistrosTotal: count });
     } catch (error) {
         console.error("Error in GET /api/resenas", err);
@@ -38,8 +43,9 @@ router.get("/api/resenas", async function (req, res, next) {
 // ejemplo de uso con filtro de comentario: http://localhost:4444/api/resenas?comentario=entretenido&Pagina=1
 // ejemplo de uso sin filtro: http://localhost:4444/api/resenas
 
+
 // Ruta de reseña: obtener por ID.
-router.get("/api/resenas/:id", authenticateJWT, authorizeUser(['fachialva']), async function (req, res, next) {
+router.get("/api/resenasALL/:id", async function (req, res) {
     try {
         let item = await db.Resenas.findOne({
             attributes: [
@@ -51,7 +57,7 @@ router.get("/api/resenas/:id", authenticateJWT, authorizeUser(['fachialva']), as
                 "user_name",
             ],
             where: { id: req.params.id },
-            
+        
         });
         if (item) {
             res.json(item);
@@ -62,11 +68,13 @@ router.get("/api/resenas/:id", authenticateJWT, authorizeUser(['fachialva']), as
         console.error("Error in GET /api/resenas", err);
         res.status(500).json({ error: "Internal server error" });
 
+
     }
 }); // ejemplo de uso: http://localhost:4444/api/resenas/1
 
+
 // Ruta de reseña: crear.
-router.post("/api/resenas/", authenticateJWT, authorizeUser(['fachialva']), async (req, res) => {
+router.post("/api/resenas/", async (req, res) => {
     try {
         let data = await db.Resenas.create({
             id_libro: req.body.id_libro,
@@ -83,8 +91,9 @@ router.post("/api/resenas/", authenticateJWT, authorizeUser(['fachialva']), asyn
 }); // ejemplo de uso: POST http://localhost:4444/api/resenas/ con body en formato JSON
 // ejemplo de body: {"id_libro":1,"fecha_resena":"2021-10-10","comentario":"Muy entretenido!","calificacion":5,"user_name":"user10"}
 
+
 // Ruta de reseña: actualizar.
-router.put("/api/resenas/:id", authenticateJWT, authorizeUser(['fachialva']), async (req, res) => {
+router.put("/api/resenas/:id", async (req, res) => {
     try {
         let item = await db.Resenas.findOne({
             attributes: [
@@ -102,12 +111,14 @@ router.put("/api/resenas/:id", authenticateJWT, authorizeUser(['fachialva']), as
             return;
         }
 
+
         item.id_libro = req.body.id_libro;
         item.fecha_resena = moment(req.body.fecha_resena).format("YYYY-MM-DD"),
         item.comentario = req.body.comentario;
         item.calificacion = req.body.calificacion;
         item.user_name = req.body.user_name;
         await item.save();
+
 
         res.sendStatus(204);
     } catch (err) {
@@ -126,8 +137,9 @@ router.put("/api/resenas/:id", authenticateJWT, authorizeUser(['fachialva']), as
 // ejemplo de uso: PUT http://localhost:4444/api/resenas/1 con body en formato JSON
 // ejemplo de body: {"fecha_resena":"2021-10-10","comentario":"Muy entretenido!","calificacion":5,"user_name":"user10"}
 
+
 // Ruta de reseña: eliminar.
-router.delete("/api/resenas/:id", authenticateJWT, authorizeUser(['fachialva']), async (req, res) => {
+router.delete("/api/resenas/:id", async (req, res) => {
     try {
         let data = await db.Resenas.destroy({
             where: { id: req.params.id },
@@ -142,6 +154,7 @@ router.delete("/api/resenas/:id", authenticateJWT, authorizeUser(['fachialva']),
         res.status(500).json({ error: "Internal server error" });
     }
 }); // ejemplo de uso: DELETE http://localhost:4444/api/resenas/1
+
 
 // exportamos nuestro nuevo router.
 module.exports = router;

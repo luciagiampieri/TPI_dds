@@ -1,11 +1,12 @@
 import { NavLink } from "react-router-dom";
 
+
 function Menu() {
   return (
     <nav className="navbar navbar-dark bg-dark navbar-expand-md">
       <div className="container-fluid">
         <a className="navbar-brand" href="/inicio">
-        <i class="fa-solid fa-book-open"></i>
+          <i className="fa-solid fa-book-open"></i>
           &nbsp;<i>BarbieBiblioteca</i>
         </a>
         <button
@@ -47,10 +48,18 @@ function Menu() {
               </NavLink>
             </li>
           </ul>
+          <ul className="navbar-nav ms-auto">
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/login">
+                <button className="btn btn-outline-light">Iniciar Sesión</button>
+              </NavLink>
+            </li>
+          </ul>
         </div>
       </div>
     </nav>
   );
 }
+
 
 export { Menu };

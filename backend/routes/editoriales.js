@@ -5,16 +5,21 @@ const moment = require("moment");
 const router = express.Router();
 const { authenticateJWT, authorizeUser } = require("../seguridad/auth"); // Importa el middleware de autenticación y autorización
 
+
 // Rutas de Editoriales.
+
 
 // Obtener por filtro.
 router.get("/api/editoriales", async function (req, res) {
     try {
         let where = {};
 
+
         if (req.query.nombre != undefined && req.query.nombre !== "") {
             where.nombre = { [Op.like]: `%${req.query.nombre}%` };
         };
+
+
 
 
         const { count, rows } = await db.Editoriales.findAndCountAll({
@@ -29,6 +34,7 @@ router.get("/api/editoriales", async function (req, res) {
             where,
         });
 
+
         return res.json({Items: rows, RegistrosTotal: count})
     } catch (error) {
         console.error("Error in GET /api/editoriales", err);
@@ -39,8 +45,10 @@ router.get("/api/editoriales", async function (req, res) {
         // ejemplo de uso: http://localhost:4444/api/editoriales?nombre=el&Pagina=1
 
 
+
+
 // Ruta de editorial: obtener por ID.
-router.get("/api/editoriales/:id", authenticateJWT, authorizeUser(['candepaez']), async function (req, res) {
+router.get("/api/editoriales/:id", async function (req, res) {
     try {
         let item = await db.Editoriales.findOne({
             attributes: [
@@ -53,6 +61,7 @@ router.get("/api/editoriales/:id", authenticateJWT, authorizeUser(['candepaez'])
             where: { id: req.params.id },
         });
 
+
         if (!item) {
             return res.status(404).json({ message: "Editorial no encontrada" });
         }
@@ -64,10 +73,13 @@ router.get("/api/editoriales/:id", authenticateJWT, authorizeUser(['candepaez'])
 });
 
 
+
+
 // ejemplo de uso: http://localhost:4444/api/editoriales/1
 
+
 // Ruta de editoriales: crear.
-router.post("/api/editoriales/", authenticateJWT, authorizeUser(['candepaez']), async (req, res) => {
+router.post("/api/editoriales/", authenticateJWT, authorizeUser(['chicasdds']), async (req, res) => {
     try {
         let data = await db.Editoriales.create({
             nombre: req.body.nombre,
@@ -82,8 +94,9 @@ router.post("/api/editoriales/", authenticateJWT, authorizeUser(['candepaez']), 
     }
 }); // ejemplo de uso: http://localhost:4444/api/editoriales/
 
+
 // Ruta de editorial: actualizar.
-router.put("/api/editoriales/:id", authenticateJWT, authorizeUser(['candepaez']), async (req, res) => {
+router.put("/api/editoriales/:id", authenticateJWT, authorizeUser(['chicasdds']), async (req, res) => {
     try {
         let item = await db.Editoriales.findOne({
             attributes: [
@@ -105,6 +118,7 @@ router.put("/api/editoriales/:id", authenticateJWT, authorizeUser(['candepaez'])
         item.id_pais = req.body.id_pais;
         await item.save();
 
+
         res.sendStatus(204);
     } catch (err) {
         if (err instanceof ValidationError) {
@@ -120,8 +134,10 @@ router.put("/api/editoriales/:id", authenticateJWT, authorizeUser(['candepaez'])
 }); // ejemplo de uso: http://localhost:4444/api/editoriales/1
 
 
-// Ruta de editoriales: eliminar. 
-router.delete("/api/editoriales/:id", authenticateJWT, authorizeUser(['candepaez']), async (req, res) => {
+
+
+// Ruta de editoriales: eliminar.
+router.delete("/api/editoriales/:id", authenticateJWT, authorizeUser(['chicasdds']), async (req, res) => {
     try {
         let data = await db.Editoriales.destroy({
             where: { id: req.params.id },
@@ -136,6 +152,7 @@ router.delete("/api/editoriales/:id", authenticateJWT, authorizeUser(['candepaez
         res.status(500).json({ error: "Internal server error" });
     }
 }); // ejemplo de uso: http://localhost:4444/api/editoriales/1
+
 
 // exportamos nuestro nuevo router.
 module.exports = router;

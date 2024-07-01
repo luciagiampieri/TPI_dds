@@ -1,4 +1,5 @@
-const jwt = require("jsonwebtoken"); // Importamos la librería jsonwebtoken.
+const jwt = require("jsonwebtoken"); 
+// Importamos la librería jsonwebtoken.
 // esta librearía nos permite generar tokens de acceso y refresco.
 // También nos permite verificar si un token es válido.
 // un TOKEN es un string que se envía en cada petición HTTP para autenticar al usuario.

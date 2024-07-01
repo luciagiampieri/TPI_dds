@@ -19,6 +19,7 @@ export default function AutoresListado({
                         <th className="text-center">Nombre</th>
                         <th className="text-center">Apellido</th>
                         <th className="text-center">Fecha nacimiento</th>
+                        <th className="text-center">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>

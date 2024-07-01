@@ -5,17 +5,21 @@ const moment = require("moment");
 const router = express.Router();
 const { authenticateJWT, authorizeUser } = require("../seguridad/auth"); // Importa el middleware de autenticación y autorización
 
+
 // Rutas de LIBROS.
 
+
 // Obtener todos los libros / obtener los libros filtrados por titulo.
-router.get("/api/libros", async function (req, res, next) {
+router.get("/api/librosALL", async function (req, res, next) {
       try {
             let where = {};
             let include = [];
 
+
             if (req.query.titulo != undefined && req.query.titulo !== "") {
                   where.titulo = { [Op.like]: `%${req.query.titulo}%` };
             };
+
 
             const { count, rows } = await db.Libros.findAndCountAll({
                   attributes: [
@@ -32,17 +36,19 @@ router.get("/api/libros", async function (req, res, next) {
                   include,
             });
 
+
             return res.json({ Items: rows, RegistrosTotal: count });
       } catch (err) {
             console.error("Error in GET /api/libros", err);
             res.status(500).json({ error: "Internal server error" });
       }
-}); // ejemplo de uso: http://localhost:4444/api/libros?titulo=el&Pagina=1
-// ejemplo de uso sin filtro: https://localhost:4444/api/libros
+});
+
+
 
 
 // Ruta de libros: obtener por ID.
-router.get("/api/libros/:id", authenticateJWT, authorizeUser(['lugiampieri']), async function (req, res, next) {
+router.get("/api/librosALL/:id", async function (req, res, next) {
       try {
             let item = await db.Libros.findOne({
                   attributes: [
@@ -57,6 +63,7 @@ router.get("/api/libros/:id", authenticateJWT, authorizeUser(['lugiampieri']), a
                   where: { id: req.params.id },
             });
 
+
             if (!item) {
                   return res.status(404).json({ message: "Libro no encontrado" });
             }
@@ -67,8 +74,9 @@ router.get("/api/libros/:id", authenticateJWT, authorizeUser(['lugiampieri']), a
       }
 });
 
+
 // Ruta de libros: crear.
-router.post("/api/libros/", authenticateJWT, authorizeUser(['lugiampieri']), async (req, res) => {
+router.post("/api/libros/", async (req, res) => {
       try {
             let data = await db.Libros.create({
                   id: req.body.id,
@@ -84,10 +92,12 @@ router.post("/api/libros/", authenticateJWT, authorizeUser(['lugiampieri']), asy
             console.error("Error in POST /api/libros/", err);
             res.status(500).json({ error: "Internal server error" });
       }
-});
+}); // ejemplo de uso: http://localhost:4444/api/libros/
+// con body en formato JSON: {"id": 1, "titulo": "El principito", "fecha_publicacion": "1943-04-06", "id_autor": 1, "id_editorial": 1, "precio": 100, "id_genero": 1}
+
 
 // Ruta de libros: actualizar.
-router.put("/api/libros/:id", authenticateJWT, authorizeUser(['lugiampieri']), async (req, res) => {
+router.put("/api/libros/:id", async (req, res) => {
       try {
             let item = await db.Libros.findOne({
                   attributes: [
@@ -106,6 +116,7 @@ router.put("/api/libros/:id", authenticateJWT, authorizeUser(['lugiampieri']), a
                   return;
             }
 
+
             item.id = req.body.id;
             item.titulo = req.body.titulo;
             item.fecha_publicacion = moment(req.body.fecha_publicacion).format("YYYY-MM-DD");
@@ -114,6 +125,7 @@ router.put("/api/libros/:id", authenticateJWT, authorizeUser(['lugiampieri']), a
             item.precio = req.body.precio;
             item.id_genero = req.body.id_genero;
             await item.save();
+
 
             res.sendStatus(204);
       } catch (err) {
@@ -129,8 +141,9 @@ router.put("/api/libros/:id", authenticateJWT, authorizeUser(['lugiampieri']), a
       }
 });
 
+
 // Ruta de libros: eliminar.
-router.delete("/api/libros/:id", authenticateJWT, authorizeUser(['lugiampieri']), async (req, res) => {
+router.delete("/api/libros/:id", async (req, res) => {
       try {
             let data = await db.Libros.destroy({
                   where: { id: req.params.id },
@@ -146,6 +159,7 @@ router.delete("/api/libros/:id", authenticateJWT, authorizeUser(['lugiampieri'])
             res.status(500).json({ error: "Internal server error" });
       }
 });
+
 
 // exportamos nuestro nuevo router.
 module.exports = router;

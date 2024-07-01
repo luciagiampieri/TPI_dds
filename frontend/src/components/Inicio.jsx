@@ -1,11 +1,13 @@
 // src/components/Inicio.jsx
 
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { motion } from 'framer-motion';
 import './Inicio.css'; // Asegúrate de tener este archivo para estilos personalizados
+
 
 function Inicio() {
   return (
@@ -74,5 +76,6 @@ function Inicio() {
     </div>
   );
 }
+
 
 export { Inicio };
