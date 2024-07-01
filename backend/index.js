@@ -38,3 +38,5 @@ const PORT = 4444;
 app.listen(PORT, () => {
     console.log(`Servidor iniciado en puerto ${PORT}`);
 });
+
+module.exports = app; // Exportar app para pruebas
