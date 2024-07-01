@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
-import AutoresBuscar from "./AutoresBuscar";
+import AutoresBuscar from "./AutoresBuscar";  
 import AutoresListado from "./AutoresListado";
 import AutoresRegistro from "./AutoresRegistro";
 import autoresService from "../../services/autores.service";
-import modalDialogService from "../../services/modalDialog.service";
 import tipo_documentosService from "../../services/tipo_documentos.service";
+import modalDialogService from "../../services/modalDialog.service";
 
-
-import moment from "moment";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 
@@ -19,31 +17,32 @@ function Autores() {
         C: "(Consultar)",
         L: "(Listado)",
     };
+
     const [AccionABMC, setAccionABMC] = useState("L");
     const [Nombre, setNombre] = useState(""); // estado para filtrar la búsqueda de autores
     const [Autor, setAutor] = useState([]); // estado para mostrar el listado de autores
     const [Item, setItem] = useState(null); // estado para mostrar el autor en el formulario
-    const [ Tipo_Doc, setTipo_Doc] = useState(""); // estado para mostrar el tipo de documento en el formulario
+    const [Tipodoc, setTipodoc] = useState([]); // estado para guardar los países
 
     useEffect(() => {
-        async function BuscarTipo_Doc() {
+        async function BuscarTipodoc() {
             let data = await tipo_documentosService.getAllTipoDocumentos();
-            setTipo_Doc(data);
+            setTipodoc(data); // Guardar los países en el estado
         }
-        BuscarTipo_Doc();
+        BuscarTipodoc();
     }, []); // useEffect se ejecuta solo una vez. Busca los autores disponibles.
 
     useEffect(() => {
         Buscar();
     }, [Nombre]); // useEffect se ejecuta cada vez que Nombre o Pagina cambian.
 
-
     async function Buscar() {
-        modalDialogService.BloquearPantalla(true); // Bloquea la pantalla
-        const data = await autoresService.getAllAutores({ nombre: Nombre }); // Busca los autores según el nombre
-        modalDialogService.BloquearPantalla(false); // Desbloquea la pantalla
-
-        setAutor(data.Items); // Actualiza el estado con los autores encontrados
+        
+        modalDialogService.BloquearPantalla(true);
+        const data = await autoresService.getAllAutores({ nombre: Nombre});
+        modalDialogService.BloquearPantalla(false);
+    
+        setAutor(data.Items);
     }
 
     async function BuscarId(item, accionABMC) {
@@ -58,28 +57,27 @@ function Autores() {
 
     function Modificar(item) {
         BuscarId(item, "M");
-    } // Modifica un autor por ID y actualiza el estado con el autor encontrado y el tipo de acción.
+    } // Modifica una editorial por ID y actualiza el estado con el autor encontrado y el tipo de acción.
 
     async function Agregar() {
         setAccionABMC("A");
         setItem({
-            tipo_documento: 0,
+            tipo_documento: "",
             nro_documento: "",
             nombre: "",
             apellido: "",
-            fecha_nacimiento: moment().format("YYYY-MM-DD"),
+            fecha_nacimiento: "",
         });
-        modalDialogService.Alert("preparando el Alta...");
         console.log(Item);
-    } // Agrega un autor y actualiza el estado con el autor creado y el tipo de acción.
+    } // Agrega una editorial y actualiza el estado con el autor creado y el tipo de acción.
 
     const Imprimir = () => {
         const data = Autor.map((item) => ({
-            "Tipo Documento": Tipo_Doc.find((tipo_doc) => tipo_doc.tipo === item.tipo_documento)?.descripcion || "",
-            "Nro Documento": item.nro_documento,
+            "Tipo documento": Tipodoc.find((tipodoc) => tipodoc.tipo === item.tipo_documento)?.descripcion || "",
+            "Numero documento": item.nro_documento,
             Nombre: item.nombre,
             Apellido: item.apellido,
-            "Fecha Nacimiento": item.fecha_nacimiento,
+            "Fecha Fundacion": item.fecha_nacimiento,
         })); // Mapea los autores encontrados y los muestra en el listado.
 
         const worksheet = XLSX.utils.json_to_sheet(data); // Convierte los datos a una hoja de cálculo
@@ -97,6 +95,7 @@ function Autores() {
     } // Elimina un autor y actualiza el estado con los autores encontrados.
 
     async function Grabar(item) {
+        console.log("Datos a grabar:", item);
         if (AccionABMC === "A") {
             await autoresService.createAutor(item);
         } else if (AccionABMC === "M") {
@@ -144,7 +143,7 @@ function Autores() {
                         Eliminar,
                         Modificar,
                         Imprimir,
-                        Tipo_Doc,
+                        Tipodoc, // Pasar los países al componente EditorialesListado
                     }}
                 />
             )}
@@ -160,7 +159,7 @@ function Autores() {
                 <AutoresRegistro
                     {...{
                         AccionABMC,
-                        Tipo_Doc,
+                        Tipodoc, // Pasar los países al componente EditorialesRegistro
                         Item,
                         Grabar,
                         Volver,

@@ -1,23 +1,22 @@
 const express = require("express");
 const db = require("../base-orm/sequelize-init");
 const { Op, ValidationError } = require("sequelize");
-const router = express.Router();
 const moment = require("moment");
-const { authenticateJWT, authorizeUser } = require("../seguridad/auth"); // Importa el middleware de autenticación y autorización
+// const auth = require("../seguridad/auth");
+const router = express.Router();
 
-// ROUTER AUTORES
+// Rutas de Editoriales.
 
-// obtener autores por filtro nombre
-router.get("/api/autores", async function (req, res) {
+// Obtener por filtro.
+router.get("/api/autores", async function (req, res, next) {
     try {
-        // Construir el filtro `where`
         let where = {};
-
         if (req.query.nombre != undefined && req.query.nombre !== "") {
             where.nombre = { [Op.like]: `%${req.query.nombre}%` };
-        }
+        };
 
-        // Consultar los autores con paginación
+        //const Pagina = parseInt(req.query.Pagina) || 1;
+
         const { count, rows } = await db.Autores.findAndCountAll({
             attributes: [
                 "id",
@@ -28,10 +27,9 @@ router.get("/api/autores", async function (req, res) {
                 "fecha_nacimiento",
             ],
             order: [["id", "ASC"]],
-            where,  // Aplicar el filtro
+            where,
         });
 
-        // Devolver los resultados
         return res.json({ Items: rows, RegistrosTotal: count });
     } catch (error) {
         // Manejar los errores
@@ -39,10 +37,11 @@ router.get("/api/autores", async function (req, res) {
         res.status(500).json({ error: "Internal server error" });
     }
 });
+// ejemplo de uso: http://localhost:4444/api/autores?nombre=pepe&Pagina=1
 
 
-// obtener autor por ID 
-router.get("/api/autores/:id", authenticateJWT, authorizeUser(['ticigatica']), async function (req, res) {
+// Obtener por id.
+router.get("/api/autores/:id", async function (req, res, next) {
     try {
         let item = await db.Autores.findOne({
             attributes: [
@@ -54,37 +53,43 @@ router.get("/api/autores/:id", authenticateJWT, authorizeUser(['ticigatica']), a
                 "fecha_nacimiento",
             ],
             where: { id: req.params.id },
+            include: [
+                {
+                    model: db.Tipo_Documentos,
+                    as: 'Tipo_Documentos',
+                    attributes: ["descripcion"]
+                }
+            ]
         });
+
         if (!item) {
-            return res.status(404).json({ message: "Autor no encontrada" });
+            return res.status(404).json({ message: "Autor no encontrado" });
         }
         res.json(item);
     } catch (error) {
-        console.error("Error al obtener el autor:", error);
-        res.status(500).json({ error: "Error al obtener el autor" });
+        next(error);
     }
-});
+});// ejemplo de uso: http://localhost:4444/api/autores/1
 
-// crear un autor
-router.post("/api/autores/", authenticateJWT, authorizeUser(['ticigatica']), async (req, res) => {
+// Ruta de editoriales: crear.
+router.post("/api/autores", async (req, res) => {
     try {
         let data = await db.Autores.create({
-                id: req.body.id,
-                tipo_documento: req.body.tipo_documento,
-                nro_documento: req.body.nro_documento,
-                nombre: req.body.nombre,
-                apellido: req.body.apellido,
-                fecha_nacimiento: moment(req.body.fecha_nacimiento).format("YYYY-MM-DD"),
+            tipo_documento: req.body.tipo_documento,
+            nro_documento: req.body.nro_documento,
+            nombre: req.body.nombre,
+            apellido: req.body.apellido,
+            fecha_nacimiento: moment(req.body.fecha_nacimiento).format("YYYY-MM-DD"),
         });
         res.status(200).json(data.dataValues);
     } catch (err) {
         console.error("Error in POST /api/autores", err);
         res.status(500).json({ error: "Internal server error" });
     }
-});
+}); // ejemplo de uso: http://localhost:4444/api/autores
 
-// actualizar un autor
-router.put("/api/autores/:id", authenticateJWT, authorizeUser(['ticigatica']), async (req, res) => {
+// actualizar.
+router.put("/api/autores/:id", async (req, res) => {
     try {
         let item = await db.Autores.findOne({
             attributes: [
@@ -101,11 +106,9 @@ router.put("/api/autores/:id", authenticateJWT, authorizeUser(['ticigatica']), a
             res.status(404).json({ message: "Autor no encontrado" });
             return;
         }
-
-        item.id = req.body.id;
         item.tipo_documento = req.body.tipo_documento;
         item.nro_documento = req.body.nro_documento;
-        item.nombre = req.body.nombre;
+        item.nombre =  req.body.nombre;
         item.apellido = req.body.apellido;
         item.fecha_nacimiento = moment(req.body.fecha_nacimiento).format("YYYY-MM-DD");
         await item.save();
@@ -115,17 +118,18 @@ router.put("/api/autores/:id", authenticateJWT, authorizeUser(['ticigatica']), a
         if (err instanceof ValidationError) {
             let messages = "";
             err.errors.forEach(
-            (x) => (messages += x.path + ": " + x.message + "\n")
+                (x) => (messages += x.path + ": " + x.message + "\n")
             );
             res.status(400).json({ message: messages });
         } else {
             throw err;
         }
-    } 
-});
+    }
+}); // ejemplo de uso: http://localhost:4444/api/autores/1
 
-// eliminar un autor
-router.delete("/api/autores/:id", authenticateJWT, authorizeUser(['ticigatica']), async (req, res) => {
+
+// eliminar.
+router.delete("/api/autores/:id", async (req, res) => {
     try {
         let data = await db.Autores.destroy({
             where: { id: req.params.id },
@@ -136,12 +140,10 @@ router.delete("/api/autores/:id", authenticateJWT, authorizeUser(['ticigatica'])
                 res.sendStatus(404);
             }
     } catch (err) {
-        console.error("Error in POST /api/autores/", err);
+        console.error("Error in POST /api/autores", err);
         res.status(500).json({ error: "Internal server error" });
     }
-});
-
-
+}); // ejemplo de uso: http://localhost:4444/api/editoriales/1
 
 // exportamos nuestro nuevo router.
 module.exports = router;

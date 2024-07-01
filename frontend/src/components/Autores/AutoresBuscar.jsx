@@ -1,6 +1,6 @@
 import React from 'react'
 
-function AutoresBuscar({ Nombre, setNombre, Buscar, Agregar }) {
+function AutoresBuscar({ nombre, setNombre, Buscar, Agregar }) {
     return (
         <form name="FormBusqueda">
             <div className="container-fluid">
@@ -13,9 +13,9 @@ function AutoresBuscar({ Nombre, setNombre, Buscar, Agregar }) {
                             type="text"
                             className="form-control"
                             onChange={(e) => setNombre(e.target.value)}
-                            value={Nombre}
-                            minLength="2"
-                            maxLength="80"
+                            value={nombre}
+                            minLength="3"
+                            maxLength="50"
                             autoFocus
                         />
                     </div>
