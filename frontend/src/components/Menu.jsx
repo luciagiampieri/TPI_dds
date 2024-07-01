@@ -38,6 +38,11 @@ function Menu() {
               </NavLink>
             </li>
             <li className="nav-item">
+              <NavLink className="nav-link" to="/autoresPublico">
+                Autores (Público)
+              </NavLink>
+            </li>
+            <li className="nav-item">
               <NavLink className="nav-link" to="/resenas">
                 Reseñas
               </NavLink>
@@ -45,6 +50,11 @@ function Menu() {
             <li className="nav-item">
               <NavLink className="nav-link" to="/editoriales">
                 Editoriales
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/editorialesPublico">
+                Editoriales (Público)
               </NavLink>
             </li>
           </ul>
@@ -60,6 +70,5 @@ function Menu() {
     </nav>
   );
 }
-
 
 export { Menu };

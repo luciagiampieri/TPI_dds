@@ -83,12 +83,11 @@ import { config } from '../config';
 
 // export default librosService;
 const URL = config.urlResourceLibros;
-const URLP = config.urlResourceLibrosPublico;
 
 
 const getAllLibros = async ({ titulo = '' }) => {
       try {
-            const response = await axiosInstance.get(URLP, {
+            const response = await axiosInstance.get(URL, {
                   params: { titulo },
             });
             return response.data;
@@ -101,7 +100,7 @@ const getAllLibros = async ({ titulo = '' }) => {
 
 const getByIdLibros = async (id) => {
       try {
-            const response = await axiosInstance.get(`${URLP}/${id}`);
+            const response = await axiosInstance.get(`${URL}/${id}`);
             return response.data;
       } catch (error) {
             console.error('Error al obtener el libro por ID:', error);

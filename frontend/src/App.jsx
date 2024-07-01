@@ -10,7 +10,8 @@ import Libros from "./components/Libros/Libros";
 import Autores from "./components/Autores/Autores";
 import Editoriales from "./components/Editoriales/Editoriales";
 import Login from './components/Login';
-
+import AutoresPublico from './components/Autores/AutoresPublico';
+import EditorialesPublico from './components/Editoriales/EditorialesPublico';
 
 const PrivateRoute = ({ children }) => {
   let location = useLocation();
@@ -22,9 +23,6 @@ const PrivateRoute = ({ children }) => {
 };
 // location.state.from.pathname
 
-
-
-
 function App() {
   return (
     <>
@@ -35,10 +33,17 @@ function App() {
           <Routes>
             <Route path="/inicio" element={<Inicio />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/resenas" element={<PrivateRoute><Resenas /></PrivateRoute>} />
-            <Route path="/libros" element={<PrivateRoute><Libros /></PrivateRoute>} />
+
+            {/*RUTAS PUBLICAS*/}
+            <Route path="/resenas" element={<Resenas />} />
+            <Route path="/libros" element={<Libros />} />
+            <Route path="/autoresPublico" element={<AutoresPublico/>} />
+            <Route path="/editorialesPublico" element={<EditorialesPublico/>} />
+
+            {/*RUTAS PRIVADAS*/} 
             <Route path="/autores" element={<PrivateRoute><Autores /></PrivateRoute>} />
             <Route path="/editoriales" element={<PrivateRoute><Editoriales /></PrivateRoute>} />
+
             <Route path="*" element={<Navigate to="/inicio" replace />} />
           </Routes>
         </div>
@@ -47,6 +52,5 @@ function App() {
     </>
   );
 }
-
 
 export default App;

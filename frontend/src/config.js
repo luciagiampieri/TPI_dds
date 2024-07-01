@@ -16,8 +16,8 @@ const urlResourceLibros = urlServidor + "/api/libros";
 const urlResourceEditoriales = urlServidor + "/api/editoriales";
 const urlResourceAutores = urlServidor + "/api/autores";
 const urlResourceResenas = urlServidor + "/api/resenas";
-const urlResourceResenasPublico = urlServidor + "/api/resenasALL";
-const urlResourceLibrosPublico = urlServidor + "/api/librosALL";
+const urlResourceAutoresPublico = urlServidor + "/api/autoresPublico";
+const urlResourceEditorialesPublico = urlServidor + "/api/editorialesPublico";
 
 
 // Interceptor para manejar la renovación del token
@@ -49,6 +49,6 @@ export const config = {
     urlResourceEditoriales,
     urlResourceAutores,
     urlResourceResenas,
-    urlResourceResenasPublico,
-    urlResourceLibrosPublico
+    urlResourceAutoresPublico,
+    urlResourceEditorialesPublico
 };

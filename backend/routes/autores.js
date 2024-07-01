@@ -2,13 +2,13 @@ const express = require("express");
 const db = require("../base-orm/sequelize-init");
 const { Op, ValidationError } = require("sequelize");
 const moment = require("moment");
-// const auth = require("../seguridad/auth");
 const router = express.Router();
+const { authenticateJWT, authorizeUser } = require("../seguridad/auth"); // Importa el middleware de autenticación y autorización
 
 // Rutas de Editoriales.
 
 // Obtener por filtro.
-router.get("/api/autores", async function (req, res, next) {
+router.get("/api/autoresPublico", async function (req, res, next) {
     try {
         let where = {};
         if (req.query.nombre != undefined && req.query.nombre !== "") {
@@ -41,7 +41,7 @@ router.get("/api/autores", async function (req, res, next) {
 
 
 // Obtener por id.
-router.get("/api/autores/:id", async function (req, res, next) {
+router.get("/api/autoresPublico/:id", async function (req, res, next) {
     try {
         let item = await db.Autores.findOne({
             attributes: [
@@ -72,7 +72,7 @@ router.get("/api/autores/:id", async function (req, res, next) {
 });// ejemplo de uso: http://localhost:4444/api/autores/1
 
 // Ruta de editoriales: crear.
-router.post("/api/autores", async (req, res) => {
+router.post("/api/autores", authenticateJWT, authorizeUser(['chicasdds']), async (req, res) => {
     try {
         let data = await db.Autores.create({
             tipo_documento: req.body.tipo_documento,
@@ -89,7 +89,7 @@ router.post("/api/autores", async (req, res) => {
 }); // ejemplo de uso: http://localhost:4444/api/autores
 
 // actualizar.
-router.put("/api/autores/:id", async (req, res) => {
+router.put("/api/autores/:id", authenticateJWT, authorizeUser(['chicasdds']), async (req, res) => {
     try {
         let item = await db.Autores.findOne({
             attributes: [
@@ -129,7 +129,7 @@ router.put("/api/autores/:id", async (req, res) => {
 
 
 // eliminar.
-router.delete("/api/autores/:id", async (req, res) => {
+router.delete("/api/autores/:id", authenticateJWT, authorizeUser(['chicasdds']), async (req, res) => {
     try {
         let data = await db.Autores.destroy({
             where: { id: req.params.id },

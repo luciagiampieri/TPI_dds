@@ -10,7 +10,7 @@ const { authenticateJWT, authorizeUser } = require("../seguridad/auth"); // Impo
 
 
 // Obtener por filtro.
-router.get("/api/editoriales", async function (req, res) {
+router.get("/api/editorialesPublico", async function (req, res) {
     try {
         let where = {};
 
@@ -48,7 +48,7 @@ router.get("/api/editoriales", async function (req, res) {
 
 
 // Ruta de editorial: obtener por ID.
-router.get("/api/editoriales/:id", async function (req, res) {
+router.get("/api/editorialesPublico/:id", async function (req, res) {
     try {
         let item = await db.Editoriales.findOne({
             attributes: [

@@ -2,11 +2,12 @@ import axios from 'axios';
 import { config } from '../config.js';
 
 const URL = config.urlResourceAutores
+const URLP = config.urlResourceAutoresPublico
 
 // Obtener todos los autores con paginación
 const getAllAutores = async ({ nombre = ''}) => {
     try {
-        const response = await axios.get(URL, {
+        const response = await axios.get(URLP, {
             params: {
                 nombre,
             },
@@ -21,7 +22,7 @@ const getAllAutores = async ({ nombre = ''}) => {
 // Obtener un autor por ID
 const getAutorById = async (id) => {
     try {
-        const response = await axios.get(`${URL}/${id}`);
+        const response = await axios.get(`${URLP}/${id}`);
         return response.data;
     } catch (error) {
         console.error('Error al obtener el autor por ID:', error);

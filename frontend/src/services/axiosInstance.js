@@ -1,10 +1,8 @@
 import axios from 'axios';
 import refreshToken from './auth.service';
 
-
 // Crear una instancia de Axios
 const axiosInstance = axios.create();
-
 
 axiosInstance.interceptors.request.use(
       async config => {
@@ -31,6 +29,5 @@ axiosInstance.interceptors.response.use(
             return Promise.reject(error);
       }
 );
-
 
 export default axiosInstance;

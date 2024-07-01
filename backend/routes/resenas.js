@@ -3,14 +3,14 @@ const db = require("../base-orm/sequelize-init");
 const { Op, ValidationError } = require("sequelize");
 const moment = require("moment");
 const router = express.Router();
-const { authenticateJWT, authorizeUser } = require("../seguridad/auth"); // Importa el middleware de autenticación y autorización
+// const { authenticateJWT, authorizeUser } = require("../seguridad/auth"); // Importa el middleware de autenticación y autorización
 
 
 // Rutas de RESEÑAS.
 
 
 // Obtener por filtro.
-router.get("/api/resenasALL", async function (req, res) {
+router.get("/api/resenas", async function (req, res) {
     try {
         let where = {};
 
@@ -45,7 +45,7 @@ router.get("/api/resenasALL", async function (req, res) {
 
 
 // Ruta de reseña: obtener por ID.
-router.get("/api/resenasALL/:id", async function (req, res) {
+router.get("/api/resenas/:id", async function (req, res) {
     try {
         let item = await db.Resenas.findOne({
             attributes: [
