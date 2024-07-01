@@ -3,6 +3,7 @@ const db = require("../base-orm/sequelize-init");
 const { Op, ValidationError } = require("sequelize");
 const moment = require("moment");
 const router = express.Router();
+const { authenticateJWT, authorizeUser } = require("../seguridad/auth"); // Importa el middleware de autenticación y autorización
 
 // Rutas de RESEÑAS.
 
@@ -38,7 +39,7 @@ router.get("/api/resenas", async function (req, res, next) {
 // ejemplo de uso sin filtro: http://localhost:4444/api/resenas
 
 // Ruta de reseña: obtener por ID.
-router.get("/api/resenas/:id", async function (req, res, next) {
+router.get("/api/resenas/:id", authenticateJWT, authorizeUser(['fachialva']), async function (req, res, next) {
     try {
         let item = await db.Resenas.findOne({
             attributes: [
@@ -65,7 +66,7 @@ router.get("/api/resenas/:id", async function (req, res, next) {
 }); // ejemplo de uso: http://localhost:4444/api/resenas/1
 
 // Ruta de reseña: crear.
-router.post("/api/resenas/", async (req, res) => {
+router.post("/api/resenas/", authenticateJWT, authorizeUser(['fachialva']), async (req, res) => {
     try {
         let data = await db.Resenas.create({
             id_libro: req.body.id_libro,
@@ -83,7 +84,7 @@ router.post("/api/resenas/", async (req, res) => {
 // ejemplo de body: {"id_libro":1,"fecha_resena":"2021-10-10","comentario":"Muy entretenido!","calificacion":5,"user_name":"user10"}
 
 // Ruta de reseña: actualizar.
-router.put("/api/resenas/:id", async (req, res) => {
+router.put("/api/resenas/:id", authenticateJWT, authorizeUser(['fachialva']), async (req, res) => {
     try {
         let item = await db.Resenas.findOne({
             attributes: [
@@ -126,7 +127,7 @@ router.put("/api/resenas/:id", async (req, res) => {
 // ejemplo de body: {"fecha_resena":"2021-10-10","comentario":"Muy entretenido!","calificacion":5,"user_name":"user10"}
 
 // Ruta de reseña: eliminar.
-router.delete("/api/resenas/:id", async (req, res) => {
+router.delete("/api/resenas/:id", authenticateJWT, authorizeUser(['fachialva']), async (req, res) => {
     try {
         let data = await db.Resenas.destroy({
             where: { id: req.params.id },

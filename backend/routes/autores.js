@@ -1,9 +1,9 @@
 const express = require("express");
 const db = require("../base-orm/sequelize-init");
 const { Op, ValidationError } = require("sequelize");
-// const auth = require("../seguridad/auth");
 const router = express.Router();
 const moment = require("moment");
+const { authenticateJWT, authorizeUser } = require("../seguridad/auth"); // Importa el middleware de autenticación y autorización
 
 // ROUTER AUTORES
 
@@ -42,7 +42,7 @@ router.get("/api/autores", async function (req, res) {
 
 
 // obtener autor por ID 
-router.get("/api/autores/:id", async function (req, res) {
+router.get("/api/autores/:id", authenticateJWT, authorizeUser(['ticigatica']), async function (req, res) {
     try {
         let item = await db.Autores.findOne({
             attributes: [
@@ -66,7 +66,7 @@ router.get("/api/autores/:id", async function (req, res) {
 });
 
 // crear un autor
-router.post("/api/autores/", async (req, res) => {
+router.post("/api/autores/", authenticateJWT, authorizeUser(['ticigatica']), async (req, res) => {
     try {
         let data = await db.Autores.create({
                 id: req.body.id,
@@ -84,7 +84,7 @@ router.post("/api/autores/", async (req, res) => {
 });
 
 // actualizar un autor
-router.put("/api/autores/:id", async (req, res) => {
+router.put("/api/autores/:id", authenticateJWT, authorizeUser(['ticigatica']), async (req, res) => {
     try {
         let item = await db.Autores.findOne({
             attributes: [
@@ -125,7 +125,7 @@ router.put("/api/autores/:id", async (req, res) => {
 });
 
 // eliminar un autor
-router.delete("/api/autores/:id", async (req, res) => {
+router.delete("/api/autores/:id", authenticateJWT, authorizeUser(['ticigatica']), async (req, res) => {
     try {
         let data = await db.Autores.destroy({
             where: { id: req.params.id },

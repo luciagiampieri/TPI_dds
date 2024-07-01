@@ -1,9 +1,9 @@
 const express = require("express");
 const db = require("../base-orm/sequelize-init");
 const { Op, ValidationError } = require("sequelize");
-// const auth = require("../seguridad/auth");
 const moment = require("moment");
 const router = express.Router();
+const { authenticateJWT, authorizeUser } = require("../seguridad/auth"); // Importa el middleware de autenticación y autorización
 
 // Rutas de Editoriales.
 
@@ -40,7 +40,7 @@ router.get("/api/editoriales", async function (req, res) {
 
 
 // Ruta de editorial: obtener por ID.
-router.get("/api/editoriales/:id", async function (req, res) {
+router.get("/api/editoriales/:id", authenticateJWT, authorizeUser(['candepaez']), async function (req, res) {
     try {
         let item = await db.Editoriales.findOne({
             attributes: [
@@ -67,7 +67,7 @@ router.get("/api/editoriales/:id", async function (req, res) {
 // ejemplo de uso: http://localhost:4444/api/editoriales/1
 
 // Ruta de editoriales: crear.
-router.post("/api/editoriales/", async (req, res) => {
+router.post("/api/editoriales/", authenticateJWT, authorizeUser(['candepaez']), async (req, res) => {
     try {
         let data = await db.Editoriales.create({
             nombre: req.body.nombre,
@@ -83,7 +83,7 @@ router.post("/api/editoriales/", async (req, res) => {
 }); // ejemplo de uso: http://localhost:4444/api/editoriales/
 
 // Ruta de editorial: actualizar.
-router.put("/api/editoriales/:id", async (req, res) => {
+router.put("/api/editoriales/:id", authenticateJWT, authorizeUser(['candepaez']), async (req, res) => {
     try {
         let item = await db.Editoriales.findOne({
             attributes: [
@@ -120,8 +120,8 @@ router.put("/api/editoriales/:id", async (req, res) => {
 }); // ejemplo de uso: http://localhost:4444/api/editoriales/1
 
 
-// Ruta de editoriales: eliminar.
-router.delete("/api/editoriales/:id", async (req, res) => {
+// Ruta de editoriales: eliminar. 
+router.delete("/api/editoriales/:id", authenticateJWT, authorizeUser(['candepaez']), async (req, res) => {
     try {
         let data = await db.Editoriales.destroy({
             where: { id: req.params.id },

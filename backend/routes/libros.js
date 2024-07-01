@@ -2,8 +2,8 @@ const express = require("express");
 const db = require("../base-orm/sequelize-init");
 const { Op, ValidationError } = require("sequelize");
 const moment = require("moment");
-// const auth = require("../seguridad/auth");
 const router = express.Router();
+const { authenticateJWT, authorizeUser } = require("../seguridad/auth"); // Importa el middleware de autenticación y autorización
 
 // Rutas de LIBROS.
 
@@ -42,7 +42,7 @@ router.get("/api/libros", async function (req, res, next) {
 
 
 // Ruta de libros: obtener por ID.
-router.get("/api/libros/:id", async function (req, res, next) {
+router.get("/api/libros/:id", authenticateJWT, authorizeUser(['lugiampieri']), async function (req, res, next) {
       try {
             let item = await db.Libros.findOne({
                   attributes: [
@@ -68,7 +68,7 @@ router.get("/api/libros/:id", async function (req, res, next) {
 });
 
 // Ruta de libros: crear.
-router.post("/api/libros/", async (req, res) => {
+router.post("/api/libros/", authenticateJWT, authorizeUser(['lugiampieri']), async (req, res) => {
       try {
             let data = await db.Libros.create({
                   id: req.body.id,
@@ -87,7 +87,7 @@ router.post("/api/libros/", async (req, res) => {
 });
 
 // Ruta de libros: actualizar.
-router.put("/api/libros/:id", async (req, res) => {
+router.put("/api/libros/:id", authenticateJWT, authorizeUser(['lugiampieri']), async (req, res) => {
       try {
             let item = await db.Libros.findOne({
                   attributes: [
@@ -130,7 +130,7 @@ router.put("/api/libros/:id", async (req, res) => {
 });
 
 // Ruta de libros: eliminar.
-router.delete("/api/libros/:id", async (req, res) => {
+router.delete("/api/libros/:id", authenticateJWT, authorizeUser(['lugiampieri']), async (req, res) => {
       try {
             let data = await db.Libros.destroy({
                   where: { id: req.params.id },
