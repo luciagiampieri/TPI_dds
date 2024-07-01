@@ -169,7 +169,7 @@ const Login = () => {
                               <img src={barbie} alt="Logo" className="mb-3" style={{ maxWidth: '100px' }} />
                               <h5 className="card-title">Iniciar Sesión</h5>
                               <form onSubmit={handleLogin}>
-                              <div className="me-2">
+                              <div className="mb-3">
                                     <label htmlFor="usuario" className="col-form-label">Usuario</label>
                                     <input
                                     type="text"
@@ -179,7 +179,7 @@ const Login = () => {
                                     onChange={(e) => setUsuario(e.target.value)}
                                     />
                               </div>
-                              <div className="mb-3">
+                              <div className="mb-2">
                                     <label htmlFor="clave" className="col-form-label">Clave</label>
                                     <input
                                     type="password"

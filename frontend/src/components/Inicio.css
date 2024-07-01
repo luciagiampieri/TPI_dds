@@ -56,6 +56,9 @@ p {
   background-color: #6e4760; 
 }
 
+.btn.btn-lg.btn-outline-primary.w-100:active {
+  background-color: #6e4760; /* Cambia el color de fondo cuando se hace clic */
+}
 
 .text-info {
   color: #6e4760 !important; 
@@ -64,3 +67,6 @@ p {
 .text-primary {
   color: #6e4760 !important; 
 }
+
+
+
