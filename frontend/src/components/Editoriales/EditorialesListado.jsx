@@ -14,25 +14,25 @@ export default function EditorialesListado({
             <table className="table table-hover table-sm table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th className="text-center">Nombre</th>
-                        <th className="text-center">Dirección</th>
-                        <th className="text-center" style={{ width: "15%" }}>Fecha Fundacion</th>
-                        <th className="text-center">Pais</th>
-                        <th className="text-center">Acciones</th>
+                        <th className="text-center" style={{ width: "15%" }}>Nombre</th>
+                        <th className="text-center" style={{ width: "15%" }}>Dirección</th>
+                        <th className="text-center" style={{ width: "10%" }}>Fecha Fundacion</th>
+                        <th className="text-center" style={{ width: "10%" }}>Pais</th>
+                        <th className="text-center" style={{ width: "8%" }}>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     {Items.map((Item) => (
                         <tr key={Item.id}>
-                            <td className="text-center align-middle">{Item.nombre}</td>
-                            <td className="text-center align-middle">{Item.direccion}</td>
-                            <td className="text-center align-middle">
+                            <td className="text-center align-middle" style={{ width: "15%" }}>{Item.nombre}</td>
+                            <td className="text-center align-middle" style={{ width: "15%" }}>{Item.direccion}</td>
+                            <td className="text-center align-middle" style={{ width: "10%" }}>
                                 {moment(Item.fecha_fundacion).format("YYYY/MM/DD")}
-                                </td>
-                            <td className="text-center align-middle" style={{ width: "15%" }}>
+                            </td>
+                            <td className="text-center align-middle" style={{ width: "10%" }}>
                                 {Paises.find((pais) => pais.id === Item.id_pais)?.nombre || ""}
                             </td>
-                            <td className="text-center align-middle text-nowrap">
+                            <td className="text-center align-middle text-nowrap" style={{ width: "8%" }}>
                                 <button
                                     className="btn btn-sm btn-outline-primary"
                                     title="Consultar"

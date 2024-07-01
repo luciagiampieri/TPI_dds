@@ -83,12 +83,11 @@ import { config } from '../config';
 
 
 const URL = config.urlResourceResenas;
-const URLP = config.urlResourceResenasPublico
 
 
 const getAllResenas = async ({ comentario = '' }) => {
     try {
-        const response = await axiosInstance.get(URLP, {
+        const response = await axiosInstance.get(URL, {
             params: { comentario },
         });
         return response.data;
@@ -101,7 +100,7 @@ const getAllResenas = async ({ comentario = '' }) => {
 
 const getResenaById = async (id) => {
     try {
-        const response = await axiosInstance.get(`${URLP}/${id}`);
+        const response = await axiosInstance.get(`${URL}/${id}`);
         return response.data;
     } catch (error) {
         console.error('Error al obtener la reseña por ID:', error);

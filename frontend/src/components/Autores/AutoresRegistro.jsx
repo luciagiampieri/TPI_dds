@@ -72,7 +72,7 @@ function AutoresRegistro({
                         </div>
                         <div className="col-sm-8 col-md-6">
                             <input
-                                type="number"
+                                type="text"
                                 {...register("nro_documento", {
                                     required: { value: true, message: "El numero de documento es requerido" },
                                     minLength: {
@@ -80,8 +80,8 @@ function AutoresRegistro({
                                         message: "El numero debe tener al menos 7 caracteres",
                                     },
                                     maxLength: {
-                                        value: 8,
-                                        message: "El numero debe tener como máximo 8 caracteres",
+                                        value: 20,
+                                        message: "El numero debe tener como máximo 20 caracteres",
                                     },
                                 })}
                                 className={

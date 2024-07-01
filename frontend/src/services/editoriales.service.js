@@ -84,12 +84,13 @@ import { config } from '../config.js';
 
 
 const URL = config.urlResourceEditoriales;
+const URLP = config.urlResourceEditorialesPublico;
 
 
 // Obtener todas las editoriales con paginación
 const getAllEditoriales = async ({ nombre = '' }) => {
     try {
-        const response = await axiosInstance.get(URL, { params: { nombre } });
+        const response = await axiosInstance.get(URLP, { params: { nombre } });
         return response.data;
     } catch (error) {
         console.error('Error al obtener todas las editoriales:', error);
@@ -101,7 +102,7 @@ const getAllEditoriales = async ({ nombre = '' }) => {
 // Obtener una editorial por ID
 const getEditorialById = async (id) => {
     try {
-        const response = await axiosInstance.get(`${URL}/${id}`);
+        const response = await axiosInstance.get(`${URLP}/${id}`);
         return response.data;
     } catch (error) {
         console.error('Error al obtener la editorial por ID:', error);

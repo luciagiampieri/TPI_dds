@@ -16,30 +16,30 @@ export default function LibrosListado({
             <table className="table table-hover table-sm table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th className="text-center">Título</th>
-                        <th className="text-center" style={{ width: "15%" }}>Fecha Publicación</th>
-                        <th className="text-center">Autor</th>
-                        <th className="text-center">Editorial</th>
-                        <th className="text-center">Precio</th>
-                        <th className="text-center text-nowrap">Genero</th>
-                        <th className="text-center align-middle text-nowrap">Acciones</th>
+                        <th className="text-center align-middle" style={{ width: "15%" }}>Título</th>
+                        <th className="text-center align-middle" style={{ width: "10%" }}>Fecha Publicación</th>
+                        <th className="text-center align-middle" style={{ width: "10%" }}>Autor</th>
+                        <th className="text-center align-middle" style={{ width: "15" }}>Editorial</th>
+                        <th className="text-center align-middle" style={{ width: "8%" }}>Precio</th>
+                        <th className="text-center align-middle" style={{ width: "10%" }}>Genero</th>
+                        <th className="text-center align-middle" style={{ width: "8%" }}>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                 {Items.map((Item) => (
                     <tr key={Item.id}>
-                        <td className="text-center align-middle">{Item.titulo}</td>
-                        <td className="text-center align-middle">
+                        <td className="text-center align-middle" style={{ width: "15%" }}>{Item.titulo}</td>
+                        <td className="text-center align-middle" style={{ width: "10%" }}>
                             {moment(Item.fecha_publicacion).format("YYYY/MM/DD")}
                         </td>
-                        <td className="text-center align-middle">
+                        <td className="text-center align-middle" style={{ width: "10%" }}>
                             {Autores.find((autor) => autor.id === Item.id_autor)?.nombre || ""}
                         </td>
-                        <td className="text-center align-middle">
+                        <td className="text-center align-middle" style={{ width: "15%" }}>
                             {Editoriales.find((editorial) => editorial.id === Item.id_editorial)?.nombre || ""}
                         </td>
-                        <td className="text-center align-middle">{Item.precio}</td>
-                        <td className="text-center align-middle">
+                        <td className="text-center align-middle" style={{ width: "8%" }}>{Item.precio}</td>
+                        <td className="text-center align-middle" style={{ width: "10%" }}>
                             {Generos.find((genero) => genero.id === Item.id_genero)?.nombre || ""}
                         </td>
                         <td className="text-center align-middle text-nowrap">

@@ -1,10 +1,66 @@
 .inicio-container {
-    background-image: url('./images/tumblr_e8681ee0c07868765f6c9110cf9c34d0_b2bb5870_1280.jpg');
-    background-size: cover;
-    background-position: center;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  background-image: url('./images/rosa.jpg');;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container.mt-5.p-5 {
+  opacity: 0.8;
+  margin-top: 4% !important;
+}
+
+.lead.mb-4.text-secondary {
+  font-size: 1.1rem;
+}
+
+h3 {
+  font-family: 'Roboto', sans-serif; 
+  animation: colorChange 5s infinite;
+}
+
+p {
+  font-family: 'Roboto', sans-serif; 
+  animation: colorChange 5s infinite;
+  font-size: 0.9rem;
+}
+
+@keyframes colorChange {
+  0% {
+    color: #9e7583;
   }
-  
+  50% {
+    color: #6e4760; 
+  }
+  100% {
+    color: #9e7583; 
+}
+}
+
+
+.btn-outline-primary {
+  background-color: #6e4760;
+  border-color: #ce9aab;
+  color: white; 
+  border: #495057;
+}
+
+.btn-outline-primary:hover {
+  background-color: #9e7583; 
+  color: white;
+}
+
+
+.btn-outline-primary:active {
+  background-color: #6e4760; 
+}
+
+
+.text-info {
+  color: #6e4760 !important; 
+}
+
+.text-primary {
+  color: #6e4760 !important; 
+}

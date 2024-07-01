@@ -14,24 +14,24 @@ export default function AutoresListado({
             <table className="table table-hover table-sm table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th className="text-center">Tipo documento</th>
-                        <th className="text-center">Numero documento </th>
-                        <th className="text-center">Nombre</th>
-                        <th className="text-center">Apellido</th>
-                        <th className="text-center">Fecha nacimiento</th>
-                        <th className="text-center">Acciones</th>
+                        <th className="text-center align-middle" style={{ width: "15%" }}>Tipo documento</th>
+                        <th className="text-center align-middle" style={{ width: "10%" }}>Numero documento </th>
+                        <th className="text-center align-middle" style={{ width: "15%" }}>Nombre</th>
+                        <th className="text-center align-middle" style={{ width: "15%" }}>Apellido</th>
+                        <th className="text-center align-middle" style={{ width: "10%" }}>Fecha nacimiento</th>
+                        <th className="text-center align-middle" style={{ width: "8%" }}>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                 {Items.map((Item) => (
                     <tr key={Item.id}>
-                        <td className="text-center align-middle">
+                        <td className="text-center align-middle" style={{ width: "15%" }}>
                             {Tipodoc.find((tipodoc) => tipodoc.tipo === Item.tipo_documento)?.descripcion|| ""}
                         </td>
-                        <td className="text-center align-middle">{Item.nro_documento}</td>
-                        <td className="text-center align-middle">{Item.nombre}</td>
-                        <td className="text-center align-middle">{Item.apellido}</td>
-                        <td className="text-center align-middle">{moment(Item.fecha_nacimiento).format("YYYY-MM-DD")}</td>
+                        <td className="text-center align-middle" style={{ width: "10%" }}>{Item.nro_documento}</td>
+                        <td className="text-center align-middle" style={{ width: "15%" }}>{Item.nombre}</td>
+                        <td className="text-center align-middle" style={{ width: "15%" }}>{Item.apellido}</td>
+                        <td className="text-center align-middle" style={{ width: "10%" }}>{moment(Item.fecha_nacimiento).format("YYYY-MM-DD")}</td>
                         
                         <td className="text-center align-middle text-nowrap">
                             <button

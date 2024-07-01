@@ -14,26 +14,24 @@ export default function ResenasListado({
             <table className="table table-hover table-sm table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th className="text-center">Libro</th>
-                        <th className="text-center">
-                            Fecha Reseña
-                        </th>
-                        <th className="text-center">Comentario</th>
-                        <th className="text-center">Calificación</th>
-                        <th className="text-center">Usuario</th>
-                        <th className="text-center">Acciones</th>
+                        <th className="text-center" style={{ width: "15%" }}>Libro</th>
+                        <th className="text-center" style={{ width: "8%" }}>Fecha Reseña</th>
+                        <th className="text-center" style={{ width: "25%" }}>Comentario</th>
+                        <th className="text-center" style={{ width: "5%" }}>Calificación</th>
+                        <th className="text-center" style={{ width: "10%" }}>Usuario</th>
+                        <th className="text-center" style={{ width: "8%" }}>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     {Items.map((Item) => (
                         <tr key={Item.id}>
-                            <td className="text-center align-middle" style={{ width: "25%" }}>
+                            <td className="text-center align-middle" style={{ width: "15%" }}>
                                 {Libros.find((libro) => libro.id === Item.id_libro)?.titulo || ""}
                             </td>
-                            <td className="text-center align-middle" style={{ width: "20%" }}>{moment(Item.fecha_resena).format("YYYY/MM/DD")}</td>
-                            <td className="text-center align-middle" style={{ width: "15%" }}>{Item.comentario}</td>
-                            <td className="text-center align-middle" style={{ width: "15%" }}>{Item.calificacion}</td>
-                            <td className="text-center align-middle" style={{ width: "15%" }}>{Item.user_name}</td>
+                            <td className="text-center align-middle" style={{ width: "8%" }}>{moment(Item.fecha_resena).format("YYYY/MM/DD")}</td>
+                            <td className="text-center align-middle" style={{ width: "25%" }}>{Item.comentario}</td>
+                            <td className="text-center align-middle" style={{ width: "5%" }}>{Item.calificacion}</td>
+                            <td className="text-center align-middle" style={{ width: "10%" }}>{Item.user_name}</td>
                             <td className="text-center align-middle text-nowrap">
                                 <button
                                     className="btn btn-sm btn-outline-primary"

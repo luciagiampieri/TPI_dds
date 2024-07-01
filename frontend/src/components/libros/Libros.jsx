@@ -40,7 +40,7 @@ function Libros() {
 
       useEffect(() => {
             async function BuscarAutores() {
-                  let data = await autoresService.getAllAutores();
+                  let data = await autoresService.getAllAutores({ nombre: "" });
                   setAutores(data.Items || []);
             }
             BuscarAutores();

@@ -1,3 +1,15 @@
+
+
+/* const PrivateRoute = ({ children }) => {
+  let location = useLocation();
+  return localStorage.getItem('accessToken') ? (
+      children
+  ) : (
+      <Navigate to="/login" state={{ from: location }} replace />
+  );
+}; */
+// location.state.from.pathname
+
 import "./App.css";
 import React from 'react';
 import { BrowserRouter, Route, Routes, Navigate, useLocation } from "react-router-dom";
@@ -10,20 +22,9 @@ import Libros from "./components/Libros/Libros";
 import Autores from "./components/Autores/Autores";
 import Editoriales from "./components/Editoriales/Editoriales";
 import Login from './components/Login';
-
-
-const PrivateRoute = ({ children }) => {
-  let location = useLocation();
-  return localStorage.getItem('accessToken') ? (
-      children
-  ) : (
-      <Navigate to="/login" state={{ from: location }} replace />
-  );
-};
-// location.state.from.pathname
-
-
-
+import AutoresPublico from './components/Autores/AutoresPublico';
+import EditorialesPublico from './components/Editoriales/EditorialesPublico';
+import PrivateRoute from './PrivateRoute';
 
 function App() {
   return (
@@ -35,8 +36,12 @@ function App() {
           <Routes>
             <Route path="/inicio" element={<Inicio />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/resenas" element={<PrivateRoute><Resenas /></PrivateRoute>} />
-            <Route path="/libros" element={<PrivateRoute><Libros /></PrivateRoute>} />
+            {/*RUTAS PUBLICAS*/}
+            <Route path="/resenas" element={<Resenas />} />
+            <Route path="/libros" element={<Libros />} />
+            <Route path="/autoresPublico" element={<AutoresPublico/>} />
+            <Route path="/editorialesPublico" element={<EditorialesPublico/>} />
+            {/*RUTAS PRIVADAS*/}
             <Route path="/autores" element={<PrivateRoute><Autores /></PrivateRoute>} />
             <Route path="/editoriales" element={<PrivateRoute><Editoriales /></PrivateRoute>} />
             <Route path="*" element={<Navigate to="/inicio" replace />} />
@@ -47,6 +52,5 @@ function App() {
     </>
   );
 }
-
 
 export default App;

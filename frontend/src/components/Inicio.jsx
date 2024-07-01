@@ -1,73 +1,54 @@
-// src/components/Inicio.jsx
-
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import { motion } from 'framer-motion';
-import './Inicio.css'; // Asegúrate de tener este archivo para estilos personalizados
+import './Inicio.css';
 
 
 function Inicio() {
   return (
     <div className="inicio-container">
-      <div
-        className="container mt-5 p-5 bg-light rounded text-center"
-        style={{ marginBottom: '50px', backgroundColor: 'rgba(255, 255, 255, 0.8)' }}
-      >
-        <motion.h1
-          className="mb-4"
-          animate={{ scale: [1, 1.2, 1] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        >
-          Bienvenido a BarbieBiblioteca
-        </motion.h1>
-        <motion.p
-          className="lead mb-4"
-          animate={{ opacity: [0, 1, 0] }}
-          transition={{ duration: 3, repeat: Infinity }}
-        >
-          Gestiona tus libros, reseñas y más con facilidad.
-        </motion.p>
+      <div className="container mt-5 p-5 bg-light rounded text-center shadow-lg">
+        <h3 className="mb-4 text-primary display-4">Bienvenido a BarbieBiblioteca</h3>
+        <p className="lead mb-4 text-secondary">Gestiona tus libros, reseñas y más con facilidad.</p>
+
         <div className="row mb-4">
-          <div className="col-md-6">
-            <motion.div
-              className="p-4 bg-white rounded shadow-sm h-100"
-              whileHover={{ scale: 1.05 }}
-            >
-              <h5>Backend</h5>
-              <p>NodeJs, Express, WebApiRest, Swagger, Sequelize, Sqlite.</p>
-            </motion.div>
-          </div>
-          <div className="col-md-6">
-            <motion.div
-              className="p-4 bg-white rounded shadow-sm h-100"
-              whileHover={{ scale: 1.05 }}
-            >
-              <h5>Frontend</h5>
-              <p>Single Page Application con React, HTML, CSS y Bootstrap.</p>
-            </motion.div>
+          <div className="col-md-12 mb-3">
+            <div className="p-4 bg-white rounded shadow-sm h-100">
+              <h5 className="text-info">Tecnologías Utilizadas</h5>
+              <p><strong>Backend:</strong> NodeJs, Express, WebApiRest, Swagger, Sequelize, Sqlite.</p>
+              <p><strong>Frontend:</strong> Single Page Application con React, HTML, CSS y Bootstrap.</p>
+            </div>
           </div>
         </div>
-        <div className="row">
+
+        <div className="row justify-content-center">
           <div className="col-md-3 col-sm-6 mb-3">
-            <Link to="/libros" className="btn btn-lg btn-primary w-100">
+            <Link to="/libros" className="btn btn-lg btn-outline-primary w-100">
               <i className="fas fa-book"></i> Ver Libros
             </Link>
           </div>
+        </div>
+
+        <div className="row justify-content-center">
           <div className="col-md-3 col-sm-6 mb-3">
-            <Link to="/resenas" className="btn btn-lg btn-primary w-100">
+            <Link to="/resenas" className="btn btn-lg btn-outline-primary w-100">
               <i className="fas fa-star"></i> Ver Reseñas
             </Link>
           </div>
+        </div>
+
+        <div className="row justify-content-center">
           <div className="col-md-3 col-sm-6 mb-3">
-            <Link to="/editoriales" className="btn btn-lg btn-primary w-100">
+            <Link to="/editoriales" className="btn btn-lg btn-outline-primary w-100">
               <i className="fas fa-list"></i> Ver Editoriales
             </Link>
           </div>
+        </div>
+
+        <div className="row justify-content-center">
           <div className="col-md-3 col-sm-6 mb-3">
-            <Link to="/autores" className="btn btn-lg btn-primary w-100">
+            <Link to="/autores" className="btn btn-lg btn-outline-primary w-100">
               <i className="fas fa-user"></i> Ver Autores
             </Link>
           </div>
@@ -76,6 +57,5 @@ function Inicio() {
     </div>
   );
 }
-
 
 export { Inicio };

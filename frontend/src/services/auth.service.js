@@ -1,4 +1,5 @@
 import axios from 'axios';
+import axiosInstance from './axiosInstance';
 
 
 const refreshToken = async () => {
@@ -16,5 +17,22 @@ const refreshToken = async () => {
       }
 };
 
+const logout = async () => {
+      try {
+            const refreshToken = localStorage.getItem('refreshToken');
+            await axiosInstance.post('/api/logout', { token: refreshToken });
+      } catch (error) {
+            console.error('Error logging out:', error);
+            } finally {
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('refreshToken');
+            window.location.href = '/inicio';
+      }
+      };
 
-export default refreshToken;
+const authService = {
+      refreshToken,
+      logout,
+};
+
+export default authService;

@@ -3,14 +3,14 @@ const db = require("../base-orm/sequelize-init");
 const { Op, ValidationError } = require("sequelize");
 const moment = require("moment");
 const router = express.Router();
-const { authenticateJWT, authorizeUser } = require("../seguridad/auth"); // Importa el middleware de autenticación y autorización
+// const { authenticateJWT, authorizeUser } = require("../seguridad/auth"); // Importa el middleware de autenticación y autorización
 
 
 // Rutas de LIBROS.
 
 
 // Obtener todos los libros / obtener los libros filtrados por titulo.
-router.get("/api/librosALL", async function (req, res, next) {
+router.get("/api/libros", async function (req, res, next) {
       try {
             let where = {};
             let include = [];
@@ -48,7 +48,7 @@ router.get("/api/librosALL", async function (req, res, next) {
 
 
 // Ruta de libros: obtener por ID.
-router.get("/api/librosALL/:id", async function (req, res, next) {
+router.get("/api/libros/:id", async function (req, res, next) {
       try {
             let item = await db.Libros.findOne({
                   attributes: [

@@ -1,6 +1,6 @@
 const { Sequelize, DataTypes } = require('sequelize');
 // cambiar la ruta!!!! a nuestra ruta
-const sequelize = new Sequelize('sqlite:' + "./.data/BD_dds.db");
+const sequelize = new Sequelize('sqlite:' + "./.data/BD_dds.db", {timezone: '+00:00'});
 
 //Definir el modelo
 const Libros = sequelize.define(
@@ -26,7 +26,7 @@ const Libros = sequelize.define(
                   },
             },
             fecha_publicacion: {
-                  type: DataTypes.DATE,
+                  type: DataTypes.DATEONLY,
                   allowNull: false,
                   validate: {
                         notNull: {
@@ -190,7 +190,7 @@ const Autores= sequelize.define(
                   },
             },
             fecha_nacimiento: {
-                  type: DataTypes.DATE,
+                  type: DataTypes.DATEONLY,
                   allowNull: false,
                   validate: {
                         notNull: {
@@ -268,7 +268,7 @@ const Editoriales= sequelize.define(
                   },
             },
             fecha_fundacion: {
-                  type: DataTypes.DATE,
+                  type: DataTypes.DATEONLY,
                   allowNull: false,
                   validate: {
                         notNull: {
@@ -360,7 +360,7 @@ const Resenas= sequelize.define(
                   },
             },
             fecha_resena: {
-                  type: DataTypes.DATE,
+                  type: DataTypes.DATEONLY,
                   allowNull: false,
                   validate: {
                         notNull: {

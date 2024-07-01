@@ -1,12 +1,13 @@
-import axios from 'axios';
+import axiosInstance from './axiosInstance';
 import { config } from '../config.js';
 
 const URL = config.urlResourceAutores
+const URLP = config.urlResourceAutoresPublico
 
 // Obtener todos los autores con paginación
 const getAllAutores = async ({ nombre = ''}) => {
     try {
-        const response = await axios.get(URL, {
+        const response = await axiosInstance.get(URLP, {
             params: {
                 nombre,
             },
@@ -21,7 +22,7 @@ const getAllAutores = async ({ nombre = ''}) => {
 // Obtener un autor por ID
 const getAutorById = async (id) => {
     try {
-        const response = await axios.get(`${URL}/${id}`);
+        const response = await axiosInstance.get(`${URLP}/${id}`);
         return response.data;
     } catch (error) {
         console.error('Error al obtener el autor por ID:', error);
@@ -33,7 +34,7 @@ const getAutorById = async (id) => {
 const createAutor = async (autor) => {
     try {
         console.log("Datos enviados al backend:", autor);
-        const response = await axios.post(`${URL}`, autor);
+        const response = await axiosInstance.post(`${URL}`, autor, { headers: { requiresAuth: true } });
         return response.data;
     } catch (error) {
         console.error('Error al crear el autor:', error);
@@ -44,7 +45,7 @@ const createAutor = async (autor) => {
 // Actualizar un autor existente
 const updateAutor = async (id, autor) => {
     try {
-        await axios.put(`${URL}/${id}`, autor);
+        await axiosInstance.put(`${URL}/${id}`, autor, { headers: { requiresAuth: true } });
     } catch (error) {
         console.error('Error al actualizar el autor:', error);
         throw error;
@@ -54,7 +55,7 @@ const updateAutor = async (id, autor) => {
 // Eliminar un autor
 const deleteAutor = async (id) => {
     try {
-        await axios.delete(`${URL}/${id}`);
+        await axiosInstance.delete(`${URL}/${id}`, { headers: { requiresAuth: true } });
     } catch (error) {
         console.error('Error al eliminar el autor:', error);
         throw error;

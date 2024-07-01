@@ -98,10 +98,23 @@ table {
   border-style: solid;
   border-color: lightgrey;
   border-width: thin;
-  margin: 0em 0.5rem 1rem 0.5rem;
+  margin: 0 auto; /* Add this line to center the table */
+  margin-top: 1%;
   padding: 0.5rem;
   box-shadow: 0.62rem 0.62rem 0.31rem rgb(173, 144, 165);
   opacity: 0.8;
+  max-width: 90%;
+}
+
+.btn.btn-primary.float-end {
+  background-color: #6e4760;
+  border-color: #ce9aab;
+  color: white; 
+  border: #495057;
+  /* Add this line to change the text color */
+  margin-right: 6em; /* Add this line to separate the buttons */
+  margin-top: 2%;
+  margin-bottom: 2%;
 }
 
 tbody {
@@ -190,6 +203,8 @@ label:not([class^='custom-control']) {
   }
 }
 
+
+
 .pyBadge {
   background-color: #6c757d;
   color: white;
@@ -202,6 +217,10 @@ label:not([class^='custom-control']) {
   white-space: nowrap;
   vertical-align: baseline;
   border-radius: 0.25rem;
+  margin-left: 6em; /* Add this line to separate the buttons */
+  margin-top: 2%;
+  margin-bottom: 2%;
+  ;
 }
 
 /* mensajes de validacion */
@@ -280,6 +299,21 @@ thead {
   color: #fff; 
 }
 
+
+.btn.btn-secondary {
+  background-color: #9e7583; 
+  border-color: #9e7583; 
+  color: #fff; 
+}
+
+.btn.btn-secondary:hover {
+  background-color: #6e4760; 
+  color: white;/* Add this line to change the background color on hover */
+}
+
+.btn.btn.btn-secondary:active {
+  background-color: #6e4760; /* Cambia el color de fondo cuando se hace clic */
+}
 
 .modal-footer .btn {
   margin-left: 10px;
