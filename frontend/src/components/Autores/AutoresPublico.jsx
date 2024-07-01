@@ -2,6 +2,7 @@ import React from 'react';
 import autoresService from "../../services/autores.service";
 import tipo_documentosService from "../../services/tipo_documentos.service";
 import { useState, useEffect } from 'react';
+import moment from 'moment';
 
 export default function AutoresPublico() {
 
@@ -49,7 +50,7 @@ export default function AutoresPublico() {
                                 <tr key={autor.id}>
                                     <td className="text-center" style={{ width: "10%" }}>{autor.nombre}</td>
                                     <td className="text-center" style={{ width: "10%" }}>{autor.apellido}</td>
-                                    <td className="text-center" style={{ width: "10%" }}>{autor.fecha_nacimiento}</td>
+                                    <td className="text-center" style={{ width: "10%" }}>{moment(autor.fecha_fundacion).format("YYYY/MM/DD")}</td>
                                     <td className="text-center" style={{ width: "15%" }}>{tipoDocumento ? tipoDocumento.descripcion : 'Desconocido'}</td>
                                     <td className="text-center" style={{ width: "10%" }}>{autor.nro_documento}</td>
                                 </tr>

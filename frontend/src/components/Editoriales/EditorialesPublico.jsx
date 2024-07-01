@@ -2,6 +2,7 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 import editorialesService from "../../services/editoriales.service";
 import paisesService from "../../services/paises.service";
+import moment from 'moment';
 
 export default function EditorialesPublico() {
 
@@ -48,7 +49,7 @@ export default function EditorialesPublico() {
                             <tr key={editorial.id}>
                                 <td className="text-center" style={{ width: "15%" }}>{editorial.nombre}</td>
                                 <td className="text-center" style={{ width: "15%" }}>{editorial.direccion}</td>
-                                <td className="text-center" style={{ width: "10%" }}>{editorial.fecha_fundacion}</td>
+                                <td className="text-center" style={{ width: "10%" }}>{moment(editorial.fecha_fundacion).format("YYYY/MM/DD")}</td>
                                 <td className="text-center" style={{ width: "10%" }}>{pais ? pais.nombre : 'Desconocido'}</td>
                             </tr>
                         );
