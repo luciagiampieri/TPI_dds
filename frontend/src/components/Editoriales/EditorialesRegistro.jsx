@@ -45,7 +45,6 @@ function EditorialesRegistro({
                                         message: "Nombre debe tener como máximo 50 caracteres",
                                     },
                                 })}
-                                autoFocus
                                 className={
                                     "form-control " + (errors?.nombre ? "is-invalid" : "")
                                 }
@@ -113,9 +112,11 @@ function EditorialesRegistro({
                                     "form-control " + (errors?.fecha_fundacion ? "is-invalid" : "")
                                 }
                             />
-                            <div className="invalid-feedback">
-                                {errors?.fecha_fundacion?.message}
-                            </div>
+                            {errors.fecha_fundacion && touchedFields.fecha_fundacion && (
+                                <div className="invalid-feedback">
+                                    {errors.fecha_fundacion.message}
+                                </div>
+                            )}
                         </div>
                     </div>
 
@@ -145,9 +146,9 @@ function EditorialesRegistro({
                                         </option>
                                     ))}
                             </select>
-                            <div className="invalid-feedback">
-                                {errors?.id_pais?.message}
-                            </div>
+                            {errors.id_pais && touchedFields.id_pais && (
+                                <div className="invalid-feedback">{errors.id_pais.message}</div>
+                            )}
                         </div>
                     </div>
                 </fieldset>

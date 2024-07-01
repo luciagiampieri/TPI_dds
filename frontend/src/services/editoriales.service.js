@@ -4,12 +4,11 @@ import { config } from '../config.js';
 const URL = config.urlResourceEditoriales;
 
 // Obtener todas las editoriales con paginación
-const getAllEditoriales = async ({ nombre = '', Pagina = 1 }) => {
+const getAllEditoriales = async ({ nombre = '' }) => {
     try {
         const response = await axios.get(URL, {
             params: {
                 nombre,
-                Pagina,
             },
         });
         return response.data; // Asegurarse de devolver el objeto completo

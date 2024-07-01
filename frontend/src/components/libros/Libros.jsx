@@ -25,9 +25,6 @@ function Libros() {
       const [Titulo, setTitulo] = useState(""); // estado para filtrar la búsqueda de libros
       const [Libro, setLibro] = useState([]); // estado para mostrar el listado de libros
       const [Item, setItem] = useState(null); // estado para mostrar el libro en el formulario
-      const [RegistrosTotal, setRegistrosTotal] = useState(0); // estado para mostrar la cantidad de registros
-      const [Pagina, setPagina] = useState(1); // estado para mostrar la página actual
-      const [Paginas, setPaginas] = useState([]); // estado para mostrar las páginas disponibles
 
       const [Autores, setAutores] = useState([]); // estado para mostrar los autores disponibles
       const [Editoriales, setEditoriales] = useState([]); // estado para mostrar las editoriales disponibles
@@ -51,7 +48,7 @@ function Libros() {
 
       useEffect(() => {
             async function BuscarEditoriales() {
-                  let data = await editorialesService.getAllEditoriales({ nombre: '', Pagina: 1 });
+                  let data = await editorialesService.getAllEditoriales({ nombre: "" });
                   setEditoriales(data.Items || []); // Asegurarse de que data.Items sea un array
             }
             BuscarEditoriales();
@@ -59,27 +56,14 @@ function Libros() {
 
       useEffect(() => {
             Buscar();
-      }, [Titulo, Pagina]);
+      }, [Titulo]);
 
-      async function Buscar(_pagina) {
-            if (_pagina && _pagina !== Pagina) {
-                  setPagina(_pagina); // Si se pasa la página por parámetro, se actualiza el estado
-            } else {
-                  _pagina = Pagina; // Si no se pasa la página por parámetro, se usa la página actual
-            }
-
+      async function Buscar() {
             modalDialogService.BloquearPantalla(true); // Bloquea la pantalla
-            const data = await librosService.getAllLibros({ titulo: Titulo, Pagina: _pagina }); // Busca los libros según el título y la página
+            const data = await librosService.getAllLibros({ titulo: Titulo }); // Busca los libros según el título
             modalDialogService.BloquearPantalla(false); // Desbloquea la pantalla
 
             setLibro(data.Items); // Actualiza el estado con los libros encontrados
-            setRegistrosTotal(data.RegistrosTotal); // Actualiza el estado con la cantidad de registros encontrados
-
-            const arrPaginas = [];
-            for (let i = 1; i <= Math.ceil(data.RegistrosTotal / 10); i++) {
-                  arrPaginas.push(i);
-            }
-            setPaginas(arrPaginas); // Actualiza el estado con las páginas disponibles
       }
 
       async function BuscarId(item, accionABMC) {
@@ -99,7 +83,6 @@ function Libros() {
       async function Agregar() {
             setAccionABMC("A");
             setItem({
-                  id: 0,
                   titulo: "",
                   fecha_publicacion: moment().format("YYYY-MM-DD"),
                   precio: 0,
@@ -113,8 +96,11 @@ function Libros() {
             const data = Libro.map((item) => ({
                   Título: item.titulo,
                   "Fecha Publicacion": item.fecha_publicacion,
-                  Autor: Autores.find((autor) => autor.id === item.id_autor)?.nombre || "",
-                  Editorial: Editoriales.find((editorial) => editorial.id === item.id_editorial)?.nombre || "",
+                  Autor:
+                        Autores.find((autor) => autor.id === item.id_autor)?.nombre || "",
+                  Editorial:
+                        Editoriales.find((editorial) => editorial.id === item.id_editorial)
+                              ?.nombre || "",
                   Precio: item.precio,
                   Genero: Generos.find((genero) => genero.id === item.id_genero)?.nombre || "",
             })); // Mapea los libros encontrados y los muestra en el listado.
@@ -123,15 +109,18 @@ function Libros() {
             const workbook = XLSX.utils.book_new(); // Crea un libro de trabajo
             XLSX.utils.book_append_sheet(workbook, worksheet, "Libros"); // Agrega la hoja de cálculo al libro de trabajo
 
-            const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" }); // Escribe el libro de trabajo en un buffer
+            const excelBuffer = XLSX.write(workbook, {
+                  bookType: "xlsx",
+                  type: "array",
+            }); // Escribe el libro de trabajo en un buffer
             const dataBlob = new Blob([excelBuffer], { type: "application/octet-stream" }); // Crea un blob con el buffer
             saveAs(dataBlob, "LibrosListado.xlsx"); // Descarga el archivo
       };
 
       async function Eliminar(item) {
             await librosService.deleteLibro(item.id);
-            await Buscar();
-      }; // Elimina un libro y actualiza el estado con los libros encontrados.
+            Buscar();
+      } // Elimina un libro y actualiza el estado con los libros encontrados.
 
       async function Grabar(item) {
             if (AccionABMC === "A") {
@@ -146,8 +135,8 @@ function Libros() {
             setTimeout(() => {
                   modalDialogService.Alert(
                         "Registro " +
-                        (AccionABMC === "A" ? "agregado" : "modificado") +
-                        " correctamente."
+                              (AccionABMC === "A" ? "agregado" : "modificado") +
+                              " correctamente."
                   );
             }, 0);
       }
@@ -181,10 +170,6 @@ function Libros() {
                                     Eliminar,
                                     Modificar,
                                     Imprimir,
-                                    Pagina,
-                                    RegistrosTotal,
-                                    Paginas,
-                                    Buscar,
                                     Generos,
                                     Autores,
                                     Editoriales,

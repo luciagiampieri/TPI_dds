@@ -7,10 +7,6 @@ export default function LibrosListado({
     Eliminar,
     Modificar,
     Imprimir,
-    Pagina,
-    RegistrosTotal,
-    Paginas,
-    Buscar,
     Generos = [],
     Autores = [],
     Editoriales = [],
@@ -26,6 +22,7 @@ export default function LibrosListado({
                         <th className="text-center">Editorial</th>
                         <th className="text-center">Precio</th>
                         <th className="text-center text-nowrap">Genero</th>
+                        <th className="text-center align-middle text-nowrap">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -73,33 +70,14 @@ export default function LibrosListado({
                 </tbody>
             </table>
 
-            <div className="paginador">
-                <div className="row">
-                    <div className="col">
-                        <span className="pyBadge">Registros: {RegistrosTotal}</span>
-                    </div>
-                    <div className="col text-center">
-                        Pagina: &nbsp;
-                        <select
-                            value={Pagina}
-                            onChange={(e) => {
-                                Buscar(Number(e.target.value));
-                            }}
-                        >
-                            {Paginas?.map((x) => (
-                                <option value={x} key={x}>
-                                    {x}
-                                </option>
-                            ))}
-                        </select>
-
-                        &nbsp; de {Paginas?.length}
-                    </div>
-                    <div className="col">
-                        <button className="btn btn-primary float-end" onClick={Imprimir}>
-                            <i className="fa fa-print"></i> Imprimir
-                        </button>
-                    </div>
+            <div className="row">
+                <div className="col">
+                    <span className="pyBadge">Registros: {Items.length}</span>
+                </div>
+                <div className="col">
+                    <button className="btn btn-primary float-end" onClick={Imprimir}>
+                        <i className="fa fa-print"></i> Imprimir
+                    </button>
                 </div>
             </div>
         </div>

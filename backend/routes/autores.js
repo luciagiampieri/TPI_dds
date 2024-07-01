@@ -5,8 +5,10 @@ const { Op, ValidationError } = require("sequelize");
 const router = express.Router();
 const moment = require("moment");
 
+// ROUTER AUTORES
+
 // obtener autores por filtro nombre
-router.get("/api/autores", async function (req, res, next) {
+router.get("/api/autores", async function (req, res) {
     try {
         // Construir el filtro `where`
         let where = {};
@@ -14,9 +16,6 @@ router.get("/api/autores", async function (req, res, next) {
         if (req.query.nombre != undefined && req.query.nombre !== "") {
             where.nombre = { [Op.like]: `%${req.query.nombre}%` };
         }
-
-        const Pagina = parseInt(req.query.Pagina, 10) || 1;
-        const TamañoPagina = 10;
 
         // Consultar los autores con paginación
         const { count, rows } = await db.Autores.findAndCountAll({
@@ -30,22 +29,20 @@ router.get("/api/autores", async function (req, res, next) {
             ],
             order: [["id", "ASC"]],
             where,  // Aplicar el filtro
-            offset: (Pagina - 1) * TamañoPagina,
-            limit: TamañoPagina,
         });
 
         // Devolver los resultados
         return res.json({ Items: rows, RegistrosTotal: count });
     } catch (error) {
         // Manejar los errores
-        console.error("Error al obtener autores:", error);
-        return res.status(500).json({ error: "Error al obtener autores" });
+        console.error("Error in GET /api/autores", err);
+        res.status(500).json({ error: "Internal server error" });
     }
 });
 
 
 // obtener autor por ID 
-router.get("/api/autores/:id", async function (req, res, next) {
+router.get("/api/autores/:id", async function (req, res) {
     try {
         let item = await db.Autores.findOne({
             attributes: [
@@ -58,6 +55,9 @@ router.get("/api/autores/:id", async function (req, res, next) {
             ],
             where: { id: req.params.id },
         });
+        if (!item) {
+            return res.status(404).json({ message: "Autor no encontrada" });
+        }
         res.json(item);
     } catch (error) {
         console.error("Error al obtener el autor:", error);
@@ -66,86 +66,78 @@ router.get("/api/autores/:id", async function (req, res, next) {
 });
 
 // crear un autor
-router.post("/api/autores", async (req, res) => {
+router.post("/api/autores/", async (req, res) => {
     try {
-          let data = await db.Autores.create({
+        let data = await db.Autores.create({
                 id: req.body.id,
                 tipo_documento: req.body.tipo_documento,
                 nro_documento: req.body.nro_documento,
                 nombre: req.body.nombre,
                 apellido: req.body.apellido,
-                fecha_nacimiento: req.body.fecha_nacimiento,
-          });
-          res.status(200).json(data.dataValues);
+                fecha_nacimiento: moment(req.body.fecha_nacimiento).format("YYYY-MM-DD"),
+        });
+        res.status(200).json(data.dataValues);
     } catch (err) {
-          console.error("Error in POST /api/autores", err);
-          res.status(500).json({ error: "Internal server error" });
+        console.error("Error in POST /api/autores", err);
+        res.status(500).json({ error: "Internal server error" });
     }
 });
 
 // actualizar un autor
 router.put("/api/autores/:id", async (req, res) => {
     try {
-          let item = await db.Autores.findOne({
-                attributes: [
-                    "id",
-                    "tipo_documento",
-                    "nro_documento",
-                    "nombre",
-                    "apellido",
-                    "fecha_nacimiento",
-                ],
-                where: { id: req.params.id },
-          });
-          if (!item) {
-                res.status(404).json({ message: "Autor no encontrado" });
-                return;
-          }
+        let item = await db.Autores.findOne({
+            attributes: [
+                "id",
+                "tipo_documento",
+                "nro_documento",
+                "nombre",
+                "apellido",
+                "fecha_nacimiento",
+            ],
+            where: { id: req.params.id },
+        });
+        if (!item) {
+            res.status(404).json({ message: "Autor no encontrado" });
+            return;
+        }
 
-          item.id = req.body.id;
-          item.tipo_documento = req.body.tipo_documento;
-          item.nro_documento = req.body.nro_documento;
-          item.nombre = req.body.nombre;
-          item.apellido = req.body.apellido;
-          item.fecha_nacimiento = req.body.fecha_nacimiento;
-          await item.save();
+        item.id = req.body.id;
+        item.tipo_documento = req.body.tipo_documento;
+        item.nro_documento = req.body.nro_documento;
+        item.nombre = req.body.nombre;
+        item.apellido = req.body.apellido;
+        item.fecha_nacimiento = moment(req.body.fecha_nacimiento).format("YYYY-MM-DD");
+        await item.save();
 
-          res.sendStatus(204);
+        res.sendStatus(204);
     } catch (err) {
-          if (err instanceof ValidationError) {
-                let messages = "";
-                err.errors.forEach(
-                (x) => (messages += x.path + ": " + x.message + "\n")
-                );
-                res.status(400).json({ message: messages });
-          } else {
-                throw err;
-          }
+        if (err instanceof ValidationError) {
+            let messages = "";
+            err.errors.forEach(
+            (x) => (messages += x.path + ": " + x.message + "\n")
+            );
+            res.status(400).json({ message: messages });
+        } else {
+            throw err;
+        }
     } 
 });
 
 // eliminar un autor
 router.delete("/api/autores/:id", async (req, res) => {
     try {
-        // Buscar el autor por ID
-        let item = await db.Autores.findOne({
+        let data = await db.Autores.destroy({
             where: { id: req.params.id },
-        });
-        
-        // Si el autor no existe, devolver un error 404
-        if (!item) {
-            res.status(404).json({ message: "Autor no encontrado" });
-            return;
-        }
-
-        // Eliminar el autor
-        await item.destroy();
-        
-        // Devolver una respuesta de éxito
-        res.sendStatus(200);
+            });
+            if (data === 1) {
+                res.sendStatus(200);
+            } else {
+                res.sendStatus(404);
+            }
     } catch (err) {
-        console.error("Error al eliminar el autor:", err);
-        res.status(500).json({ error: "Error al eliminar el autor" });
+        console.error("Error in POST /api/autores/", err);
+        res.status(500).json({ error: "Internal server error" });
     }
 });
 

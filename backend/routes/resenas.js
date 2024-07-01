@@ -2,18 +2,19 @@ const express = require("express");
 const db = require("../base-orm/sequelize-init");
 const { Op, ValidationError } = require("sequelize");
 const moment = require("moment");
-// const auth = require("../seguridad/auth");
 const router = express.Router();
 
+// Rutas de RESEÑAS.
+
+// Obtener por filtro.
 router.get("/api/resenas", async function (req, res, next) {
     try {
         let where = {};
+
         if (req.query.comentario != undefined && req.query.comentario !== "") {
             where.comentario = { [Op.like]: `%${req.query.comentario}%` };
         };
 
-        const Pagina = parseInt(req.query.Pagina) || 1;
-        const TamañoPagina = 10;
         const { count, rows } = await db.Resenas.findAndCountAll({
             attributes: [
                 "id",
@@ -25,13 +26,12 @@ router.get("/api/resenas", async function (req, res, next) {
             ],
             order: [["id", "ASC"]],
             where,
-            offset: (Pagina - 1) * TamañoPagina,
-            limit: TamañoPagina,
         });
 
         return res.json({ Items: rows, RegistrosTotal: count });
     } catch (error) {
-        next(error);
+        console.error("Error in GET /api/resenas", err);
+        res.status(500).json({ error: "Internal server error" });
     }
 });
 // ejemplo de uso con filtro de comentario: http://localhost:4444/api/resenas?comentario=entretenido&Pagina=1
@@ -50,22 +50,17 @@ router.get("/api/resenas/:id", async function (req, res, next) {
                 "user_name",
             ],
             where: { id: req.params.id },
-            include: [
-                {
-                    model: db.Libros,
-                    as: 'libro',
-                    attributes: ["titulo"]
-                }
-            ]
+            
         });
         if (item) {
             res.json(item);
         } else {
             res.status(404).json({ message: "Reseña no encontrada" });
         }
-    } catch (err) {
-        console.error("Error in GET /api/resenas/:id", err);
+    } catch (error) {
+        console.error("Error in GET /api/resenas", err);
         res.status(500).json({ error: "Internal server error" });
+
     }
 }); // ejemplo de uso: http://localhost:4444/api/resenas/1
 
@@ -122,7 +117,7 @@ router.put("/api/resenas/:id", async (req, res) => {
             );
             res.status(400).json({ message: messages });
         } else {
-            console.error("Error in PUT /api/resenas/:id", err);
+            console.error("Error in PUT /api/resenas/", err);
             res.status(500).json({ error: "Internal server error" });
         }
     }
@@ -142,7 +137,7 @@ router.delete("/api/resenas/:id", async (req, res) => {
             res.sendStatus(404);
         }
     } catch (err) {
-        console.error("Error in DELETE /api/resenas/:id", err);
+        console.error("Error in DELETE /api/resenas/", err);
         res.status(500).json({ error: "Internal server error" });
     }
 }); // ejemplo de uso: DELETE http://localhost:4444/api/resenas/1

@@ -14,17 +14,29 @@ function ResenasBuscar({ Comentario, setComentario, Buscar, Agregar }) {
                             className="form-control"
                             onChange={(e) => setComentario(e.target.value)}
                             value={Comentario}
+                            minLength="3"
+                            maxLength="500"
                             autoFocus
                         />
                     </div>
                 </div>
                 <hr />
+
+                {/* Botones */}
                 <div className="row">
                     <div className="col text-center botones">
-                        <button type="button" className="btn btn-primary" onClick={() => Buscar(1)}>
+                    <button
+                            type="button"
+                            className="btn btn-primary"
+                            onClick={() => Buscar(1)}
+                        >
                             <i className="fa fa-search"> </i> Buscar
                         </button>
-                        <button type="button" className="btn btn-primary" onClick={Agregar}>
+                        <button
+                            type="button"
+                            className="btn btn-primary"
+                            onClick={() => Agregar()}
+                        >
                             <i className="fa fa-plus"> </i> Agregar
                         </button>
                     </div>

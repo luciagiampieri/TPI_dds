@@ -148,7 +148,7 @@ const Autores= sequelize.define(
                   },
             },
             nro_documento: {
-                  type: DataTypes.INTEGER,
+                  type: DataTypes.STRING(20),
                   allowNull: false,
                   validate: {
                         notEmpty: {

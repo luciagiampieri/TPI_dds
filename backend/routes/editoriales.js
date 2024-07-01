@@ -1,14 +1,14 @@
 const express = require("express");
 const db = require("../base-orm/sequelize-init");
 const { Op, ValidationError } = require("sequelize");
-const moment = require("moment");
 // const auth = require("../seguridad/auth");
+const moment = require("moment");
 const router = express.Router();
 
 // Rutas de Editoriales.
 
 // Obtener por filtro.
-router.get("/api/editoriales", async function (req, res, next) {
+router.get("/api/editoriales", async function (req, res) {
     try {
         let where = {};
 
@@ -16,8 +16,7 @@ router.get("/api/editoriales", async function (req, res, next) {
             where.nombre = { [Op.like]: `%${req.query.nombre}%` };
         };
 
-        const Pagina = parseInt(req.query.Pagina) || 1;
-        const TamañoPagina = 10;
+
         const { count, rows } = await db.Editoriales.findAndCountAll({
             attributes: [
                 "id",
@@ -28,13 +27,12 @@ router.get("/api/editoriales", async function (req, res, next) {
             ],
             order: [["id", "ASC"]],
             where,
-            offset: (Pagina - 1) * TamañoPagina,
-            limit: TamañoPagina,
         });
 
-        return res.json({ Items: rows, RegistrosTotal: count });
+        return res.json({Items: rows, RegistrosTotal: count})
     } catch (error) {
-        next(error);
+        console.error("Error in GET /api/editoriales", err);
+        res.status(500).json({ error: "Internal server error" });
     }
 });
 // ejemplo de uso sin filtro: https://localhost:4444/api/editoriales
@@ -42,7 +40,7 @@ router.get("/api/editoriales", async function (req, res, next) {
 
 
 // Ruta de editorial: obtener por ID.
-router.get("/api/editoriales/:id", async function (req, res, next) {
+router.get("/api/editoriales/:id", async function (req, res) {
     try {
         let item = await db.Editoriales.findOne({
             attributes: [
@@ -60,7 +58,8 @@ router.get("/api/editoriales/:id", async function (req, res, next) {
         }
         res.json(item);
     } catch (error) {
-        next(error);
+        console.error("Error in GET /api/editoriales", err);
+        res.status(500).json({ error: "Internal server error" });
     }
 });
 
@@ -133,7 +132,7 @@ router.delete("/api/editoriales/:id", async (req, res) => {
                 res.sendStatus(404);
             }
     } catch (err) {
-        console.error("Error in POST /api/resenas/", err);
+        console.error("Error in POST /api/editoriales/", err);
         res.status(500).json({ error: "Internal server error" });
     }
 }); // ejemplo de uso: http://localhost:4444/api/editoriales/1

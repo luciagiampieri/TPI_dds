@@ -1,6 +1,7 @@
 // Para acceder a la BD usando aa-sqlite
 const db = require('aa-sqlite');
 
+// Crear la BD en caso de que no exista
 async function CrearDBSiNoExiste() {
       // abrir BD, si no existe la crea
       await db.open("./.data/BD_dds.db");
@@ -65,15 +66,19 @@ async function CrearDBSiNoExiste() {
             "SELECT COUNT(*) as Cantidad FROM sqlite_schema WHERE type='table' AND name='Generos'",
             []
       );
+      // Verificar si la tabla existe
       if (response.Cantidad > 0) {
             exists = true;
       }
+      // Si no existe
       if (!exists) {
+            // Crear tabla Generos
             await db.run(
                   `CREATE TABLE Generos (
                   id INTEGER PRIMARY KEY AUTOINCREMENT, 
                   nombre TEXT NOT NULL)`
             );
+            // Agrega valores
             console.log("Tabla Generos creada!");
             await db.run(
                   `INSERT INTO Generos (nombre) VALUES 
@@ -96,10 +101,13 @@ async function CrearDBSiNoExiste() {
             "SELECT COUNT(*) as Cantidad FROM sqlite_schema WHERE type='table' AND name='Resenas'",
             []
       );
+      // Verificar si la tabla existe
       if (response.Cantidad > 0) {
             exists = true;
       }
+      // Si no existe
       if (!exists) {
+            // Crear tabla Resenas
             await db.run(
                   `CREATE TABLE Resenas (
                   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -113,6 +121,7 @@ async function CrearDBSiNoExiste() {
                   )`
             );
             console.log("Tabla Resenas creada!");
+            // Agrega valores
             await db.run(
                   `INSERT INTO Resenas (id_libro, fecha_resena, comentario, calificacion, user_name) VALUES 
                   (1, '2021-06-01', 'Me fascina este libro. Muy cautivante. Lo recomendaría sin dudas!', 5, 'user1'),
@@ -164,16 +173,20 @@ async function CrearDBSiNoExiste() {
             "SELECT COUNT(*) as Cantidad FROM sqlite_schema WHERE type='table' AND name='User_Name'",
             []
       );
+      // Verificar si la tabla existe
       if (response.Cantidad > 0) {
             exists = true;
       }
+      // Si no existe
       if (!exists) {
+            // Crear tabla User_Name
             await db.run(
                   `CREATE TABLE User_Name (
                   user_name TEXT PRIMARY KEY, 
                   edad INTEGER NOT NULL)`
             );
             console.log("Tabla User_Name creada!");
+            // Agrega valores
             await db.run(
                   `INSERT INTO User_Name (user_name, edad) VALUES
                   ('user1', 25), 
@@ -192,22 +205,24 @@ async function CrearDBSiNoExiste() {
       // Tabla tipo documento
       exists = false;
       response = await db.get(
-            "SELECT COUNT(*) as Cantidad FROM sqlite_schema WHERE type='table' AND name='TipoDocumentos'",
+            "SELECT COUNT(*) as Cantidad FROM sqlite_schema WHERE type='table' AND name='Tipo_Documentos'",
             []
       );
-
+      // Verificar si la tabla existe
       if (response.Cantidad > 0) {
             exists = true;
       }
-
+      // Si no existe
       if (!exists) {
             await db.run(
+                  // Crear tabla Tipo_Documentos
                   `CREATE TABLE Tipo_Documentos (
                   tipo INT PRIMARY KEY,
                   descripcion VARCHAR(50)
                   )`
             );
-            console.log("Tabla TiposDocumento creada!");
+            console.log("Tabla Tipos_Documento creada!");
+            // Agrega valores
             await db.run(
                   "INSERT INTO Tipo_Documentos (tipo, descripcion) VALUES (1, 'DNI'), (2, 'Cédula'), (3, 'Pasaporte'), (4, 'Numero de Identificacion de Extranjero')"
             );
@@ -220,24 +235,26 @@ async function CrearDBSiNoExiste() {
             "SELECT COUNT(*) as Cantidad FROM sqlite_schema WHERE type='table' AND name='Autores'",
             []
       );
-
+      // Verificar si la tabla existe
       if (response.Cantidad > 0) {
             exists = true;
       }
-
+      // Si no existe
       if (!exists) {
             await db.run(
+                  // Crear tabla Autores
                   `CREATE TABLE Autores (
                   id INTEGER PRIMARY KEY AUTOINCREMENT,
                   nombre TEXT NOT NULL,
                   apellido TEXT NOT NULL,
                   fecha_nacimiento DATE NOT NULL,
                   tipo_documento INT NOT NULL,
-                  nro_documento INT NOT NULL,
+                  nro_documento VARCHAR(20) NOT NULL,
                   FOREIGN KEY (tipo_documento) REFERENCES Tipo_Documentos(tipo)
                   )`
             );
             console.log("Tabla Autores creada!");
+            // Agrega valores
             await db.run(
                   `INSERT INTO Autores (tipo_documento, nro_documento, nombre, apellido, fecha_nacimiento) VALUES
                   (1, '12345678', 'Jane', 'Austen', '1775-12-16'),
@@ -267,9 +284,13 @@ async function CrearDBSiNoExiste() {
       exists = false;
       sql = "SELECT COUNT(*) as Cantidad FROM sqlite_schema WHERE type='table' AND name='Editoriales'",
       response = await db.get(sql, []);
-      if (response.Cantidad > 0) exists = true;
+      // Verificar si la tabla existe
+      if (response.Cantidad > 0) 
+            exists = true;
+      // Si no existe
       if (!exists) {
             await db.run(
+                  // Crear tabla Editoriales
                   `CREATE TABLE Editoriales (
                   id INTEGER PRIMARY KEY AUTOINCREMENT, 
                   nombre VARCHAR(50) NOT NULL, 
@@ -304,10 +325,13 @@ async function CrearDBSiNoExiste() {
       exists = false;
       sql = "SELECT COUNT(*) as Cantidad FROM sqlite_schema WHERE type='table' AND name='Paises'",
       response = await db.get(sql, []);
+      // Verificar si la tabla existe
       if (response.Cantidad > 0)
             exists = true;
+      // Si no existe
       if (!exists) {
             await db.run(
+                  // Crear tabla Paises
                   `CREATE TABLE Paises (
                   id INTEGER PRIMARY KEY AUTOINCREMENT, 
                   nombre VARCHAR(50) NOT NULL)`
@@ -335,6 +359,7 @@ async function CrearDBSiNoExiste() {
       db.close();
 }
 
+// Ejecutar la función
 CrearDBSiNoExiste();
 
 // Exportar la base de datos para poder usarla en otros archivos

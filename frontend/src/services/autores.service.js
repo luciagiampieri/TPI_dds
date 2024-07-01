@@ -5,15 +5,14 @@ import { config } from '../config.js';
 const URL = config.urlResourceAutores
 
 // Obtener todos los autores con paginación
-const getAllAutores = async (nombre = '', pagina = 1) => {
+const getAllAutores = async ({nombre = ''}) => {
     try {
-        const response = await axios.get(`${URL}`, {
+        const response = await axios.get(URL, {
             params: {
                 nombre,
-                Pagina: pagina,
             },
         });
-        return response.data.Items;
+        return response.data;
     } catch (error) {
         console.error('Error al obtener todos los autores:', error);
         throw error;
@@ -34,7 +33,7 @@ const getAutorById = async (id) => {
 // Crear un nuevo autor
 const createAutor = async (autor) => {
     try {
-        const response = await axios.post(`${URL}`, autor);
+        const response = await axios.post(URL, autor);
         return response.data;
     } catch (error) {
         console.error('Error al crear el autor:', error);

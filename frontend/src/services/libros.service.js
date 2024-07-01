@@ -3,13 +3,11 @@ import { config } from "../config";
 
 const URL = config.urlResourceLibros;
 
-// Obtener todos los libros con paginación
-const getAllLibros = async ({ titulo = '', Pagina = 1 }) => {
+const getAllLibros = async ({ titulo = '' }) => {
       try {
             const response = await axios.get(URL, {
                   params: {
                         titulo,
-                        Pagina,
                   },
             });
             return response.data; // Asegurarse de devolver el objeto completo
@@ -18,6 +16,7 @@ const getAllLibros = async ({ titulo = '', Pagina = 1 }) => {
             throw error;
       }
 };
+
 
 // Obtener un libro por ID
 const getByIdLibros = async (id) => {

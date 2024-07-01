@@ -3,9 +3,10 @@ import EditorialesBuscar from "./EditorialesBuscar";
 import EditorialesListado from "./EditorialesListado";
 import EditorialesRegistro from "./EditorialesRegistro";
 import editorialesService from "../../services/editoriales.service";
-import paisesService from "../../services/paises.services";
+import paisesService from "../../services/paises.service";
 import modalDialogService from "../../services/modalDialog.service";
 
+import moment from "moment";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 
@@ -17,14 +18,11 @@ function Editoriales() {
         C: "(Consultar)",
         L: "(Listado)",
     };
-    const [AccionABMC, setAccionABMC] = useState("L");
 
+    const [AccionABMC, setAccionABMC] = useState("L");
     const [Nombre, setNombre] = useState(""); // estado para filtrar la búsqueda de autores
     const [Editorial, setEditorial] = useState([]); // estado para mostrar el listado de autores
     const [Item, setItem] = useState(null); // estado para mostrar el autor en el formulario
-    const [RegistrosTotal, setRegistrosTotal] = useState(0); // estado para mostrar la cantidad de registros
-    const [Pagina, setPagina] = useState(1); // estado para mostrar la página actual
-    const [Paginas, setPaginas] = useState([]); // estado para mostrar las páginas disponibles
     const [Paises, setPaises] = useState([]); // estado para guardar los países
 
     useEffect(() => {
@@ -37,27 +35,14 @@ function Editoriales() {
 
     useEffect(() => {
         Buscar();
-    }, [Nombre, Pagina]); // useEffect se ejecuta cada vez que Nombre o Pagina cambian.
+    }, [Nombre]); // useEffect se ejecuta cada vez que Nombre o Pagina cambian.
 
-    async function Buscar(_pagina) {
-        if (_pagina && _pagina !== Pagina) {
-            setPagina(_pagina);
-        } else {
-            _pagina = Pagina;
-        }
-    
-        modalDialogService.BloquearPantalla(true);
-        const data = await editorialesService.getAllEditoriales({ nombre: Nombre, Pagina: _pagina });
-        modalDialogService.BloquearPantalla(false);
-    
-        setEditorial(data.Items || []); // Asegurarse de que data.Items sea un array
-        setRegistrosTotal(data.RegistrosTotal);
-    
-        const arrPaginas = [];
-        for (let i = 1; i <= Math.ceil(data.RegistrosTotal / 10); i++) {
-            arrPaginas.push(i);
-        }
-        setPaginas(arrPaginas);
+    async function Buscar() {
+        modalDialogService.BloquearPantalla(true); // Bloquea la pantalla
+        const data = await editorialesService.getAllEditoriales({ nombre: Nombre }); // Busca los libros según el título
+        modalDialogService.BloquearPantalla(false); // Desbloquea la pantalla
+
+        setEditorial(data.Items); // Actualiza el estado con los libros encontrados
     }
 
     async function BuscarId(item, accionABMC) {
@@ -79,7 +64,7 @@ function Editoriales() {
         setItem({
             nombre: "",
             direccion: "",
-            fecha_fundacion: "",
+            fecha_fundacion: moment().format("YYYY-MM-DD"),
             id_pais: "",
         });
         modalDialogService.Alert("preparando el Alta...");
@@ -105,7 +90,7 @@ function Editoriales() {
 
     async function Eliminar(item) {
         await editorialesService.deleteEditorial(item.id);
-        await Buscar();
+        Buscar();
     } // Elimina un autor y actualiza el estado con los autores encontrados.
 
     async function Grabar(item) {
@@ -156,10 +141,6 @@ function Editoriales() {
                         Eliminar,
                         Modificar,
                         Imprimir,
-                        Pagina,
-                        RegistrosTotal,
-                        Paginas,
-                        Buscar,
                         Paises, // Pasar los países al componente EditorialesListado
                     }}
                 />

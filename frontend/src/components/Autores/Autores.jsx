@@ -4,6 +4,7 @@ import AutoresListado from "./AutoresListado";
 import AutoresRegistro from "./AutoresRegistro";
 import autoresService from "../../services/autores.service";
 import modalDialogService from "../../services/modalDialog.service";
+import tipo_documentosService from "../../services/tipo_documentos.service";
 
 
 import moment from "moment";
@@ -19,39 +20,30 @@ function Autores() {
         L: "(Listado)",
     };
     const [AccionABMC, setAccionABMC] = useState("L");
-
     const [Nombre, setNombre] = useState(""); // estado para filtrar la búsqueda de autores
-    const [Items, setItems] = useState([]); // estado para mostrar el listado de autores
+    const [Autor, setAutor] = useState([]); // estado para mostrar el listado de autores
     const [Item, setItem] = useState(null); // estado para mostrar el autor en el formulario
-    const [RegistrosTotal, setRegistrosTotal] = useState(0); // estado para mostrar la cantidad de registros
-    const [Pagina, setPagina] = useState(1); // estado para mostrar la página actual
-    const [Paginas, setPaginas] = useState([]); // estado para mostrar las páginas disponibles
+    const [ Tipo_Doc, setTipo_Doc] = useState(""); // estado para mostrar el tipo de documento en el formulario
 
     useEffect(() => {
-        async function BuscarAutores() {
-            let data = await autoresService.getAllAutores();
-            setItems(data);
+        async function BuscarTipo_Doc() {
+            let data = await tipo_documentosService.getAllTipoDocumentos();
+            setTipo_Doc(data);
         }
-        BuscarAutores();
+        BuscarTipo_Doc();
     }, []); // useEffect se ejecuta solo una vez. Busca los autores disponibles.
 
-    async function Buscar(_pagina) {
-        if (_pagina && _pagina !== Pagina) {
-            setPagina(_pagina); // Si se pasa la página por parámetro, se actualiza el estado
-        } else {
-            _pagina = Pagina; // Si no se pasa la página por parámetro, se usa la página actual
-        }
+    useEffect(() => {
+        Buscar();
+    }, [Nombre]); // useEffect se ejecuta cada vez que Nombre o Pagina cambian.
 
-        const data = await autoresService.getAllAutores({ nombre: Nombre, pagina: _pagina }); // Busca los autores según el título y la página
 
-        setItems(data); // Actualiza el estado con los autores encontrados
-        setRegistrosTotal(data.length); // Actualiza el estado con la cantidad de registros encontrados
+    async function Buscar() {
+        modalDialogService.BloquearPantalla(true); // Bloquea la pantalla
+        const data = await autoresService.getAllAutores({ nombre: Nombre }); // Busca los autores según el nombre
+        modalDialogService.BloquearPantalla(false); // Desbloquea la pantalla
 
-        const arrPaginas = [];
-        for (let i = 1; i <= Math.ceil(data.length / 10); i++) {
-            arrPaginas.push(i);
-        }
-        setPaginas(arrPaginas); // Actualiza el estado con las páginas disponibles
+        setAutor(data.Items); // Actualiza el estado con los autores encontrados
     }
 
     async function BuscarId(item, accionABMC) {
@@ -71,23 +63,23 @@ function Autores() {
     async function Agregar() {
         setAccionABMC("A");
         setItem({
-            id: 0,
-            tipo_documento: "",
+            tipo_documento: 0,
             nro_documento: "",
             nombre: "",
             apellido: "",
             fecha_nacimiento: moment().format("YYYY-MM-DD"),
         });
+        modalDialogService.Alert("preparando el Alta...");
         console.log(Item);
     } // Agrega un autor y actualiza el estado con el autor creado y el tipo de acción.
 
     const Imprimir = () => {
-        const data = Items.map((item) => ({
+        const data = Autor.map((item) => ({
+            "Tipo Documento": Tipo_Doc.find((tipo_doc) => tipo_doc.tipo === item.tipo_documento)?.descripcion || "",
+            "Nro Documento": item.nro_documento,
             Nombre: item.nombre,
             Apellido: item.apellido,
             "Fecha Nacimiento": item.fecha_nacimiento,
-            "Tipo Documento": item.tipo_documento,
-            "Nro Documento": item.nro_documento,
         })); // Mapea los autores encontrados y los muestra en el listado.
 
         const worksheet = XLSX.utils.json_to_sheet(data); // Convierte los datos a una hoja de cálculo
@@ -101,7 +93,7 @@ function Autores() {
 
     async function Eliminar(item) {
         await autoresService.deleteAutor(item.id);
-        await Buscar();
+        Buscar();
     } // Elimina un autor y actualiza el estado con los autores encontrados.
 
     async function Grabar(item) {
@@ -144,23 +136,20 @@ function Autores() {
                 />
             )}
 
-            {AccionABMC === "L" && Items && Items.length > 0 && (
+            {AccionABMC === "L" && Autor && Autor.length > 0 && (
                 <AutoresListado
                     {...{
-                        Items,
+                        Items: Autor,
                         Consultar,
                         Eliminar,
                         Modificar,
                         Imprimir,
-                        Pagina,
-                        RegistrosTotal,
-                        Paginas,
-                        Buscar,
+                        Tipo_Doc,
                     }}
                 />
             )}
 
-            {AccionABMC === "L" && Items && Items.length === 0 && (
+            {AccionABMC === "L" && Autor && Autor.length === 0 && (
                 <div className="alert alert-info mensajesAlert">
                     <i className="fa fa-exclamation-sign"></i>
                     No se encontraron registros...
@@ -171,6 +160,7 @@ function Autores() {
                 <AutoresRegistro
                     {...{
                         AccionABMC,
+                        Tipo_Doc,
                         Item,
                         Grabar,
                         Volver,

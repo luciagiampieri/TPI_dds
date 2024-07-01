@@ -29,7 +29,7 @@ function LibrosBuscar({ titulo, setTitulo, Buscar, Agregar }) {
                         <button
                             type="button"
                             className="btn btn-primary"
-                            onClick={() => Buscar(1)}
+                            onClick={() => Buscar()}
                         >
                             <i className="fa fa-search"> </i> Buscar
                         </button>

@@ -1,4 +1,5 @@
 import React from "react";
+import moment from "moment";
 
 export default function AutoresListado({
     Items,
@@ -6,11 +7,7 @@ export default function AutoresListado({
     Eliminar,
     Modificar,
     Imprimir,
-    Pagina,
-    RegistrosTotal,
-    Paginas,
-    Buscar,
-    tipo_documento,
+    Tipo_Documento = [],
 }) {
     return (
         <div className="table-responsive">
@@ -30,13 +27,13 @@ export default function AutoresListado({
                 {Items.map((Item) => (
                     <tr key={Item.id}>
                         <td className="text-center align-middle" style={{ width: "15%" }}>
-                            {tipo_documento.find((TipoDoc) => TipoDoc.tipo === Item.tipo_documento)?.descripcion || ""}
+                            {Tipo_Documento.find((TipoDoc) => TipoDoc.tipo === Item.tipo_documento)?.descripcion || ""}
                         </td>
                         <td className="text-center align-middle">{Item.nro_documento}</td>
                         <td className="text-center align-middle">{Item.nombre}</td>
                         <td className="text-center align-middle">{Item.apellido}</td>
                         <td className="text-center align-middle" style={{ width: "15%" }}>
-                            {Item.fecha_nacimiento}
+                        {moment(Item.fecha_nacimiento).format("YYYY/MM/DD")}
                         </td>
                         <td className="text-center align-middle text-nowrap">
                             <button
@@ -66,33 +63,14 @@ export default function AutoresListado({
                 </tbody>
             </table>
 
-            <div className="paginador">
-                <div className="row">
-                    <div className="col">
-                        <span className="pyBadge">Registros: {RegistrosTotal}</span>
-                    </div>
-                    <div className="col text-center">
-                        Pagina: &nbsp;
-                        <select
-                            value={Pagina}
-                            onChange={(e) => {
-                                Buscar(e.target.value);
-                            }}
-                        >
-                            {Paginas?.map((x) => (
-                                <option value={x} key={x}>
-                                    {x}
-                                </option>
-                            ))}
-                        </select>
-
-                        &nbsp; de {Paginas?.length}
-                    </div>
-                    <div className="col">
-                        <button className="btn btn-primary float-end" onClick={Imprimir}>
-                            <i className="fa fa-print"></i> Imprimir
-                        </button>
-                    </div>
+            <div className="row">
+                <div className="col">
+                    <span className="pyBadge">Registros: {Items.length}</span>
+                </div>
+                <div className="col">
+                    <button className="btn btn-primary float-end" onClick={Imprimir}>
+                        <i className="fa fa-print"></i> Imprimir
+                    </button>
                 </div>
             </div>
         </div>

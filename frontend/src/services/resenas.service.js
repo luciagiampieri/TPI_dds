@@ -1,14 +1,13 @@
 import axios from 'axios';
-import { config } from '../config.js';
+import { config } from "../config";
 
 const URL = config.urlResourceResenas;
 
-const getAllResenas = async ({ comentario = '', Pagina = 1 }) => {
+const getAllResenas = async ({ comentario = '' }) => {
     try {
         const response = await axios.get(URL, {
             params: {
                 comentario,
-                Pagina,
             },
         });
         return response.data;
@@ -17,6 +16,7 @@ const getAllResenas = async ({ comentario = '', Pagina = 1 }) => {
         throw error;
     }
 };
+
 
 const getResenaById = async (id) => {
     try {
@@ -27,6 +27,7 @@ const getResenaById = async (id) => {
         throw error;
     }
 };
+
 
 const createResena = async (resena) => {
     try {
@@ -56,6 +57,12 @@ const deleteResena = async (id) => {
     }
 };
 
-const resenasService = { getAllResenas, getResenaById, createResena, updateResena, deleteResena };
+const resenasService = { 
+    getAllResenas, 
+    getResenaById, 
+    createResena, 
+    updateResena, 
+    deleteResena 
+};
 
 export default resenasService;
