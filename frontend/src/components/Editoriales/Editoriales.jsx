@@ -88,10 +88,24 @@ function Editoriales() {
         saveAs(dataBlob, "EditorialListado.xlsx"); // Descarga el archivo
     };
 
+
     async function Eliminar(item) {
-        await editorialesService.deleteEditorial(item.id);
-        Buscar();
-    } // Elimina un autor y actualiza el estado con los autores encontrados.
+        modalDialogService.Confirm(
+            "¿Estás seguro de que deseas eliminar esta editorial?",
+            "Confirmar eliminación",
+            "Sí",
+            "No",
+            async () => {
+                await editorialesService.deleteEditorial(item.id);
+                modalDialogService.Alert("Editorial eliminada correctamente.", "Eliminación exitosa", "Aceptar", "", null, null, "success");
+                setTimeout(() => {
+                    Buscar();
+                }, 3000);
+            },
+            null,
+            'warning'
+        );
+    }
 
     async function Grabar(item) {
         if (AccionABMC === "A") {

@@ -96,10 +96,24 @@ function Resenas() {
         saveAs(dataBlob, "ReseñaListado.xlsx");
     };
 
+
     async function Eliminar(item) {
-        await resenasService.deleteResena(item.id);
-        Buscar();
-    };
+        modalDialogService.Confirm(
+            "¿Estás seguro de que deseas eliminar esta reseña?",
+            "Confirmar eliminación",
+            "Sí",
+            "No",
+            async () => {
+                await resenasService.deleteResena(item.id);
+                modalDialogService.Alert("Reseña eliminada correctamente.", "Eliminación exitosa", "Aceptar", "", null, null, "success");
+                setTimeout(() => {
+                    Buscar();
+                }, 3000);
+            },
+            null,
+            'warning'
+        );
+    }
 
     async function Grabar(item) {
         if (AccionABMC === "A") {

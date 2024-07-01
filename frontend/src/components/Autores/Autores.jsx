@@ -68,6 +68,7 @@ function Autores() {
             apellido: "",
             fecha_nacimiento: "",
         });
+        modalDialogService.Alert("preparando el Alta...");
         console.log(Item);
     } // Agrega una editorial y actualiza el estado con el autor creado y el tipo de acción.
 
@@ -89,10 +90,25 @@ function Autores() {
         saveAs(dataBlob, "AutoresListado.xlsx"); // Descarga el archivo
     };
 
+
     async function Eliminar(item) {
-        await autoresService.deleteAutor(item.id);
-        Buscar();
-    } // Elimina un autor y actualiza el estado con los autores encontrados.
+        modalDialogService.Confirm(
+            "¿Estás seguro de que deseas eliminar este autor?",
+            "Confirmar eliminación",
+            "Sí",
+            "No",
+            async () => {
+                await autoresService.deleteAutor(item.id);
+                modalDialogService.Alert("Autor eliminado correctamente.", "Eliminación exitosa", "Aceptar", "", null, null, "success");
+                setTimeout(() => {
+                    Buscar();
+                }, 3000);
+            },
+            null,
+            'warning'
+        );
+    }
+    
 
     async function Grabar(item) {
         console.log("Datos a grabar:", item);

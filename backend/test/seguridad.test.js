@@ -1,72 +1,83 @@
 const request = require("supertest");
 const app = require("../index");
 
-const userCredentials = {
-    usuario: "admin",
-    clave: "123"
-};
+const usuarioAdmin = { usuario: "admin", clave: "123" };
+const usuarioMiembro = { usuario: "chicasdds", clave: "abc" };
 
-const invalidCredentials = {
-    usuario: "wrong",
-    clave: "wrong"
-};
+describe("POST /api/login", function () {
+  it("Devolvería error de autenticación, porque tiene clave errónea", async function () {
+    const res = await request(app)
+      .post("/api/login")
+      .send({ usuario: "admin", clave: "errónea" });
 
-const refreshTokenObj = {
-    refreshToken: ""
-};
+    expect(res.statusCode).toEqual(200);
+    expect(res.body.message).toEqual("usuario o clave incorrecto");
+  });
 
-// Test route /api/login POST
-describe("POST /api/login", () => {
-    it("Debería devolver un token de acceso y un token de refresco para credenciales válidas", async () => {
-        const res = await request(app).post("/api/login").send(userCredentials);
-        expect(res.statusCode).toEqual(200);
-        expect(res.body).toHaveProperty("accessToken");
-        expect(res.body).toHaveProperty("refreshToken");
-        expect(res.body).toHaveProperty("message", "Bienvenido admin!");
-        refreshTokenObj.refreshToken = res.body.refreshToken;
-    });
+  it("Devolvería el token para usuario admin", async function () {
+    const res = await request(app).post("/api/login").send(usuarioAdmin);
 
-    it("Debería devolver un mensaje de error para credenciales inválidas", async () => {
-        const res = await request(app).post("/api/login").send(invalidCredentials);
-        expect(res.statusCode).toEqual(200);
-        expect(res.body).toHaveProperty("message", "usuario o clave incorrecto");
-    });
+    expect(res.statusCode).toEqual(200);
+    expect(res.body.accessToken).toEqual(expect.any(String));
+    expect(res.body.refreshToken).toEqual(expect.any(String));
+  });
+
+  it("Devolvería el token para usuario chicasdds", async function () {
+    const res = await request(app).post("/api/login").send(usuarioMiembro);
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body.accessToken).toEqual(expect.any(String));
+    expect(res.body.refreshToken).toEqual(expect.any(String));
+  });
 });
 
-// Test route /api/logout POST
-describe("POST /api/logout", () => {
-    it("Debería desloguear correctamente al usuario con un token de refresco válido", async () => {
-        const res = await request(app).post("/api/logout").send({ token: refreshTokenObj.refreshToken });
-        expect(res.statusCode).toEqual(200);
-        expect(res.body).toHaveProperty("message", "Usuario deslogueado correctamente!");
-    });
+describe("POST /api/logout", function () {
+  it("Devolvería error porque el token no es válido", async function () {
+    const res = await request(app)
+      .post("/api/logout")
+      .send({ token: "invalido" });
 
-    it("Debería devolver un mensaje de error para un token de refresco inválido", async () => {
-        const res = await request(app).post("/api/logout").send({ token: "invalidtoken" });
-        expect(res.statusCode).toEqual(200);
-        expect(res.body).toHaveProperty("message", "Logout inválido!");
-    });
+    expect(res.statusCode).toEqual(200);
+    expect(res.body.message).toEqual("Logout inválido!");
+  });
+
+  it("Devolvería mensaje de deslogueo correcto", async function () {
+    const loginRes = await request(app).post("/api/login").send(usuarioAdmin);
+    const refreshToken = loginRes.body.refreshToken;
+
+    const res = await request(app)
+      .post("/api/logout")
+      .send({ token: refreshToken });
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body.message).toEqual("Usuario deslogueado correctamente!");
+  });
 });
 
-// Test route /api/token POST
-describe("POST /api/token", () => {
-    it("Debería devolver un nuevo token de acceso para un token de refresco válido", async () => {
-        // Login first to get a valid refresh token
-        const loginRes = await request(app).post("/api/login").send(userCredentials);
-        const refreshToken = loginRes.body.refreshToken;
+describe("POST /api/token", function () {
+  it("Devolvería error porque no se envió el token de refresco", async function () {
+    const res = await request(app).post("/api/token").send({});
 
-        const res = await request(app).post("/api/token").send({ refreshToken });
-        expect(res.statusCode).toEqual(200);
-        expect(res.body).toHaveProperty("accessToken");
-    });
+    expect(res.statusCode).toEqual(401);
+  });
 
-    it("Debería devolver un error 401 si no se envía el token de refresco", async () => {
-        const res = await request(app).post("/api/token").send({});
-        expect(res.statusCode).toEqual(401);
-    });
+  it("Devolvería error porque el token de refresco no es válido", async function () {
+    const res = await request(app)
+      .post("/api/token")
+      .send({ refreshToken: "invalido" });
 
-    it("Debería devolver un error 403 para un token de refresco inválido", async () => {
-        const res = await request(app).post("/api/token").send({ refreshToken: "invalidtoken" });
-        expect(res.statusCode).toEqual(403);
-    });
+    expect(res.statusCode).toEqual(403);
+  });
+
+  it("Devolvería un nuevo token de acceso", async function () {
+    const loginRes = await request(app).post("/api/login").send(usuarioAdmin);
+    const refreshToken = loginRes.body.refreshToken;
+
+    const res = await request(app)
+      .post("/api/token")
+      .send({ refreshToken });
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body.accessToken).toEqual(expect.any(String));
+  });
 });

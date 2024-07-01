@@ -117,10 +117,24 @@ function Libros() {
             saveAs(dataBlob, "LibrosListado.xlsx"); // Descarga el archivo
       };
 
+      
       async function Eliminar(item) {
-            await librosService.deleteLibro(item.id);
-            Buscar();
-      } // Elimina un libro y actualiza el estado con los libros encontrados.
+            modalDialogService.Confirm(
+                "¿Estás seguro de que deseas eliminar este libro?",
+                "Confirmar eliminación",
+                "Sí",
+                "No",
+                async () => {
+                    await librosService.deleteLibro(item.id);
+                    modalDialogService.Alert("Libro eliminado correctamente.", "Eliminación exitosa", "Aceptar", "", null, null, "success");
+                    setTimeout(() => {
+                        Buscar();
+                    }, 3000);
+                },
+                null,
+                'warning'
+            );
+        }
 
       async function Grabar(item) {
             if (AccionABMC === "A") {
