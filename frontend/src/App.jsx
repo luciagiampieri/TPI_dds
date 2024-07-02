@@ -7,7 +7,7 @@ import { Menu } from "./components/Menu";
 import { Footer } from "./components/Footer";
 import { ModalDialog } from "./components/ModalDialog";
 import Resenas from "./components/Resenas/Resenas";
-import Libros from "./components/Libros/Libros";
+import Libros from "./components/Libro/Libros";
 import Autores from "./components/Autores/Autores";
 import Editoriales from "./components/Editoriales/Editoriales";
 import Login from './components/Login';
