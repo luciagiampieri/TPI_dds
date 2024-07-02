@@ -73,24 +73,49 @@ router.get("/api/libros/:id", async function (req, res) {
 
 
 // Crear un nuevo libro
+// router.post("/api/libros/", async (req, res) => {
+//       try {
+//             let data = await db.Libros.create({
+//                   id: req.body.id,
+//                   titulo: req.body.titulo,
+//                   fecha_publicacion: moment(req.body.fecha_publicacion).format("YYYY-MM-DD"),
+//                   id_autor: req.body.id_autor,
+//                   id_editorial: req.body.id_editorial,
+//                   precio: req.body.precio,
+//                   id_genero: req.body.id_genero,
+//             });
+//             res.status(200).json(data.dataValues); // 200 significa que la solicitud ha tenido éxito
+//       } catch (err) {
+//             console.error("Error in POST /api/libros/", err);
+//             res.status(500).json({ error: "Internal server error" }); //error 500 significa error interno del servidor
+//       }
+// }); // ejemplo de uso: http://localhost:4444/api/libros/
+// con body en formato JSON: {"id": 1, "titulo": "El principito", "fecha_publicacion": "1943-04-06", "id_autor": 1, "id_editorial": 1, "precio": 100, "id_genero": 1}
+
+// Crear un nuevo libro
 router.post("/api/libros/", async (req, res) => {
       try {
-            let data = await db.Libros.create({
-                  id: req.body.id,
-                  titulo: req.body.titulo,
-                  fecha_publicacion: moment(req.body.fecha_publicacion).format("YYYY-MM-DD"),
-                  id_autor: req.body.id_autor,
-                  id_editorial: req.body.id_editorial,
-                  precio: req.body.precio,
-                  id_genero: req.body.id_genero,
-            });
-            res.status(200).json(data.dataValues); // 200 significa que la solicitud ha tenido éxito
+          let data = await db.Libros.create({
+              id: req.body.id,
+              titulo: req.body.titulo,
+              fecha_publicacion: moment(req.body.fecha_publicacion).format("YYYY-MM-DD"),
+              id_autor: req.body.id_autor,
+              id_editorial: req.body.id_editorial,
+              precio: req.body.precio,
+              id_genero: req.body.id_genero,
+          });
+          res.status(200).json(data.dataValues); // 200 significa que la solicitud ha tenido éxito
       } catch (err) {
-            console.error("Error in POST /api/libros/", err);
-            res.status(500).json({ error: "Internal server error" }); //error 500 significa error interno del servidor
+          if (err instanceof ValidationError) { // si el error es de validación
+              let messages = "";
+              err.errors.forEach((x) => (messages += x.message + ""));
+              res.status(400).json({ message: messages }); // 400 significa error en la solicitud del cliente
+          } else {
+              console.error("Error in POST /api/libros/", err);
+              res.status(500).json({ error: "Internal server error" }); //error 500 significa error interno del servidor
+          }
       }
-}); // ejemplo de uso: http://localhost:4444/api/libros/
-// con body en formato JSON: {"id": 1, "titulo": "El principito", "fecha_publicacion": "1943-04-06", "id_autor": 1, "id_editorial": 1, "precio": 100, "id_genero": 1}
+  }); 
 
 
 // Actualizar un nuevo libro

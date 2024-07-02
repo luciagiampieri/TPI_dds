@@ -1,6 +1,7 @@
 import React from "react";
 import moment from "moment";
 import { useForm } from "react-hook-form";
+import modalDialogService from "../../services/modalDialog.service"; 
 
 // Componente para el registro de editoriales
 function EditorialesRegistro({
@@ -16,10 +17,20 @@ function EditorialesRegistro({
         formState: { errors, touchedFields, isValid, isSubmitted },
     } = useForm({ values: Item });
 
-    const onSubmit = (data) => {
-        data.fecha_fundacion = moment(data.fecha_fundacion).format("YYYY/MM/DD");
-        Grabar(data);
-    }; // Función para enviar los datos del formulario al backend
+    // const onSubmit = (data) => {
+    //     data.fecha_fundacion = moment(data.fecha_fundacion).format("YYYY/MM/DD");
+    //     Grabar(data);
+    // }; // Función para enviar los datos del formulario al backend
+
+    const onSubmit = async (data) => {
+        data.fecha_fundacion = moment(data.fecha_fundacion).format("YYYY-MM-DD");
+        try {
+              await Grabar(data);
+        } catch (error) {
+              if (error.message === 'Ya existe la editorial.') {
+                    modalDialogService.Alert("Ya existe la editorial.");
+        }
+  }}; 
 
     return (
         <div className="container-principal">

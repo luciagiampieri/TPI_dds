@@ -24,7 +24,7 @@ async function CrearDBSiNoExiste() {
             await db.run(
                   `CREATE TABLE Libros (
                   id INTEGER PRIMARY KEY AUTOINCREMENT, 
-                  titulo TEXT NOT NULL, 
+                  titulo TEXT NOT NULL UNIQUE, 
                   fecha_publicacion DATE NOT NULL, 
                   id_autor INT NOT NULL, 
                   id_editorial INT NOT NULL, 
@@ -293,7 +293,7 @@ async function CrearDBSiNoExiste() {
                   // Crear tabla Editoriales
                   `CREATE TABLE Editoriales (
                   id INTEGER PRIMARY KEY AUTOINCREMENT, 
-                  nombre VARCHAR(50) NOT NULL, 
+                  nombre VARCHAR(50) NOT NULL UNIQUE, 
                   direccion VARCHAR(100) NOT NULL,  
                   fecha_fundacion DATE NOT NULL, 
                   id_pais INTEGER NOT NULL, FOREIGN KEY (id_pais) REFERENCES Paises(id) )`

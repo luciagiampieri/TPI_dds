@@ -5,6 +5,7 @@ import AutoresRegistro from "./AutoresRegistro";
 import autoresService from "../../services/autores.service";
 import tipo_documentosService from "../../services/tipo_documentos.service";
 import modalDialogService from "../../services/modalDialog.service";
+import moment from "moment";
 
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
@@ -68,7 +69,7 @@ function Autores() {
             nro_documento: "",
             nombre: "",
             apellido: "",
-            fecha_nacimiento: "",
+            fecha_nacimiento: moment().format("YYYY-MM-DD"),
         });
         modalDialogService.Alert("preparando el Alta...");
         console.log(Item);

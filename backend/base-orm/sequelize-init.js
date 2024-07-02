@@ -14,6 +14,10 @@ const Libros = sequelize.define(
             titulo:{
                   type: DataTypes.STRING(80),
                   allowNull: false,
+                  unique: {
+                        args: true,
+                        msg: 'El libro ya existe'
+                  },
                   validate:{
                         notEmpty: {
                               args: true,
@@ -242,6 +246,10 @@ const Editoriales= sequelize.define(
             nombre: {
                   type: DataTypes.STRING(50),
                   allowNull: false,
+                  unique: {
+                        args: true,
+                        msg: 'La editorial ya existe'
+                  },
                   validate: {
                         notEmpty: {
                               args: true,

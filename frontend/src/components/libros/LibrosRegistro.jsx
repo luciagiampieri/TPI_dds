@@ -1,6 +1,8 @@
 import moment from "moment";
-import React from "react";
 import { useForm } from "react-hook-form";
+import React from "react";
+import modalDialogService from "../../services/modalDialog.service";    
+
 
 function LibrosRegistro({
       AccionABMC,
@@ -17,10 +19,15 @@ function LibrosRegistro({
             formState: { errors, touchedFields, isValid, isSubmitted },
       } = useForm({ values: Item });
 
-      const onSubmit = (data) => {
+      const onSubmit = async (data) => {
             data.fecha_publicacion = moment(data.fecha_publicacion).format("YYYY-MM-DD");
-            Grabar(data);
-      }; // Envía los datos del formulario al método Grabar.
+            try {
+                  await Grabar(data);
+            } catch (error) {
+                  if (error.message === 'Ya existe un libro con este título.') {
+                        modalDialogService.Alert("Ya existe un libro con este título.");
+            }
+      }}; // Envía los datos del formulario al método Grabar.
 
       return (
             <div className="container-principal">

@@ -33,7 +33,7 @@ export default function AutoresListado({
                         <td className="text-center align-middle" style={{ width: "10%" }}>{Item.nro_documento}</td>
                         <td className="text-center align-middle" style={{ width: "15%" }}>{Item.nombre}</td>
                         <td className="text-center align-middle" style={{ width: "15%" }}>{Item.apellido}</td>
-                        <td className="text-center align-middle" style={{ width: "10%" }}>{moment(Item.fecha_fundacion).format("YYYY/MM/DD")}</td>
+                        <td className="text-center align-middle" style={{ width: "10%" }}>{moment(Item.fecha_nacimiento).format("YYYY/MM/DD")}</td>
                         
                         <td className="text-center align-middle text-nowrap">
                             {/* Agregar los botones de la tabla */}

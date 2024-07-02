@@ -28,16 +28,20 @@ const getByIdLibros = async (id) => {
       }
 };
 
-// Crear un nuevo libro
+
 const createLibro = async (libro) => {
       try {
             const response = await axiosInstance.post(URL, libro, { headers: { requiresAuth: true } });
             return response.data;
       } catch (error) {
+            if (error.response.status === 400) {
+                  throw new Error('Ya existe un libro con este título.');
+            }
             console.error('Error al crear el libro:', error);
             throw error;
       }
 };
+
 
 // Actualizar un libro existente
 const updateLibro = async (id, libro) => {

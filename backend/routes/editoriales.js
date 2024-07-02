@@ -80,9 +80,14 @@ router.post("/api/editoriales/", authenticateJWT, authorizeUser(['chicasdds']), 
         });
         res.status(200).json(data.dataValues); // 200 significa que la solicitud ha tenido éxito
     } catch (err) {
-        console.error("Error in POST /api/editoriales/", err);
-        res.status(500).json({ error: "Internal server error" }); // 500 significa error interno del servidor
-    }
+        if (err instanceof ValidationError) { // si el error es de validación
+            let messages = "";
+            err.errors.forEach((x) => (messages += x.message + ""));
+            res.status(400).json({ message: messages }); // 400 significa error en la solicitud del cliente
+        } else {    
+            console.error("Error in POST /api/editoriales/", err);
+            res.status(500).json({ error: "Internal server error" }); // 500 significa error interno del servidor
+    }};
 }); // ejemplo de uso: http://localhost:4444/api/editoriales/
 
 
