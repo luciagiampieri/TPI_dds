@@ -1,6 +1,7 @@
 import React from "react";
 import moment from "moment";
 
+// Componente para mostrar el listado de editoriales
 export default function EditorialesListado({
     Items,
     Consultar,

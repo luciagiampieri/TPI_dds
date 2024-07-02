@@ -4,7 +4,7 @@ import { config } from '../config.js';
 const URL = config.urlResourceAutores
 const URLP = config.urlResourceAutoresPublico
 
-// Obtener todos los autores con paginación
+// Obtener todos los autores
 const getAllAutores = async ({ nombre = ''}) => {
     try {
         const response = await axiosInstance.get(URLP, {
@@ -30,7 +30,7 @@ const getAutorById = async (id) => {
     }
 };
 
-// Crear un nuevo autor
+// Crear un nuevo autor (requiere autenticación)
 const createAutor = async (autor) => {
     try {
         console.log("Datos enviados al backend:", autor);
@@ -42,7 +42,7 @@ const createAutor = async (autor) => {
     }
 };
 
-// Actualizar un autor existente
+// Actualizar un autor existente 
 const updateAutor = async (id, autor) => {
     try {
         await axiosInstance.put(`${URL}/${id}`, autor, { headers: { requiresAuth: true } });
@@ -52,7 +52,7 @@ const updateAutor = async (id, autor) => {
     }
 };
 
-// Eliminar un autor
+// Eliminar un autor  (requiere autenticación)
 const deleteAutor = async (id) => {
     try {
         await axiosInstance.delete(`${URL}/${id}`, { headers: { requiresAuth: true } });
@@ -71,5 +71,6 @@ const autoresService = {
     deleteAutor,
 };
 
+// Exportar el servicio
 export default autoresService;
 

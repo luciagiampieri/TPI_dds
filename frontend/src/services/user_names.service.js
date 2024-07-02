@@ -1,6 +1,7 @@
 import axios from "axios";
 const URL = "http://localhost:4444/api/user";
 
+// Obtener todos los nombres de usuario
 async function getAllUserNames() {
     try {
         const users = await axios.get(`${URL}`);

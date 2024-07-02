@@ -1,6 +1,7 @@
 import React from "react";
 import moment from "moment";
 
+// Componente para mostrar el listado de reseñas
 export default function ResenasListado({
     Items,
     Consultar,

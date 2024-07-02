@@ -22,28 +22,30 @@ function Autores() {
     const [Nombre, setNombre] = useState(""); // estado para filtrar la búsqueda de autores
     const [Autor, setAutor] = useState([]); // estado para mostrar el listado de autores
     const [Item, setItem] = useState(null); // estado para mostrar el autor en el formulario
-    const [Tipodoc, setTipodoc] = useState([]); // estado para guardar los países
+    const [Tipodoc, setTipodoc] = useState([]); // estado para guardar los tipo_doc
 
     useEffect(() => {
         async function BuscarTipodoc() {
             let data = await tipo_documentosService.getAllTipoDocumentos();
-            setTipodoc(data); // Guardar los países en el estado
+            setTipodoc(data); // Guardar los tipo_doc en el estado
         }
         BuscarTipodoc();
-    }, []); // useEffect se ejecuta solo una vez. Busca los autores disponibles.
+    }, []); // useEffect se ejecuta solo una vez.
 
     useEffect(() => {
         Buscar();
-    }, [Nombre]); // useEffect se ejecuta cada vez que Nombre o Pagina cambian.
+    }, [Nombre]); // useEffect se ejecuta cada vez que cambia el estado Nombre.
 
     async function Buscar() {
         
-        modalDialogService.BloquearPantalla(true);
+        // Llamar al servicio para buscar autores
+        modalDialogService.BloquearPantalla(true); // Bloquear la pantalla mientras se busca autores
         const data = await autoresService.getAllAutores({ nombre: Nombre});
-        modalDialogService.BloquearPantalla(false);
+        modalDialogService.BloquearPantalla(false); // Desbloquear la pantalla
     
         setAutor(data.Items);
     }
+
 
     async function BuscarId(item, accionABMC) {
         const data = await autoresService.getAutorById(item.id);
@@ -68,8 +70,9 @@ function Autores() {
             apellido: "",
             fecha_nacimiento: "",
         });
+        modalDialogService.Alert("preparando el Alta...");
         console.log(Item);
-    } // Agrega una editorial y actualiza el estado con el autor creado y el tipo de acción.
+    } // Agrega un autor y actualiza el estado con el autor creado y el tipo de acción.
 
     const Imprimir = () => {
         const data = Autor.map((item) => ({
@@ -89,10 +92,24 @@ function Autores() {
         saveAs(dataBlob, "AutoresListado.xlsx"); // Descarga el archivo
     };
 
+
     async function Eliminar(item) {
-        await autoresService.deleteAutor(item.id);
-        Buscar();
-    } // Elimina un autor y actualiza el estado con los autores encontrados.
+        modalDialogService.Confirm(
+            "¿Estás seguro de que deseas eliminar este autor?",
+            "Confirmar eliminación",
+            "Sí",
+            "No",
+            async () => {
+                await autoresService.deleteAutor(item.id);
+                modalDialogService.Alert("Autor eliminado correctamente.", "Eliminación exitosa", "Aceptar", "", null, null, "success");
+                setTimeout(() => {
+                    Buscar();
+                }, 3000);
+            },
+            null,
+            'warning'
+        );
+    } // Elimina un autor por ID y actualiza el estado con el autor eliminado.   
 
     async function Grabar(item) {
         console.log("Datos a grabar:", item);
@@ -112,11 +129,11 @@ function Autores() {
                     " correctamente."
             );
         }, 0);
-    }
+    } // Graba un autor y actualiza el estado con el autor creado o modificado.
 
     function Volver() {
-        setAccionABMC("L");
-    }
+        setAccionABMC("L"); 
+    } // Vuelve al listado de autores.
 
     return (
         <div>
@@ -133,7 +150,7 @@ function Autores() {
                         Agregar,
                     }}
                 />
-            )}
+            )} {/* Muestra el formulario de búsqueda de autores. */} 
 
             {AccionABMC === "L" && Autor && Autor.length > 0 && (
                 <AutoresListado
@@ -143,29 +160,29 @@ function Autores() {
                         Eliminar,
                         Modificar,
                         Imprimir,
-                        Tipodoc, // Pasar los países al componente EditorialesListado
+                        Tipodoc, // Pasar los tipo_doc al componente AutoresListado
                     }}
                 />
-            )}
+            )} {/* Muestra el listado de autores. */}
 
             {AccionABMC === "L" && Autor && Autor.length === 0 && (
                 <div className="alert alert-info mensajesAlert">
                     <i className="fa fa-exclamation-sign"></i>
                     No se encontraron registros...
                 </div>
-            )}
+            )} {/* Muestra un mensaje si no se encontraron autores. */}
 
             {AccionABMC !== "L" && (
                 <AutoresRegistro
                     {...{
                         AccionABMC,
-                        Tipodoc, // Pasar los países al componente EditorialesRegistro
+                        Tipodoc, // Pasar los tipo_doc al componente AutoresRegistro
                         Item,
                         Grabar,
                         Volver,
                     }}
                 />
-            )}
+            )} {/* Muestra el formulario de registro de autores. */}
         </div>
     );
 }

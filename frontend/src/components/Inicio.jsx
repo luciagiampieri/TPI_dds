@@ -41,7 +41,7 @@ function Inicio() {
         <div className="row justify-content-center">
           <div className="col-md-3 col-sm-6 mb-3">
             <Link to="/editoriales" className="btn btn-lg btn-outline-primary w-100">
-              <i className="fas fa-list"></i> Ver Editoriales
+              <i class="fa-solid fa-shop"></i> Ver Editoriales
             </Link>
           </div>
         </div>
@@ -49,7 +49,7 @@ function Inicio() {
         <div className="row justify-content-center">
           <div className="col-md-3 col-sm-6 mb-3">
             <Link to="/autores" className="btn btn-lg btn-outline-primary w-100">
-              <i className="fas fa-user"></i> Ver Autores
+            <i class="fa-regular fa-address-book"></i> Ver Autores
             </Link>
           </div>
         </div>

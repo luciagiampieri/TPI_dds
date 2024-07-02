@@ -1,7 +1,7 @@
 import axios from 'axios';
 import axiosInstance from './axiosInstance';
 
-
+// Define una función para refrescar el token. Asi se evita que el usuario tenga que volver a iniciar sesión.
 const refreshToken = async () => {
       try {
             const token = localStorage.getItem('refreshToken');
@@ -17,6 +17,7 @@ const refreshToken = async () => {
       }
 };
 
+// Define una función para cerrar la sesión
 const logout = async () => {
       try {
             const refreshToken = localStorage.getItem('refreshToken');

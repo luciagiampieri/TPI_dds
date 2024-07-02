@@ -396,12 +396,12 @@ const Resenas= sequelize.define(
                               msg: 'La calificación debe ser un número entero'
                         },
                         min: {
-                              args: 1,
+                              args: 0,
                               msg: 'La calificación debe ser mayor a 0'
                         },
                         max: {
                               args: 5,
-                              msg: 'La calificación debe ser menor a 6'
+                              msg: 'La calificación debe ser menor a 5'
                         },
                   },
             },

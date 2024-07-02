@@ -1,18 +1,19 @@
 import { useState, useEffect } from 'react';
 import tipo_documentosService from '../services/tipo_documentos.service';
 
+// Componente para mostrar los tipos de documentos
 function Tipo_Documentos() {
     const tituloPagina = 'Tipo de Documentos';
     const [tipodocs, setTipoDocs] = useState("");
 
     useEffect(() => {
         BuscarTipoDocs();
-    }, []);
+    }, []); // useEffect se ejecuta solo una vez. Busca los tipos de documentos.
 
     async function BuscarTipoDocs() {
         let docs = await tipo_documentosService.getAllTipoDocumentos();
         setTipoDocs(docs);
-    };
+    }; // Función para buscar los tipos de documentos
 
     return (
         <div>

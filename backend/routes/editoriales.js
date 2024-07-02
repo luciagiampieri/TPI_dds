@@ -9,7 +9,7 @@ const { authenticateJWT, authorizeUser } = require("../seguridad/auth"); // Impo
 // Rutas de Editoriales.
 
 
-// Obtener por filtro.
+// Obtener editoriales por filtro.
 router.get("/api/editorialesPublico", async function (req, res) {
     try {
         let where = {};
@@ -35,7 +35,7 @@ router.get("/api/editorialesPublico", async function (req, res) {
         return res.json({Items: rows, RegistrosTotal: count})
     } catch (error) {
         console.error("Error in GET /api/editoriales", err);
-        res.status(500).json({ error: "Internal server error" });
+        res.status(500).json({ error: "Internal server error" }); //error 500 significa error interno del servidor
     }
 });
 // ejemplo de uso sin filtro: https://localhost:4444/api/editoriales
@@ -43,8 +43,7 @@ router.get("/api/editorialesPublico", async function (req, res) {
 
 
 
-
-// Ruta de editorial: obtener por ID.
+// Obtener editorial por ID.
 router.get("/api/editorialesPublico/:id", async function (req, res) {
     try {
         let item = await db.Editoriales.findOne({
@@ -60,22 +59,17 @@ router.get("/api/editorialesPublico/:id", async function (req, res) {
 
 
         if (!item) {
-            return res.status(404).json({ message: "Editorial no encontrada" });
+            return res.status(404).json({ message: "Editorial no encontrada" }); //error 404 significa que no se encontró el recurso
         }
         res.json(item);
     } catch (error) {
         console.error("Error in GET /api/editoriales", err);
-        res.status(500).json({ error: "Internal server error" });
+        res.status(500).json({ error: "Internal server error" }); //error 500 significa error interno del servidor
     }
-});
+}); // ejemplo de uso: http://localhost:4444/api/editoriales/1
 
 
-
-
-// ejemplo de uso: http://localhost:4444/api/editoriales/1
-
-
-// Ruta de editoriales: crear.
+// Agregar una nueva editorial
 router.post("/api/editoriales/", authenticateJWT, authorizeUser(['chicasdds']), async (req, res) => {
     try {
         let data = await db.Editoriales.create({
@@ -84,15 +78,15 @@ router.post("/api/editoriales/", authenticateJWT, authorizeUser(['chicasdds']), 
             fecha_fundacion: moment(req.body.fecha_fundacion).format("YYYY-MM-DD"),
             id_pais: req.body.id_pais,
         });
-        res.status(200).json(data.dataValues);
+        res.status(200).json(data.dataValues); // 200 significa que la solicitud ha tenido éxito
     } catch (err) {
         console.error("Error in POST /api/editoriales/", err);
-        res.status(500).json({ error: "Internal server error" });
+        res.status(500).json({ error: "Internal server error" }); // 500 significa error interno del servidor
     }
 }); // ejemplo de uso: http://localhost:4444/api/editoriales/
 
 
-// Ruta de editorial: actualizar.
+// Actualizar una editorial
 router.put("/api/editoriales/:id", authenticateJWT, authorizeUser(['chicasdds']), async (req, res) => {
     try {
         let item = await db.Editoriales.findOne({
@@ -106,7 +100,7 @@ router.put("/api/editoriales/:id", authenticateJWT, authorizeUser(['chicasdds'])
             where: { id: req.params.id },
         });
         if (!item) {
-            res.status(404).json({ message: "Editorial no encontrada" });
+            res.status(404).json({ message: "Editorial no encontrada" }); // 404 significa que no se encontró el recurso solicitado
             return;
         }
         item.nombre =  req.body.nombre;
@@ -116,16 +110,17 @@ router.put("/api/editoriales/:id", authenticateJWT, authorizeUser(['chicasdds'])
         await item.save();
 
 
-        res.sendStatus(204);
+        res.sendStatus(204); // 204 significa que la solicitud ha tenido éxito
     } catch (err) {
         if (err instanceof ValidationError) {
             let messages = "";
             err.errors.forEach(
                 (x) => (messages += x.path + ": " + x.message + "\n")
             );
-            res.status(400).json({ message: messages });
+            res.status(400).json({ message: messages }); // 400 significa error en la solicitud del cliente
         } else {
-            throw err;
+            console.error("Error in PUT /api/editoriales", err);
+            res.status(500).json({ error: "Internal server error" }); //error 500 significa error interno del servidor;
         }
     }
 }); // ejemplo de uso: http://localhost:4444/api/editoriales/1
@@ -133,20 +128,20 @@ router.put("/api/editoriales/:id", authenticateJWT, authorizeUser(['chicasdds'])
 
 
 
-// Ruta de editoriales: eliminar.
+// Eliminar una editorial
 router.delete("/api/editoriales/:id", authenticateJWT, authorizeUser(['chicasdds']), async (req, res) => {
     try {
         let data = await db.Editoriales.destroy({
             where: { id: req.params.id },
             });
             if (data === 1) {
-                res.sendStatus(200);
+                res.sendStatus(200); // 200 significa que la solicitud ha tenido éxito
             } else {
-                res.sendStatus(404);
+                res.sendStatus(404); // 404 significa que no se encontró el recurso solicitado
             }
     } catch (err) {
-        console.error("Error in POST /api/editoriales/", err);
-        res.status(500).json({ error: "Internal server error" });
+        console.error("Error in DELETE /api/editoriales/", err);
+        res.status(500).json({ error: "Internal server error" }); // 500 significa error interno del servidor
     }
 }); // ejemplo de uso: http://localhost:4444/api/editoriales/1
 

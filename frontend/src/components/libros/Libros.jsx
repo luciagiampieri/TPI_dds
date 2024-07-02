@@ -12,6 +12,7 @@ import moment from "moment";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 
+// Componente para mostrar los libros
 function Libros() {
       const TituloAccionABMC = {
             A: "(Agregar)",
@@ -44,7 +45,7 @@ function Libros() {
                   setAutores(data.Items || []);
             }
             BuscarAutores();
-      }, []);
+      }, []); // useEffect se ejecuta solo una vez. Busca los autores disponibles.
 
       useEffect(() => {
             async function BuscarEditoriales() {
@@ -52,11 +53,11 @@ function Libros() {
                   setEditoriales(data.Items || []); // Asegurarse de que data.Items sea un array
             }
             BuscarEditoriales();
-      }, []);
+      }, []); // useEffect se ejecuta solo una vez. Busca las editoriales disponibles.
 
       useEffect(() => {
             Buscar();
-      }, [Titulo]);
+      }, [Titulo]); // useEffect se ejecuta cada vez que cambia el estado Título.
 
       async function Buscar() {
             modalDialogService.BloquearPantalla(true); // Bloquea la pantalla
@@ -117,20 +118,34 @@ function Libros() {
             saveAs(dataBlob, "LibrosListado.xlsx"); // Descarga el archivo
       };
 
+      
       async function Eliminar(item) {
-            await librosService.deleteLibro(item.id);
-            Buscar();
-      } // Elimina un libro y actualiza el estado con los libros encontrados.
+            modalDialogService.Confirm(
+                  "¿Estás seguro de que deseas eliminar este libro?",
+                  "Confirmar eliminación",
+                  "Sí",
+                  "No",
+                  async () => {
+                        await librosService.deleteLibro(item.id);
+                        modalDialogService.Alert("Libro eliminado correctamente.", "Eliminación exitosa", "Aceptar", "", null, null, "success");
+                        setTimeout(() => {
+                              Buscar();
+                        }, 3000);
+                  },
+                  null,
+                  'warning'
+                  );
+            } // Elimina un libro y actualiza el estado con los libros encontrados.
 
       async function Grabar(item) {
             if (AccionABMC === "A") {
                   await librosService.createLibro(item);
             } else if (AccionABMC === "M") {
                   await librosService.updateLibro(item.id, item);
-            }
+            } // Actualiza un libro por ID y actualiza el estado con el libro modificado.
 
             await Buscar();
-            Volver();
+            Volver(); 
 
             setTimeout(() => {
                   modalDialogService.Alert(
@@ -139,11 +154,11 @@ function Libros() {
                               " correctamente."
                   );
             }, 0);
-      }
+      } // Graba un libro y actualiza el estado con el libro creado o modificado.
 
       function Volver() {
             setAccionABMC("L");
-      }
+      } // Vuelve al listado de libros.
 
       return (
             <div>
@@ -160,7 +175,7 @@ function Libros() {
                                     Agregar,
                               }}
                         />
-                  )}
+                  )} {/*Muestra el formulario de búsqueda de libros*/}
 
                   {AccionABMC === "L" && Libro && Libro.length > 0 && (
                         <LibrosListado
@@ -175,14 +190,14 @@ function Libros() {
                                     Editoriales,
                               }}
                         />
-                  )}
+                  )} {/*Muestra el listado de libros*/}
 
                   {AccionABMC === "L" && Libro && Libro.length === 0 && (
                         <div className="alert alert-info mensajesAlert">
                               <i className="fa fa-exclamation-sign"></i>
                               No se encontraron registros...
                         </div>
-                  )}
+                  )} {/*Muestra un mensaje si no se encontraron libros*/}
 
                   {AccionABMC !== "L" && (
                         <LibrosRegistro
@@ -196,7 +211,7 @@ function Libros() {
                                     Volver,
                               }}
                         />
-                  )}
+                  )} {/*Muestra el formulario de registro de libros*/}
             </div>
       );
 }

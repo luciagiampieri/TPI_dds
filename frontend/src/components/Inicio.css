@@ -9,6 +9,8 @@
 .container.mt-5.p-5 {
   opacity: 0.8;
   margin-top: 4% !important;
+  margin-bottom: 4% !important;
+  max-width: 70%;
 }
 
 .lead.mb-4.text-secondary {
@@ -56,6 +58,9 @@ p {
   background-color: #6e4760; 
 }
 
+.btn.btn-lg.btn-outline-primary.w-100:active {
+  background-color: #6e4760; /* Cambia el color de fondo cuando se hace clic */
+}
 
 .text-info {
   color: #6e4760 !important; 
@@ -64,3 +69,6 @@ p {
 .text-primary {
   color: #6e4760 !important; 
 }
+
+
+

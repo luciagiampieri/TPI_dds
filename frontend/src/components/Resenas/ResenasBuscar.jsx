@@ -1,5 +1,6 @@
 import React from 'react';
 
+// Componente para buscar reseñas por comentario
 function ResenasBuscar({ Comentario, setComentario, Buscar, Agregar }) {
     return (
         <form name="FormBusqueda">

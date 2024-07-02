@@ -20,9 +20,9 @@ function Editoriales() {
     };
 
     const [AccionABMC, setAccionABMC] = useState("L");
-    const [Nombre, setNombre] = useState(""); // estado para filtrar la búsqueda de autores
-    const [Editorial, setEditorial] = useState([]); // estado para mostrar el listado de autores
-    const [Item, setItem] = useState(null); // estado para mostrar el autor en el formulario
+    const [Nombre, setNombre] = useState(""); // estado para filtrar la búsqueda de editoriales
+    const [Editorial, setEditorial] = useState([]); // estado para mostrar el listado de editoriales
+    const [Item, setItem] = useState(null); // estado para mostrar la editorial en el formulario
     const [Paises, setPaises] = useState([]); // estado para guardar los países
 
     useEffect(() => {
@@ -31,33 +31,33 @@ function Editoriales() {
             setPaises(data); // Guardar los países en el estado
         }
         BuscarPaises();
-    }, []); // useEffect se ejecuta solo una vez. Busca los autores disponibles.
+    }, []); // useEffect se ejecuta solo una vez. Busca los paises disponibles.
 
     useEffect(() => {
         Buscar();
-    }, [Nombre]); // useEffect se ejecuta cada vez que Nombre o Pagina cambian.
+    }, [Nombre]); // useEffect se ejecuta cada vez que cambia el estado Nombre.
 
     async function Buscar() {
         modalDialogService.BloquearPantalla(true); // Bloquea la pantalla
-        const data = await editorialesService.getAllEditoriales({ nombre: Nombre }); // Busca los libros según el título
+        const data = await editorialesService.getAllEditoriales({ nombre: Nombre }); // Busca las editoriales según el nombre
         modalDialogService.BloquearPantalla(false); // Desbloquea la pantalla
 
-        setEditorial(data.Items); // Actualiza el estado con los libros encontrados
+        setEditorial(data.Items); // Actualiza el estado con las editoriales encontrados
     }
 
     async function BuscarId(item, accionABMC) {
         const data = await editorialesService.getEditorialById(item.id);
         setItem(data);
         setAccionABMC(accionABMC);
-    } // Busca un autor por ID y actualiza el estado con el autor encontrado y el tipo de acción.
+    } // Busca una editorial por ID y actualiza el estado con las editoriales encontradas y el tipo de acción.
 
     function Consultar(item) {
         BuscarId(item, "C");
-    } // Consulta un autor por ID y actualiza el estado con el autor encontrado y el tipo de acción.
+    } // Consulta una editorial por ID y actualiza el estado con la editorial encontrada y el tipo de acción.
 
     function Modificar(item) {
         BuscarId(item, "M");
-    } // Modifica una editorial por ID y actualiza el estado con el autor encontrado y el tipo de acción.
+    } // Modifica una editorial por ID y actualiza el estado con la editorial encontrada y el tipo de acción.
 
     async function Agregar() {
         setAccionABMC("A");
@@ -69,7 +69,7 @@ function Editoriales() {
         });
         modalDialogService.Alert("preparando el Alta...");
         console.log(Item);
-    } // Agrega una editorial y actualiza el estado con el autor creado y el tipo de acción.
+    } // Agrega una editorial y actualiza el estado con la editorial creada y el tipo de acción.
 
     const Imprimir = () => {
         const data = Editorial.map((item) => ({
@@ -77,7 +77,7 @@ function Editoriales() {
             Direccion: item.direccion,
             "Fecha Fundacion": item.fecha_fundacion,
             Pais: Paises.find((pais) => pais.id === item.id_pais)?.nombre || "",
-        })); // Mapea los autores encontrados y los muestra en el listado.
+        })); // Mappear los datos de las editoriales
 
         const worksheet = XLSX.utils.json_to_sheet(data); // Convierte los datos a una hoja de cálculo
         const workbook = XLSX.utils.book_new(); // Crea un libro de trabajo
@@ -88,10 +88,24 @@ function Editoriales() {
         saveAs(dataBlob, "EditorialListado.xlsx"); // Descarga el archivo
     };
 
+
     async function Eliminar(item) {
-        await editorialesService.deleteEditorial(item.id);
-        Buscar();
-    } // Elimina un autor y actualiza el estado con los autores encontrados.
+        modalDialogService.Confirm(
+            "¿Estás seguro de que deseas eliminar esta editorial?",
+            "Confirmar eliminación",
+            "Sí",
+            "No",
+            async () => {
+                await editorialesService.deleteEditorial(item.id);
+                modalDialogService.Alert("Editorial eliminada correctamente.", "Eliminación exitosa", "Aceptar", "", null, null, "success");
+                setTimeout(() => {
+                    Buscar();
+                }, 3000);
+            },
+            null,
+            'warning'
+        );
+    } // Elimina una editorial y actualiza el estado con las editoriales encontradas.
 
     async function Grabar(item) {
         if (AccionABMC === "A") {
@@ -110,11 +124,11 @@ function Editoriales() {
                     " correctamente."
             );
         }, 0);
-    }
+    } // Agrega o modifica una editorial y actualiza el estado con las editoriales encontradas.
 
     function Volver() {
         setAccionABMC("L");
-    }
+    } // Vuelve al listado de editoriales.
 
     return (
         <div>
@@ -131,7 +145,7 @@ function Editoriales() {
                         Agregar,
                     }}
                 />
-            )}
+            )} {/*Muestra el formulario de búsqueda de editoriales*/}
 
             {AccionABMC === "L" && Editorial && Editorial.length > 0 && (
                 <EditorialesListado
@@ -144,7 +158,7 @@ function Editoriales() {
                         Paises, // Pasar los países al componente EditorialesListado
                     }}
                 />
-            )}
+            )} {/*Muestra el listado de editoriales*/}
 
             {AccionABMC === "L" && Editorial && Editorial.length === 0 && (
                 <div className="alert alert-info mensajesAlert">
@@ -163,7 +177,7 @@ function Editoriales() {
                         Volver,
                     }}
                 />
-            )}
+            )} {/*Muestra el formulario de registro de editoriales*/}
         </div>
     );
 }

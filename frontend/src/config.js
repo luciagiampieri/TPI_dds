@@ -1,15 +1,10 @@
 import axios from 'axios';
 import refreshToken from './services/auth.service';
 
-
 /*
 En este archivo se definen las URL de los servicios REST que se van a consumir. Para
 estandarizar un poco más el proceso y no tener que modificar cada archivo que consuma una URL
 */
-
-
-// opción 1 cuando se hacen pruebas locales.
-
 
 const urlServidor = "http://localhost:4444";
 const urlResourceLibros = urlServidor + "/api/libros";

@@ -75,6 +75,8 @@ body {
 footer {
   padding: 1rem;
 }
+
+
 .navbar-brand {
   color: rgb(255, 255, 255);
   font-size: 1.1rem;
@@ -89,8 +91,31 @@ form {
   margin: 0em 0.5rem 1rem 0.5rem;
   padding: 0.5rem;
   box-shadow: 0.62rem 0.62rem 0.31rem rgb(154, 153, 154);
-  
 }
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+.container-principal {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.fregistro {
+  background-color:  rgba(241, 243, 247, 0.5);
+  border-radius: 0.5rem;
+  border-color: rgb(158, 151, 151);
+  box-shadow: 0.62rem 0.62rem 0.31rem rgb(154, 153, 154);
+  max-width: 80%;
+  margin: auto; /* Center the element horizontally and vertically */
+  width: 80%; /* Set the width of the element */
+  padding: 0.5rem;
+}
+
 
 table {
   background-color: rgba(241, 243, 247, 0.8);
@@ -106,13 +131,14 @@ table {
   max-width: 90%;
 }
 
+/*Boton de imprimir*/
 .btn.btn-primary.float-end {
   background-color: #6e4760;
   border-color: #ce9aab;
   color: white; 
   border: #495057;
   /* Add this line to change the text color */
-  margin-right: 6em; /* Add this line to separate the buttons */
+  margin-right: 4.8em; /* Add this line to separate the buttons */
   margin-top: 2%;
   margin-bottom: 2%;
 }
@@ -128,14 +154,28 @@ tbody {
 
 /* todos los labels menos los de los radio y check */
 label:not([class^='custom-control']) {
-  background-color: #d7dfe7;
-  border-radius: 0.625em 0.2em 0rem 0.625em;
-  border-bottom: solid;
-  margin-right: -0.9em; /* para que columna label este cerca del input*/
+  background-color: #9faab6;
+  border-radius: 0.625em;
+  margin-right: auto; /* para que columna label este cerca del input*/
+  margin-left: 0.0 ;
   padding-left: 0.5em;
   display: block;
   height: 90%;
+  font-size: 1.1em;
+  
 }
+
+.card {
+  border-radius: 0.5rem;
+  border-style: solid;
+  border-color: rgb(158, 151, 151);
+  margin: 2rem 0.5rem; /* Changed margin value */
+  margin-top: 2%;
+  padding: 0.5rem;
+  box-shadow: 0.62rem 0.62rem 0.31rem rgb(154, 153, 154);
+}
+
+
 
 /*<=576*/
 @media only screen and (max-width: 575px) {
@@ -145,17 +185,16 @@ label:not([class^='custom-control']) {
   }
 }
 
-
+/*Botones generales*/
 .btn.btn-primary {
   background-color: #6e4760;
   border-color: #ce9aab;
   color: white; 
   border: #495057;
-  /* Add this line to change the text color */
 }
 
 .btn.btn-primary:hover {
-  background-color: #9e7583; /* Add this line to change the background color on hover */
+  background-color: #9e7583; 
 }
 
 .btn.btn-sm.btn-outline-primary {
@@ -163,18 +202,18 @@ label:not([class^='custom-control']) {
   border-color: #ce9aab;
   color: white; 
   border: #495057;
-  /* Add this line to change the text color */
-  margin-right: 0.5em; /* Add this line to separate the buttons */
+  margin-right: 0.5em; 
 }
 
 .btn.btn-sm.btn-outline-primary:hover {
-  background-color: #9e7583; /* Add this line to change the background color on hover */
+  background-color: #9e7583; 
 }
 
 .btn.btn-primary:active {
-  background-color: #6e4760; /* Cambia el color de fondo cuando se hace clic */
+  background-color: #6e4760; 
 }
 
+/*Boton de Cancelar*/
 .btn.btn-warning {
   background-color: #9e7583;
   border-color: #ce9aab;
@@ -204,7 +243,7 @@ label:not([class^='custom-control']) {
 }
 
 
-
+/*Boton de Cantidad de registro*/
 .pyBadge {
   background-color: #6c757d;
   color: white;
@@ -217,7 +256,7 @@ label:not([class^='custom-control']) {
   white-space: nowrap;
   vertical-align: baseline;
   border-radius: 0.25rem;
-  margin-left: 6em; /* Add this line to separate the buttons */
+  margin-left: 4.8em; /* Add this line to separate the buttons */
   margin-top: 2%;
   margin-bottom: 2%;
   ;
@@ -287,8 +326,8 @@ thead {
 
 
 .modal-footer .btn-primary {
-  background-color: #007bff;
-  border-color: #007bff; 
+  background-color: #9e7583; 
+  border-color: #9e7583; 
   color: #fff; 
 }
 

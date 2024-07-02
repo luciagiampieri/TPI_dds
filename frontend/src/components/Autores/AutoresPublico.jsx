@@ -2,11 +2,12 @@ import React from 'react';
 import autoresService from "../../services/autores.service";
 import tipo_documentosService from "../../services/tipo_documentos.service";
 import { useState, useEffect } from 'react';
+import moment from 'moment';
 
 export default function AutoresPublico() {
 
-    const [Autores, setAutores] = useState([]);
-    const [TipoDocumentos, setTipoDocumentos] = useState([]);
+    const [Autores, setAutores] = useState([]); // estado para guardar los autores
+    const [TipoDocumentos, setTipoDocumentos] = useState([]); // estado para guardar los tipo_doc
 
     useEffect(() => {
         async function BuscarAutores() {
@@ -14,7 +15,7 @@ export default function AutoresPublico() {
             setAutores(data.Items);
         }
         BuscarAutores();
-    }, []);
+    }, []); // useEffect se ejecuta solo una vez buscando autores
 
     useEffect(() => {
         async function BuscarTipoDocumentos() {
@@ -22,7 +23,7 @@ export default function AutoresPublico() {
             setTipoDocumentos(data);
         }
         BuscarTipoDocumentos();
-    }, []);
+    }, []); // useEffect se ejecuta solo una vez buscando tipo_doc
 
     return (
         <>
@@ -49,7 +50,7 @@ export default function AutoresPublico() {
                                 <tr key={autor.id}>
                                     <td className="text-center" style={{ width: "10%" }}>{autor.nombre}</td>
                                     <td className="text-center" style={{ width: "10%" }}>{autor.apellido}</td>
-                                    <td className="text-center" style={{ width: "10%" }}>{autor.fecha_nacimiento}</td>
+                                    <td className="text-center" style={{ width: "10%" }}>{moment(autor.fecha_fundacion).format("YYYY/MM/DD")}</td>
                                     <td className="text-center" style={{ width: "15%" }}>{tipoDocumento ? tipoDocumento.descripcion : 'Desconocido'}</td>
                                     <td className="text-center" style={{ width: "10%" }}>{autor.nro_documento}</td>
                                 </tr>

@@ -1,7 +1,7 @@
 import axios from "axios";
 const URL = "http://localhost:4444/api/paises";
 
-
+// Obtener todos los países
 async function getAllPaises() {
     try {
         const paises = await axios.get(`${URL}`);

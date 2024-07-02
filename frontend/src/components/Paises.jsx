@@ -1,18 +1,19 @@
 import { useState, useEffect } from 'react';
 import paisesService from '../services/paises.services';
 
+// Componente para mostrar los países
 function Paises() {
     const tituloPagina = 'Paises';
     const [pais, setPais] = useState("");
 
     useEffect(() => {
         BuscarPaises();
-    }, []);
+    }, []); // useEffect se ejecuta solo una vez. Busca los países.
 
     async function BuscarPaises() {
         let pais = await paisesService.getAllPaises();
         setPais(pais)
-    };
+    }; // Función para buscar los países
 
     return (
         <div>

@@ -19,17 +19,17 @@ function Resenas() {
         L: "(Listado)",
     };
 
-    const [AccionABMC, setAccionABMC] = useState("L");
-    const [Comentario, setComentario] = useState("");
-    const [Libros, setLibros] = useState([]); // Inicializar como array
-    const [Resenas, setResenas] = useState([]);
-    const [Item, setItem] = useState(null);
-    const [Users, setUsers] = useState([]);
+    const [AccionABMC, setAccionABMC] = useState("L"); // Estado para controlar la acción a realizar
+    const [Comentario, setComentario] = useState(""); // Estado para filtrar la búsqueda de reseñas
+    const [Libros, setLibros] = useState([]); // Estado para guardar los libros
+    const [Resenas, setResenas] = useState([]); // Estado para guardar las reseñas
+    const [Item, setItem] = useState(null); // Estado para mostrar la reseña en el formulario
+    const [Users, setUsers] = useState([]); // Estado para guardar los usuarios
 
     const Buscar = useCallback(async () => {
         const data = await resenasService.getAllResenas({ comentario: Comentario });
         setResenas(data.Items);
-    }, [Comentario]);
+    }, [Comentario]); // Busca las reseñas según el comentario
 
     useEffect(() => {
         async function BuscarUsers() {
@@ -37,7 +37,7 @@ function Resenas() {
             setUsers(data);
         };
         BuscarUsers();
-    }, []);
+    }, []); // useEffect se ejecuta solo una vez. Busca los usuarios disponibles.
 
     useEffect(() => {
         async function BuscarLibros() {
@@ -45,25 +45,25 @@ function Resenas() {
             setLibros(data.Items || []); // Asegurarse de que data.Items sea un array
         };
         BuscarLibros();
-    }, []);
+    }, []); // useEffect se ejecuta solo una vez. Busca los libros disponibles.
 
     useEffect(() => {
         Buscar();
-    }, [Buscar]);
+    }, [Buscar]); // useEffect se ejecuta cada vez que cambia el estado Comentario.
 
     async function BuscarId(item, accionABMC) {
         const data = await resenasService.getResenaById(item.id);
         setItem(data);
         setAccionABMC(accionABMC);
-    };
+    }; // Busca una reseña por ID y actualiza el estado con las reseñas encontradas y el tipo de acción.
 
     function Consultar(item) {
         BuscarId(item, "C");
-    }
+    } // Consulta una reseña por ID y actualiza el estado con la reseña encontrada y el tipo de acción.
 
     function Modificar(item) {
         BuscarId(item, "M");
-    }
+    } // Modifica una reseña por ID y actualiza el estado con la reseña encontrada y el tipo de acción.
 
     async function Agregar() {
         setAccionABMC("A");
@@ -76,7 +76,7 @@ function Resenas() {
         });
         modalDialogService.Alert("preparando el Alta...");
         console.log(Item);
-    };
+    }; // Agrega una reseña y actualiza el estado con la reseña encontrada y el tipo de acción.
 
     const Imprimir = () => {
         const data = Resenas.map((item) => ({
@@ -94,12 +94,26 @@ function Resenas() {
         const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
         const dataBlob = new Blob([excelBuffer], { type: "application/octet-stream" });
         saveAs(dataBlob, "ReseñaListado.xlsx");
-    };
+    }; // Mapea las reseñas encontradas y las muestra en el listado.
+
 
     async function Eliminar(item) {
-        await resenasService.deleteResena(item.id);
-        Buscar();
-    };
+        modalDialogService.Confirm(
+            "¿Estás seguro de que deseas eliminar esta reseña?",
+            "Confirmar eliminación",
+            "Sí",
+            "No",
+            async () => {
+                await resenasService.deleteResena(item.id);
+                modalDialogService.Alert("Reseña eliminada correctamente.", "Eliminación exitosa", "Aceptar", "", null, null, "success");
+                setTimeout(() => {
+                    Buscar();
+                }, 3000);
+            },
+            null,
+            'warning'
+        );
+    } // Elimina una reseña por ID y actualiza el estado con las reseñas encontradas.
 
     async function Grabar(item) {
         if (AccionABMC === "A") {
@@ -118,11 +132,11 @@ function Resenas() {
                     " correctamente."
             );
         }, 0);
-    };
+    }; // Graba una reseña y actualiza el estado con las reseñas encontradas.
 
     function Volver() {
         setAccionABMC("L");
-    }
+    } // Vuelve al listado de reseñas.
 
     return (
         <div>
@@ -139,7 +153,8 @@ function Resenas() {
                         Agregar 
                     }} 
                 />
-            )}
+            )} {/*Muestra el formulario de búsqueda de reseñas*/}
+
             {AccionABMC === "L" && Resenas.length > 0 && (
                 <ResenasListado 
                     {...{ 
@@ -151,13 +166,15 @@ function Resenas() {
                         Libros 
                     }} 
                 />
-            )}
+            )} {/*Muestra el listado de reseñas*/}
+
             {AccionABMC === "L" && Resenas && Resenas.length === 0 && (
                 <div className="alert alert-info mensajesAlert">
                     <i className="fa fa-exclamation-sign"></i>
                     No se encontraron registros...
                 </div>
-            )}
+            )} {/*Muestra un mensaje si no se encuentran registros*/}
+            
             {AccionABMC !== "L" && (
                 <ResenasRegistro 
                     {...{ 
@@ -169,7 +186,7 @@ function Resenas() {
                         Volver 
                     }} 
                 />
-            )}
+            )} {/*Muestra el formulario de registro de reseñas*/}
         </div>
     );
 }

@@ -3,23 +3,20 @@ const db = require("../base-orm/sequelize-init");
 const { Op, ValidationError } = require("sequelize");
 const moment = require("moment");
 const router = express.Router();
-// const { authenticateJWT, authorizeUser } = require("../seguridad/auth"); // Importa el middleware de autenticación y autorización
 
 
 // Rutas de LIBROS.
 
 
-// Obtener todos los libros / obtener los libros filtrados por titulo.
-router.get("/api/libros", async function (req, res, next) {
+// Obtener los libros filtrados por titulo.
+router.get("/api/libros", async function (req, res) {
       try {
             let where = {};
             let include = [];
 
-
             if (req.query.titulo != undefined && req.query.titulo !== "") {
                   where.titulo = { [Op.like]: `%${req.query.titulo}%` };
             };
-
 
             const { count, rows } = await db.Libros.findAndCountAll({
                   attributes: [
@@ -40,15 +37,15 @@ router.get("/api/libros", async function (req, res, next) {
             return res.json({ Items: rows, RegistrosTotal: count });
       } catch (err) {
             console.error("Error in GET /api/libros", err);
-            res.status(500).json({ error: "Internal server error" });
+            res.status(500).json({ error: "Internal server error" }); //error 500 significa error interno del servidor
       }
 });
 
 
 
 
-// Ruta de libros: obtener por ID.
-router.get("/api/libros/:id", async function (req, res, next) {
+// Obtener libros por ID.
+router.get("/api/libros/:id", async function (req, res) {
       try {
             let item = await db.Libros.findOne({
                   attributes: [
@@ -65,17 +62,17 @@ router.get("/api/libros/:id", async function (req, res, next) {
 
 
             if (!item) {
-                  return res.status(404).json({ message: "Libro no encontrado" });
+                  return res.status(404).json({ message: "Libro no encontrado" }); //error 404 significa que no se encontró el recurso solicitado
             }
             res.json(item);
       } catch (err) {
             console.error("Error in GET /api/libros/", err);
-            res.status(500).json({ error: "Internal server error" });
+            res.status(500).json({ error: "Internal server error" }); //error 500 significa error interno del servidor
       }
 });
 
 
-// Ruta de libros: crear.
+// Crear un nuevo libro
 router.post("/api/libros/", async (req, res) => {
       try {
             let data = await db.Libros.create({
@@ -87,16 +84,16 @@ router.post("/api/libros/", async (req, res) => {
                   precio: req.body.precio,
                   id_genero: req.body.id_genero,
             });
-            res.status(200).json(data.dataValues);
+            res.status(200).json(data.dataValues); // 200 significa que la solicitud ha tenido éxito
       } catch (err) {
             console.error("Error in POST /api/libros/", err);
-            res.status(500).json({ error: "Internal server error" });
+            res.status(500).json({ error: "Internal server error" }); //error 500 significa error interno del servidor
       }
 }); // ejemplo de uso: http://localhost:4444/api/libros/
 // con body en formato JSON: {"id": 1, "titulo": "El principito", "fecha_publicacion": "1943-04-06", "id_autor": 1, "id_editorial": 1, "precio": 100, "id_genero": 1}
 
 
-// Ruta de libros: actualizar.
+// Actualizar un nuevo libro
 router.put("/api/libros/:id", async (req, res) => {
       try {
             let item = await db.Libros.findOne({
@@ -112,7 +109,7 @@ router.put("/api/libros/:id", async (req, res) => {
                   where: { id: req.params.id },
             });
             if (!item) {
-                  res.status(404).json({ message: "Libro no encontrado" });
+                  res.status(404).json({ message: "Libro no encontrado" }); //error 404 significa que no se encontró el recurso solicitado
                   return;
             }
 
@@ -127,22 +124,23 @@ router.put("/api/libros/:id", async (req, res) => {
             await item.save();
 
 
-            res.sendStatus(204);
+            res.sendStatus(204); // 204 significa que la solicitud ha tenido éxito
       } catch (err) {
             if (err instanceof ValidationError) {
                   let messages = "";
                   err.errors.forEach(
                   (x) => (messages += x.path + ": " + x.message + "\n")
                   );
-                  res.status(400).json({ message: messages });
+                  res.status(400).json({ message: messages }); // 400 significa error en la solicitud del cliente
             } else {
-                  throw err;
+                  console.error("Error in PUT /api/libros", err);
+                  res.status(500).json({ error: "Internal server error" }); //error 500 significa error interno del servidor
             }
       }
 });
 
 
-// Ruta de libros: eliminar.
+// Eliminar un libro
 router.delete("/api/libros/:id", async (req, res) => {
       try {
             let data = await db.Libros.destroy({
@@ -150,13 +148,13 @@ router.delete("/api/libros/:id", async (req, res) => {
             });
             console.log("Numero de filas borradas:", data);
             if (data === 1) {
-                  res.sendStatus(200);
+                  res.sendStatus(200); // 200 significa que la solicitud ha tenido éxito
             } else {
-                  res.sendStatus(404);
+                  res.sendStatus(404); // 404 significa que no se encontró el recurso solicitado
             }
       } catch (err) {
             console.error("Error in DELETE /api/libros/", err);
-            res.status(500).json({ error: "Internal server error" });
+            res.status(500).json({ error: "Internal server error" }); //error 500 significa error interno del servidor
       }
 });
 

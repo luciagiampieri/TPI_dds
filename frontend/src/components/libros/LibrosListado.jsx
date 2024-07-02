@@ -1,6 +1,7 @@
 import React from "react";
 import moment from "moment";
 
+// Componente para mostrar el listado de libros
 export default function LibrosListado({
     Items,
     Consultar,

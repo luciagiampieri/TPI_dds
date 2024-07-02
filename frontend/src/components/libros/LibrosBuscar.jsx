@@ -1,5 +1,6 @@
 import React from "react";
 
+// Buscar un libro por título y actualiza el estado con el libro encontrado y el tipo de acción.
 function LibrosBuscar({ titulo, setTitulo, Buscar, Agregar }) {
     return (
         <form name="FormBusqueda">

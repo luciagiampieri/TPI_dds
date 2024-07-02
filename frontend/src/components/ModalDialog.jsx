@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Modal from "react-bootstrap/Modal";
 import modalDialogService from "../services/modalDialog.service";
 
-
+// Componente para mostrar un mensaje en un modal
 function ModalDialog() {
   const [mensaje, setMensaje] = useState("");
   const [titulo, setTitulo] = useState("");
@@ -24,12 +24,12 @@ function ModalDialog() {
       accionBoton2();
     }
     setMensaje((x) => (x = ""));
-  };
+  }; // Funciones para manejar las acciones de los botones
 
 
   const handleClose = () => {
     setMensaje((x) => (x = ""));
-  };
+  }; // Función para cerrar el modal
 
 
   function Show(
@@ -51,7 +51,7 @@ function ModalDialog() {
     setAccionBoton1(() => _accionBoton1);
     setAccionBoton2(() => _accionBoton2);
     setTipo((x) => (x = _tipo));
-  }
+  } // Función para mostrar el modal
 
 
   useEffect(() => {
@@ -61,7 +61,7 @@ function ModalDialog() {
       //desuscribirse al servicio modalDialogService al desmontar el componente
       modalDialogService.subscribeShow(null);
     };
-  }, []);
+  }, []); // useEffect se ejecuta solo una vez al iniciar el componente
 
 
   let classHeader = "";
@@ -86,7 +86,7 @@ function ModalDialog() {
     default:
       classHeader = "bg-success";
       break;
-  }
+  } // Clases y iconos para los mensajes
 
 
   if (mensaje === "") return null;
@@ -94,6 +94,7 @@ function ModalDialog() {
 
   return (
     <>
+      {/* Modal para mostrar mensajes */}
       <Modal
         show
         onHide={handleClose}
@@ -107,7 +108,7 @@ function ModalDialog() {
           <Modal.Title>{titulo}</Modal.Title>
         </Modal.Header>
 
-
+        {/* Si el mensaje es BloquearPantalla, muestra una barra de progreso */}
         <Modal.Body style={{ fontSize: "1.2em" }}>
           {mensaje === "BloquearPantalla" ? (
             <div className="progress">
@@ -131,7 +132,7 @@ function ModalDialog() {
           )}
         </Modal.Body>
 
-
+        {/* Si el mensaje es BloquearPantalla, no muestra los botones */}
         <Modal.Footer>
           {boton1 !== "" && (
             <button

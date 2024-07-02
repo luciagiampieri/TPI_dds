@@ -7,13 +7,14 @@ export default function AutoresListado({
     Eliminar,
     Modificar,
     Imprimir,
-    Tipodoc = [], // Asegurarse de que Paises está en las props y tenga un valor por defecto
+    Tipodoc = [], // Asegurarse de que Tipo_Doc está en las props y tenga un valor por defecto
 }) {
     return (
         <div className="table-responsive">
             <table className="table table-hover table-sm table-bordered table-striped">
                 <thead>
                     <tr>
+                        {/* Agregar las columnas de la tabla */}
                         <th className="text-center align-middle" style={{ width: "15%" }}>Tipo documento</th>
                         <th className="text-center align-middle" style={{ width: "10%" }}>Numero documento </th>
                         <th className="text-center align-middle" style={{ width: "15%" }}>Nombre</th>
@@ -23,6 +24,7 @@ export default function AutoresListado({
                     </tr>
                 </thead>
                 <tbody>
+                    {/* Agregar las filas de la tabla */}
                 {Items.map((Item) => (
                     <tr key={Item.id}>
                         <td className="text-center align-middle" style={{ width: "15%" }}>
@@ -31,9 +33,10 @@ export default function AutoresListado({
                         <td className="text-center align-middle" style={{ width: "10%" }}>{Item.nro_documento}</td>
                         <td className="text-center align-middle" style={{ width: "15%" }}>{Item.nombre}</td>
                         <td className="text-center align-middle" style={{ width: "15%" }}>{Item.apellido}</td>
-                        <td className="text-center align-middle" style={{ width: "10%" }}>{moment(Item.fecha_nacimiento).format("YYYY-MM-DD")}</td>
+                        <td className="text-center align-middle" style={{ width: "10%" }}>{moment(Item.fecha_fundacion).format("YYYY/MM/DD")}</td>
                         
                         <td className="text-center align-middle text-nowrap">
+                            {/* Agregar los botones de la tabla */}
                             <button
                                 className="btn btn-sm btn-outline-primary"
                                 title="Consultar"

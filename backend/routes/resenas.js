@@ -3,22 +3,17 @@ const db = require("../base-orm/sequelize-init");
 const { Op, ValidationError } = require("sequelize");
 const moment = require("moment");
 const router = express.Router();
-// const { authenticateJWT, authorizeUser } = require("../seguridad/auth"); // Importa el middleware de autenticación y autorización
-
 
 // Rutas de RESEÑAS.
-
 
 // Obtener por filtro.
 router.get("/api/resenas", async function (req, res) {
     try {
         let where = {};
 
-
         if (req.query.comentario != undefined && req.query.comentario !== "") {
             where.comentario = { [Op.like]: `%${req.query.comentario}%` };
         };
-
 
         const { count, rows } = await db.Resenas.findAndCountAll({
             attributes: [
@@ -37,14 +32,14 @@ router.get("/api/resenas", async function (req, res) {
         return res.json({ Items: rows, RegistrosTotal: count });
     } catch (error) {
         console.error("Error in GET /api/resenas", err);
-        res.status(500).json({ error: "Internal server error" });
+        res.status(500).json({ error: "Internal server error" }); //error 500 significa error interno del servidor
     }
 });
 // ejemplo de uso con filtro de comentario: http://localhost:4444/api/resenas?comentario=entretenido&Pagina=1
 // ejemplo de uso sin filtro: http://localhost:4444/api/resenas
 
 
-// Ruta de reseña: obtener por ID.
+// Obtener reseñas por ID
 router.get("/api/resenas/:id", async function (req, res) {
     try {
         let item = await db.Resenas.findOne({
@@ -62,18 +57,18 @@ router.get("/api/resenas/:id", async function (req, res) {
         if (item) {
             res.json(item);
         } else {
-            res.status(404).json({ message: "Reseña no encontrada" });
+            res.status(404).json({ message: "Reseña no encontrada" }); //error 404 significa que no se encontró el recurso solicitado
         }
     } catch (error) {
         console.error("Error in GET /api/resenas", err);
-        res.status(500).json({ error: "Internal server error" });
+        res.status(500).json({ error: "Internal server error" }); //error 500 significa error interno del servidor
 
 
     }
 }); // ejemplo de uso: http://localhost:4444/api/resenas/1
 
 
-// Ruta de reseña: crear.
+// Crear una nueva reseña
 router.post("/api/resenas/", async (req, res) => {
     try {
         let data = await db.Resenas.create({
@@ -83,16 +78,16 @@ router.post("/api/resenas/", async (req, res) => {
             calificacion: req.body.calificacion,
             user_name: req.body.user_name,
         });
-        res.status(200).json(data.dataValues);
+        res.status(200).json(data.dataValues); // 200 significa que la solicitud ha tenido éxito
     } catch (err) {
         console.error("Error in POST /api/resenas/", err);
-        res.status(500).json({ error: "Internal server error" });
+        res.status(500).json({ error: "Internal server error" }); //error 500 significa error interno del servidor
     }
 }); // ejemplo de uso: POST http://localhost:4444/api/resenas/ con body en formato JSON
 // ejemplo de body: {"id_libro":1,"fecha_resena":"2021-10-10","comentario":"Muy entretenido!","calificacion":5,"user_name":"user10"}
 
 
-// Ruta de reseña: actualizar.
+// Modificar una reseña
 router.put("/api/resenas/:id", async (req, res) => {
     try {
         let item = await db.Resenas.findOne({
@@ -107,7 +102,7 @@ router.put("/api/resenas/:id", async (req, res) => {
             where: { id: req.params.id },
         });
         if (!item) {
-            res.status(404).json({ message: "Reseña no encontrada" });
+            res.status(404).json({ message: "Reseña no encontrada" }); // 404 significa que no se encontró el recurso solicitado
             return;
         }
 
@@ -120,17 +115,17 @@ router.put("/api/resenas/:id", async (req, res) => {
         await item.save();
 
 
-        res.sendStatus(204);
+        res.sendStatus(204); // 204 significa que la solicitud ha tenido éxito
     } catch (err) {
         if (err instanceof ValidationError) {
             let messages = "";
             err.errors.forEach(
                 (x) => (messages += x.path + ": " + x.message + "\n")
             );
-            res.status(400).json({ message: messages });
+            res.status(400).json({ message: messages }); // 400 significa error en la solicitud del cliente
         } else {
             console.error("Error in PUT /api/resenas/", err);
-            res.status(500).json({ error: "Internal server error" });
+            res.status(500).json({ error: "Internal server error" }); //error 500 significa error interno del servidor
         }
     }
 });
@@ -138,20 +133,20 @@ router.put("/api/resenas/:id", async (req, res) => {
 // ejemplo de body: {"fecha_resena":"2021-10-10","comentario":"Muy entretenido!","calificacion":5,"user_name":"user10"}
 
 
-// Ruta de reseña: eliminar.
+// Eliminar una reseña
 router.delete("/api/resenas/:id", async (req, res) => {
     try {
         let data = await db.Resenas.destroy({
             where: { id: req.params.id },
         });
         if (data === 1) {
-            res.sendStatus(200);
+            res.sendStatus(200); // 200 significa que la solicitud ha tenido éxito
         } else {
-            res.sendStatus(404);
+            res.sendStatus(404); // 404 significa que no se encontró el recurso solicitado
         }
     } catch (err) {
         console.error("Error in DELETE /api/resenas/", err);
-        res.status(500).json({ error: "Internal server error" });
+        res.status(500).json({ error: "Internal server error" }); // 500 significa error interno del servidor
     }
 }); // ejemplo de uso: DELETE http://localhost:4444/api/resenas/1
 

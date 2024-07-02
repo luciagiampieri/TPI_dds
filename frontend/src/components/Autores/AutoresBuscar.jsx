@@ -1,5 +1,6 @@
 import React from 'react'
 
+// Buscar un autor por ID y actualiza el estado con el autor encontrado y el tipo de acción.
 function AutoresBuscar({ nombre, setNombre, Buscar, Agregar }) {
     return (
         <form name="FormBusqueda">

@@ -1,15 +1,4 @@
 
-
-/* const PrivateRoute = ({ children }) => {
-  let location = useLocation();
-  return localStorage.getItem('accessToken') ? (
-      children
-  ) : (
-      <Navigate to="/login" state={{ from: location }} replace />
-  );
-}; */
-// location.state.from.pathname
-
 import "./App.css";
 import React from 'react';
 import { BrowserRouter, Route, Routes, Navigate, useLocation } from "react-router-dom";

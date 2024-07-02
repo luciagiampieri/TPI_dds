@@ -5,18 +5,18 @@ import generosService from '../services/generos.service';
 function Generos() {
       const tituloPagina = 'Generos';
       const [generos, setGeneros] = useState("");
-      // cargar al montar el componente (solo una vez)
+      
 
 
       useEffect(() => {
             BuscarGeneros();
-      }, []);
+      }, []); // useEffect se ejecuta solo una vez buscando generos
 
 
       async function BuscarGeneros() {
             let genero = await generosService.getAllGeneros();
             setGeneros(genero);
-      };
+      }; // Busca los generos y actualiza el estado con los generos encontrados.
 
       return (
             <div>

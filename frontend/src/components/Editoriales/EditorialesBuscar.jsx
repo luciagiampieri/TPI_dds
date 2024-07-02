@@ -1,5 +1,6 @@
 import React from 'react'
 
+// Componente para buscar editoriales por nombre
 function EditorialesBuscar({ nombre, setNombre, Buscar, Agregar }) {
     return (
         <form name="FormBusqueda">

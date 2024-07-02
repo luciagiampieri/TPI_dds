@@ -2,11 +2,13 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 import editorialesService from "../../services/editoriales.service";
 import paisesService from "../../services/paises.service";
+import moment from 'moment';
 
+// Componente para mostrar las editoriales
 export default function EditorialesPublico() {
 
-    const [Editoriales, setEditoriales] = useState([]);
-    const [Paises, setPaises] = useState([]);
+    const [Editoriales, setEditoriales] = useState([]); // estado para guardar las editoriales
+    const [Paises, setPaises] = useState([]); // estado para guardar los países
 
     useEffect(() => {
         async function BuscarEditoriales() {
@@ -14,7 +16,7 @@ export default function EditorialesPublico() {
             setEditoriales(data.Items);
         }
         BuscarEditoriales();
-    }, []);
+    }, []); // useEffect se ejecuta solo una vez buscando editoriales
 
     useEffect(() => {
         async function BuscarPaises() {
@@ -22,7 +24,7 @@ export default function EditorialesPublico() {
             setPaises(data);
         }
         BuscarPaises();
-    }, []);
+    }, []); // useEffect se ejecuta solo una vez buscando paises
 
     return (
     <>
@@ -48,7 +50,7 @@ export default function EditorialesPublico() {
                             <tr key={editorial.id}>
                                 <td className="text-center" style={{ width: "15%" }}>{editorial.nombre}</td>
                                 <td className="text-center" style={{ width: "15%" }}>{editorial.direccion}</td>
-                                <td className="text-center" style={{ width: "10%" }}>{editorial.fecha_fundacion}</td>
+                                <td className="text-center" style={{ width: "10%" }}>{moment(editorial.fecha_fundacion).format("YYYY/MM/DD")}</td>
                                 <td className="text-center" style={{ width: "10%" }}>{pais ? pais.nombre : 'Desconocido'}</td>
                             </tr>
                         );
