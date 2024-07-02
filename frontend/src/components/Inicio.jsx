@@ -16,8 +16,8 @@ function Inicio() {
           <div className="col-md-12 mb-3">
             <div className="p-4 bg-white rounded shadow-sm h-100">
               <h5 className="text-info">Tecnologías Utilizadas</h5>
-              <p><strong>Backend:</strong> NodeJs, Express, WebApiRest, Swagger, Sequelize, Sqlite.</p>
-              <p><strong>Frontend:</strong> Single Page Application con React, HTML, CSS y Bootstrap.</p>
+              <p><strong>Backend:</strong> NodeJs, Express, WebApiRest, Sequelize, Sqlite.</p>
+              <p><strong>Frontend:</strong> React, HTML, CSS y Bootstrap.</p>
             </div>
           </div>
         </div>
