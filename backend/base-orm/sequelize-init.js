@@ -115,13 +115,7 @@ const Generos= sequelize.define(
       },
 
       {
-            hooks: {
-                  beforeValidate: function (Generos, options) {
-                        if (typeof Generos.nombre === 'string') {
-                              Generos.nombre = Generos.nombre.toUpperCase().trim();
-                        }
-                  }
-            },
+
             timestamps: false
       },
 );
@@ -199,16 +193,6 @@ const Autores= sequelize.define(
       },
       
       {
-            hooks: {
-                  beforeValidate: function (Autores, options) {
-                        if (typeof Autores.nombre === 'string') {
-                              Autores.nombre = Autores.nombre.toUpperCase().trim();
-                        }
-                        if (typeof Autores.apellido === 'string') {
-                              Autores.apellido = Autores.apellido.toUpperCase().trim();
-                        }
-                  }
-            },
             timestamps: false
       },
 );
@@ -291,16 +275,6 @@ const Editoriales= sequelize.define(
       },
 
       {
-            hooks: {
-                  beforeValidate: function (Editoriales, options) {
-                        if (typeof Editoriales.nombre === 'string') {
-                              Editoriales.nombre = Editoriales.nombre.toUpperCase().trim();
-                        }
-                        if (typeof Editoriales.direccion === 'string') {
-                              Editoriales.direccion = Editoriales.direccion.toUpperCase().trim();
-                        }
-                  }
-            },
             timestamps: false
       },
 );
@@ -331,13 +305,6 @@ const Paises= sequelize.define(
       },
 
       {
-            hooks: {
-                  beforeValidate: function (Paises, options) {
-                        if (typeof Paises.nombre === 'string') {
-                              Paises.nombre = Paises.nombre.toUpperCase().trim();
-                        }
-                  }
-            },
             timestamps: false
       },
 );
@@ -397,7 +364,7 @@ const Resenas= sequelize.define(
                               msg: 'La calificación debe ser un número entero'
                         },
                         min: {
-                              args: 0,
+                              args: 1,
                               msg: 'La calificación debe ser mayor a 0'
                         },
                         max: {
@@ -423,13 +390,6 @@ const Resenas= sequelize.define(
       },
 
       {
-            hooks: {
-                  beforeValidate: function (Resenas, options) {
-                        if (typeof Resenas.comentario === 'string') {
-                              Resenas.comentario = Resenas.comentario.toUpperCase().trim();
-                        }
-                  }
-            },
             timestamps: false,
       },
 );
@@ -465,13 +425,6 @@ const User_Name= sequelize.define(
       },
 
       {
-            hooks: {
-                  beforeValidate: function (User_Name, options) {
-                        if (typeof User_Name.user_name === 'string') {
-                              User_Name.user_name = User_Name.user_name.toUpperCase().trim();
-                        }
-                  }
-            },
             timestamps: false,
             freezeTableName: true
       },

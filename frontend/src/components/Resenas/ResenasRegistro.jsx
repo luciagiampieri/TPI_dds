@@ -137,8 +137,8 @@ function ResenasRegistro({
                                             message: "Calificación es requerida" 
                                         },
                                         min: { 
-                                            value: 0, 
-                                            message: "Calificación debe ser mayor o igual a 0" 
+                                            value: 1, 
+                                            message: "Calificación debe ser mayor o igual a 1" 
                                         },
                                         max: { 
                                             value: 5, 

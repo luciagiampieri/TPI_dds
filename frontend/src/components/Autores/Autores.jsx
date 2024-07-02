@@ -125,7 +125,7 @@ function Autores() {
 
         setTimeout(() => {
             modalDialogService.Alert(
-                "Registro " +
+                "Autor " +
                     (AccionABMC === "A" ? "agregado" : "modificado") +
                     " correctamente."
             );

@@ -49,6 +49,9 @@ const updateEditorial = async (id, editorial) => {
     try {
         await axiosInstance.put(`${URL}/${id}`, editorial, { headers: { requiresAuth: true } });
     } catch (error) {
+        if (error.response.status === 400) {
+            throw new Error('Ya existe la editorial.');
+      }
         console.error('Error al actualizar la editorial:', error);
         throw error;
     }

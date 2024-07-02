@@ -119,7 +119,7 @@ function Editoriales() {
 
         setTimeout(() => {
             modalDialogService.Alert(
-                "Registro " +
+                "Editorial " +
                     (AccionABMC === "A" ? "agregado" : "modificado") +
                     " correctamente."
             );

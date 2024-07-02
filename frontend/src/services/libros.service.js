@@ -48,8 +48,13 @@ const updateLibro = async (id, libro) => {
       try {
             await axiosInstance.put(`${URL}/${id}`, libro, { headers: { requiresAuth: true } });
       } catch (error) {
-            console.error('Error al actualizar el libro:', error);
-            throw error;
+            
+            if (error.response.status === 400) {
+            throw new Error('Ya existe un libro con este título.');
+      }
+
+           console.error('Error al actualizar el libro:', error);
+           throw error;
       }
 };
 

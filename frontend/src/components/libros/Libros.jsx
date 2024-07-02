@@ -149,7 +149,7 @@ function Libros() {
 
             setTimeout(() => {
                   modalDialogService.Alert(
-                        "Registro " +
+                        "Libro " +
                               (AccionABMC === "A" ? "agregado" : "modificado") +
                               " correctamente."
                   );

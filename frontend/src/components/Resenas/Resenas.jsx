@@ -127,7 +127,7 @@ function Resenas() {
 
         setTimeout(() => {
             modalDialogService.Alert(
-                "Registro " +
+                "Reseña " +
                     (AccionABMC === "A" ? "agregado" : "modificado") +
                     " correctamente."
             );

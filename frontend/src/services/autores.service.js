@@ -49,6 +49,9 @@ const updateAutor = async (id, autor) => {
     try {
         await axiosInstance.put(`${URL}/${id}`, autor, { headers: { requiresAuth: true } });
     } catch (error) {
+        if (error.response.status === 400) {
+            throw new Error('Ya existe el autor.');
+        }
         console.error('Error al actualizar el autor:', error);
         throw error;
     }
