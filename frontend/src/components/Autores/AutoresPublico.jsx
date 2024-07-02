@@ -40,7 +40,7 @@ export default function AutoresPublico() {
                             <th className="text-center" style={{ width: "10%" }}>Apellido</th>
                             <th className="text-center" style={{ width: "10%" }}>Fecha de Nacimiento</th>
                             <th className="text-center" style={{ width: "15%" }}>Tipo de Documento</th>
-                            <th className="text-center" style={{ width: "10%" }}>Numero Documento</th>
+                            <th className="text-center" style={{ width: "10%" }}>Número Documento</th>
                         </tr>
                     </thead>
                     <tbody>

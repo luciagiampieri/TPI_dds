@@ -39,7 +39,7 @@ export default function EditorialesPublico() {
                     <tr>
                         <th className="text-center" style={{ width: "15%" }}>Nombre</th>
                         <th className="text-center" style={{ width: "15%" }}>Dirección</th>
-                        <th className="text-center" style={{ width: "10%" }}>Fecha de Fundación</th>
+                        <th className="text-center" style={{ width: "10%" }}>Fecha Fundación</th>
                         <th className="text-center" style={{ width: "10%" }}>País</th>
                     </tr>
                 </thead>

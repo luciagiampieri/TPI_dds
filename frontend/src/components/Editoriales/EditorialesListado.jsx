@@ -17,8 +17,8 @@ export default function EditorialesListado({
                     <tr>
                         <th className="text-center" style={{ width: "15%" }}>Nombre</th>
                         <th className="text-center" style={{ width: "15%" }}>Dirección</th>
-                        <th className="text-center" style={{ width: "10%" }}>Fecha Fundacion</th>
-                        <th className="text-center" style={{ width: "10%" }}>Pais</th>
+                        <th className="text-center" style={{ width: "10%" }}>Fecha Fundación</th>
+                        <th className="text-center" style={{ width: "10%" }}>País</th>
                         <th className="text-center" style={{ width: "8%" }}>Acciones</th>
                     </tr>
                 </thead>

@@ -22,7 +22,7 @@ export default function LibrosListado({
                         <th className="text-center align-middle" style={{ width: "10%" }}>Autor</th>
                         <th className="text-center align-middle" style={{ width: "15" }}>Editorial</th>
                         <th className="text-center align-middle" style={{ width: "8%" }}>Precio</th>
-                        <th className="text-center align-middle" style={{ width: "10%" }}>Genero</th>
+                        <th className="text-center align-middle" style={{ width: "10%" }}>Género</th>
                         <th className="text-center align-middle" style={{ width: "8%" }}>Acciones</th>
                     </tr>
                 </thead>

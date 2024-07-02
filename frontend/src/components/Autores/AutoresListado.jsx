@@ -16,7 +16,7 @@ export default function AutoresListado({
                     <tr>
                         {/* Agregar las columnas de la tabla */}
                         <th className="text-center align-middle" style={{ width: "15%" }}>Tipo documento</th>
-                        <th className="text-center align-middle" style={{ width: "10%" }}>Numero documento </th>
+                        <th className="text-center align-middle" style={{ width: "10%" }}>Número documento </th>
                         <th className="text-center align-middle" style={{ width: "15%" }}>Nombre</th>
                         <th className="text-center align-middle" style={{ width: "15%" }}>Apellido</th>
                         <th className="text-center align-middle" style={{ width: "10%" }}>Fecha nacimiento</th>
