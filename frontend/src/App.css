@@ -131,6 +131,13 @@ table {
   max-width: 90%;
 }
 
+
+.table-responsive{
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+}
+
 /*Boton de imprimir*/
 .btn.btn-primary.float-end {
   background-color: #6e4760;
