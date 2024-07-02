@@ -24,7 +24,7 @@ async function CrearDBSiNoExiste() {
             await db.run(
                   `CREATE TABLE Libros (
                   id INTEGER PRIMARY KEY AUTOINCREMENT, 
-                  titulo TEXT NOT NULL UNIQUE, 
+                  titulo TEXT NOT NULL UNIQUE COLLATE NOCASE, 
                   fecha_publicacion DATE NOT NULL, 
                   id_autor INT NOT NULL, 
                   id_editorial INT NOT NULL, 
@@ -124,46 +124,46 @@ async function CrearDBSiNoExiste() {
             // Agrega valores
             await db.run(
                   `INSERT INTO Resenas (id_libro, fecha_resena, comentario, calificacion, user_name) VALUES 
-                  (1, '2021-06-01', 'Me fascina este libro. Muy cautivante. Lo recomendaría sin dudas!', 5, 'user1'),
-                  (2, '2021-06-01', 'La calidad del autor es excelente, aunque no mi estilo.', 3, 'user2'),
-                  (3, '2021-06-01', 'No me gustó para nada. No lo recomendaría.', 1, 'user3'),
-                  (4, '2021-06-01', 'Me encantó. Muy buen libro.', 4, 'user4'),
-                  (5, '2021-06-01', 'Muy buen libro. Me gustó mucho.', 4, 'user5'),
-                  (6, '2021-06-01', 'Este libro tiene mucho potencial. Ojalá llegara al New York Times1', 5, 'user6'),
-                  (7, '2021-06-01', 'Me encantó.', 4, 'user7'),
-                  (8, '2021-06-01', 'Lo leí en un par de horas. Es fascinante.', 4, 'user8'),
-                  (9, '2021-06-01', 'Como amante de los libros que soy, esta edición me ha decepcionado un poco pero respeto al autor.', 3, 'user9'),
-                  (10, '2021-06-01', 'Me encantó. Muy buen libro.', 4, 'user10'),
-                  (1, '2021-06-01', 'Es muy divertido. Lo recomendaría sin dudas!', 5, 'user10'),
-                  (2, '2021-06-01', 'No es mi estilo de libros.', 2, 'user9'),
-                  (3, '2021-06-01', 'No me gustó para nada. No lo recomendaría.', 1, 'user8'),
-                  (4, '2021-06-01', 'Me encantó. Muy buen libro.', 4, 'user7'),
-                  (5, '2021-06-01', 'Muy buen libro. Me gustó mucho.', 4, 'user6'),
-                  (6, '2021-06-01', 'No me gustó para nada. No lo recomendaría.', 1, 'user5'),
-                  (7, '2021-06-01', 'Me encantó. Muy buen libro.', 4, 'user4'),
-                  (8, '2021-06-01', 'Muy buen libro. Me gustó mucho.', 4, 'user3'),
-                  (9, '2021-06-01', 'No me gustó para nada. No lo recomendaría.', 1, 'user2'),
-                  (10, '2021-06-01', 'Me encantó. Muy buen libro.', 4, 'user1'),
-                  (11, '2021-06-01', 'Me encantó. Muy buen libro.', 4, 'user5'),
-                  (12, '2021-06-01', 'Muy buen libro. Me gustó mucho.', 4, 'user4'),
-                  (13, '2021-06-01', 'No me gustó para nada. No lo recomendaría.', 1, 'user3'),
-                  (14, '2021-06-01', 'Me encantó. Muy buen libro.', 4, 'user2'),
-                  (15, '2021-06-01', 'Muy buen libro. Me gustó mucho.', 4, 'user1'),
-                  (16, '2021-06-01', 'No me gustó para nada. No lo recomendaría.', 1, 'user10'),
-                  (17, '2021-06-01', 'Me encantó. Muy buen libro.', 4, 'user9'),
-                  (18, '2021-06-01', 'Muy buen libro. Me gustó mucho.', 4, 'user8'),
-                  (19, '2021-06-01', 'No me gustó para nada. No lo recomendaría.', 1, 'user7'),
-                  (20, '2021-06-01', 'Me encantó. Muy buen libro.', 4, 'user6'),
-                  (20, '2021-06-01', 'HORRIBLE.', 1, 'user6'),
-                  (19, '2021-06-01', 'Muy buen libro. Me gustó mucho.', 4, 'user5'),
-                  (18, '2021-06-01', 'No me gustó para nada. No lo recomendaría.', 1, 'user4'),
-                  (17, '2021-06-01', 'Me encantó. Muy buen libro.', 4, 'user3'),
-                  (16, '2021-06-01', 'Muy buen libro. Me gustó mucho.', 4, 'user2'),
-                  (15, '2021-06-01', 'No me gustó para nada. No lo recomendaría.', 1, 'user1'),
-                  (14, '2021-06-01', 'Me encantó. Muy buen libro.', 4, 'user10'),
-                  (13, '2021-06-01', 'Muy buen libro. Me gustó mucho.', 4, 'user9'),
-                  (12, '2021-06-01', 'No me gustó para nada. No lo recomendaría.', 1, 'user8'),
-                  (11, '2021-06-01', 'Me encantó. Muy buen libro.', 4, 'user7')`
+                  (1, '2023-04-15', 'Me fascina este libro. Muy cautivante. Lo recomendaría sin dudas!', 5, 'user1'),
+                  (2, '2015-08-20', 'La calidad del autor es excelente, aunque no mi estilo.', 3, 'user2'),
+                  (3, '2010-11-10', 'No me gustó para nada. No lo recomendaría.', 1, 'user3'),
+                  (4, '2018-03-25', 'Me encantó. Muy buen libro.', 4, 'user4'),
+                  (5, '2011-09-05', 'Muy buen libro. Me gustó mucho.', 4, 'user5'),
+                  (6, '2019-06-12', 'Este libro tiene mucho potencial. Ojalá llegara al New York Times1', 5, 'user6'),
+                  (7, '2014-10-30', 'Me encantó.', 4, 'user7'),
+                  (8, '2012-07-18', 'Lo leí en un par de horas. Es fascinante.', 4, 'user8'),
+                  (9, '2017-02-22', 'Como amante de los libros que soy, esta edición me ha decepcionado un poco pero respeto al autor.', 3, 'user9'),
+                  (10, '2016-12-07', 'Me encantó. Muy buen libro.', 4, 'user10'),
+                  (11, '2010-05-02', 'Es muy divertido. Lo recomendaría sin dudas!', 5, 'user10'),
+                  (12, '2011-11-14', 'No es mi estilo de libros.', 2, 'user9'),
+                  (13, '2013-09-28', 'No me gustó para nada. No lo recomendaría.', 1, 'user8'),
+                  (14, '2018-01-03', 'Me encantó. Muy buen libro.', 4, 'user7'),
+                  (15, '2019-08-09', 'Muy buen libro. Me gustó mucho.', 4, 'user6'),
+                  (16, '2015-04-17', 'No me gustó para nada. No lo recomendaría.', 1, 'user5'),
+                  (17, '2016-10-21', 'Me encantó. Muy buen libro.', 4, 'user4'),
+                  (18, '2013-12-05', 'Muy buen libro. Me gustó mucho.', 4, 'user3'),
+                  (19, '2014-06-30', 'No me gustó para nada. No lo recomendaría.', 1, 'user2'),
+                  (20, '2020-02-19', 'Me encantó. Muy buen libro.', 4, 'user1'),
+                  (1, '2011-07-23', 'Me encantó. Muy buen libro.', 4, 'user5'),
+                  (2, '2017-05-11', 'Muy buen libro. Me gustó mucho.', 4, 'user4'),
+                  (3, '2018-09-27', 'No me gustó para nada. No lo recomendaría.', 1, 'user3'),
+                  (4, '2019-11-08', 'Me encantó. Muy buen libro.', 4, 'user2'),
+                  (5, '2010-06-16', 'Muy buen libro. Me gustó mucho.', 4, 'user1'),
+                  (6, '2012-04-04', 'No me gustó para nada. No lo recomendaría.', 1, 'user10'),
+                  (7, '2013-10-29', 'Me encantó. Muy buen libro.', 4, 'user9'),
+                  (8, '2016-03-07', 'Muy buen libro. Me gustó mucho.', 4, 'user8'),
+                  (9, '2014-08-13', 'No me gustó para nada. No lo recomendaría.', 1, 'user7'),
+                  (10, '2015-12-01', 'Me encantó. Muy buen libro.', 4, 'user6'),
+                  (11, '2020-07-22', 'HORRIBLE.', 1, 'user6'),
+                  (12, '2013-02-25', 'Muy buen libro. Me gustó mucho.', 4, 'user5'),
+                  (13, '2012-10-12', 'No me gustó para nada. No lo recomendaría.', 1, 'user4'),
+                  (14, '2017-04-09', 'Me encantó. Muy buen libro.', 4, 'user3'),
+                  (15, '2018-06-03', 'Muy buen libro. Me gustó mucho.', 4, 'user2'),
+                  (16, '2011-03-18', 'No me gustó para nada. No lo recomendaría.', 1, 'user1'),
+                  (17, '2019-05-26', 'Me encantó. Muy buen libro.', 4, 'user10'),
+                  (18, '2016-09-14', 'Muy buen libro. Me gustó mucho.', 4, 'user9'),
+                  (19, '2013-07-02', 'No me gustó para nada. No lo recomendaría.', 1, 'user8'),
+                  (20, '2010-08-06', 'Me encantó. Muy buen libro.', 4, 'user7');`
             );
       }
 
@@ -251,6 +251,7 @@ async function CrearDBSiNoExiste() {
                   tipo_documento INT NOT NULL,
                   nro_documento VARCHAR(20) NOT NULL,
                   FOREIGN KEY (tipo_documento) REFERENCES Tipo_Documentos(tipo)
+                  UNIQUE(tipo_documento, nro_documento)
                   )`
             );
             console.log("Tabla Autores creada!");
@@ -293,7 +294,7 @@ async function CrearDBSiNoExiste() {
                   // Crear tabla Editoriales
                   `CREATE TABLE Editoriales (
                   id INTEGER PRIMARY KEY AUTOINCREMENT, 
-                  nombre VARCHAR(50) NOT NULL UNIQUE, 
+                  nombre VARCHAR(50) NOT NULL UNIQUE COLLATE NOCASE, 
                   direccion VARCHAR(100) NOT NULL,  
                   fecha_fundacion DATE NOT NULL, 
                   id_pais INTEGER NOT NULL, FOREIGN KEY (id_pais) REFERENCES Paises(id) )`

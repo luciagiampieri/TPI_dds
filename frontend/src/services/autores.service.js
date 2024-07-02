@@ -30,17 +30,19 @@ const getAutorById = async (id) => {
     }
 };
 
-// Crear un nuevo autor (requiere autenticación)
 const createAutor = async (autor) => {
     try {
-        console.log("Datos enviados al backend:", autor);
-        const response = await axiosInstance.post(`${URL}`, autor, { headers: { requiresAuth: true } });
-        return response.data;
+          const response = await axiosInstance.post(URL, autor, { headers: { requiresAuth: true } });
+          return response.data;
     } catch (error) {
-        console.error('Error al crear el autor:', error);
-        throw error;
+          if (error.response.status === 400) {
+                throw new Error('Ya existe el autor.');
+          }
+          console.error('Error al crear el autor:', error);
+          throw error;
     }
 };
+
 
 // Actualizar un autor existente 
 const updateAutor = async (id, autor) => {

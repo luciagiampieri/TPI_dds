@@ -1,6 +1,7 @@
 import React from "react";
 import moment from "moment";
 import { useForm } from "react-hook-form";
+import modalDialogService from "../../services/modalDialog.service"; 
 
 // Definición de la función AutoresRegistro
 function AutoresRegistro({
@@ -24,11 +25,17 @@ function AutoresRegistro({
         }
     });
 
-    const onSubmit = (data) => {
-        console.log("Datos del formulario:", data);
+
+
+    const onSubmit = async (data) => {
         data.fecha_nacimiento = moment(data.fecha_nacimiento).format("YYYY-MM-DD");
-        Grabar(data);
-    }; // Función que se ejecuta al hacer submit del formulario
+        try {
+              await Grabar(data);
+        } catch (error) {
+              if (error.message === 'Ya existe el autor.') {
+                    modalDialogService.Alert("Ya existe el autor.");
+        }
+    }}; 
 
     return (
         <div className="container-principal">

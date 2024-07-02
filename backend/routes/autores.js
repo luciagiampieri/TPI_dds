@@ -83,10 +83,16 @@ router.post("/api/autores/", authenticateJWT, authorizeUser(['chicasdds']), asyn
         });
         res.status(200).json(data.dataValues); //status 200 significa que la solicitud fue exitosa
     } catch (err) {
-        console.error("Error in POST /api/autores", err);
-        res.status(500).json({ error: "Internal server error" }); //error 500 significa error interno del servidor
+        if (err instanceof ValidationError) {
+            // Manejar el error de clave única (duplicado)
+            res.status(400).json({ error: 'Ya existe el autor.' });
+        } else {
+            console.error("Error in POST /api/autores", err);
+            res.status(500).json({ error: "Internal server error" }); //error 500 significa error interno del servidor
+        }
     }
-}); // ejemplo de uso: http://localhost:4444/api/autores
+});
+
 
 
 // Actualizar un autor.

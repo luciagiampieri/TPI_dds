@@ -1,5 +1,4 @@
 const { Sequelize, DataTypes } = require('sequelize');
-// cambiar la ruta!!!! a nuestra ruta
 const sequelize = new Sequelize('sqlite:' + "./.data/BD_dds.db", {timezone: '+00:00'});
 
 //Definir el modelo
@@ -85,17 +84,11 @@ const Libros = sequelize.define(
             },
       },
 
-      { // hooks es para pasar de mayusculas y evitar espacios en blanco (trim)
-            hooks: {
-                  beforeValidate: function (Libros, options) {
-                        if (typeof Libros.titulo === 'string') {
-                              Libros.titulo = Libros.titulo.toUpperCase().trim();
-                        }
-                  }
-            },
+      { 
             timestamps: false
       },
 );
+
 
 const Generos= sequelize.define(
       "Generos",

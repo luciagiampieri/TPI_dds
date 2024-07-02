@@ -30,17 +30,6 @@ const getEditorialById = async (id) => {
 };
 
 
-// // Crear una nueva editorial (requiere autenticación)
-// const createEditorial = async (editorial) => {
-//     try {
-//         const response = await axiosInstance.post(URL, editorial, { headers: { requiresAuth: true } });
-//         return response.data;
-//     } catch (error) {
-//         console.error('Error al crear la editorial:', error);
-//         throw error;
-//     }
-// };
-
 const createEditorial = async (editorial) => {
     try {
           const response = await axiosInstance.post(URL, editorial, { headers: { requiresAuth: true } });

@@ -17,10 +17,6 @@ function EditorialesRegistro({
         formState: { errors, touchedFields, isValid, isSubmitted },
     } = useForm({ values: Item });
 
-    // const onSubmit = (data) => {
-    //     data.fecha_fundacion = moment(data.fecha_fundacion).format("YYYY/MM/DD");
-    //     Grabar(data);
-    // }; // Función para enviar los datos del formulario al backend
 
     const onSubmit = async (data) => {
         data.fecha_fundacion = moment(data.fecha_fundacion).format("YYYY-MM-DD");
@@ -30,7 +26,7 @@ function EditorialesRegistro({
               if (error.message === 'Ya existe la editorial.') {
                     modalDialogService.Alert("Ya existe la editorial.");
         }
-  }}; 
+    }}; 
 
     return (
         <div className="container-principal">
